@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        history: "url('/img/cold-brew.webp')",
-        main: "url('/img/bg-main-coffee.webp')",
+        history: "url('/public/assets/images/cold-brew.webp')",
+        main: "url('/public/assets/images/bg-main-coffee.webp')",
       },
       spacing: {
         22: "7rem",
