@@ -11,8 +11,8 @@ module.exports = {
         22: "7rem",
       },
       colors: {
-        secondary: "#ffba33;",
-        tertiary: "#895537",
+        secondary: "#ffba33",
+        tertiary: "#6A4029",
         quartenary: "#0b132a",
       },
     },
