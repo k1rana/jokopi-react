@@ -6,7 +6,7 @@ import images from "../assets/images/person-with-a-coffee.webp";
 import productPlaceholder from "../assets/images/placeholder-image.webp";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import useDocumentTitle from "../helpers/documentTitle";
+import useDocumentTitle from "../utils/documentTitle";
 
 const promos = [
   {
@@ -94,7 +94,7 @@ function Products(props) {
           </nav>
           <section className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 justify-items-center content-around gap-3 gap-y-16 mt-10">
             {products.map((product, idx) => (
-              <Link to={`/products/${idx}`} key={idx}>
+              <Link to={`/products/detail/${idx}`} key={idx}>
                 <section className="relative w-36 bg-white shadow-xl p-5 rounded-3xl">
                   <img
                     src={product.img ?? productPlaceholder}
@@ -109,7 +109,7 @@ function Products(props) {
                       {product.name}
                     </p>
                     <p className="font-bold end text-tertiary">
-                      IDR{" "}
+                      IDR
                       {product.price
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}

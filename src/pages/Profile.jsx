@@ -4,7 +4,7 @@ import iconPen from "../assets/icons/icon-pen.svg";
 import placeholderImage from "../assets/images/placeholder-profile.jpg";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import useDocumentTitle from "../helpers/documentTitle";
+import useDocumentTitle from "../utils/documentTitle";
 
 function Profile() {
   useDocumentTitle("Profile");
