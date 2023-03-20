@@ -12,6 +12,7 @@ module.exports = {
         22: "7rem",
       },
       colors: {
+        primary: "#4F5665",
         secondary: "#ffba33",
         tertiary: "#6A4029",
         quartenary: "#0b132a",
