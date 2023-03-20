@@ -17,7 +17,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/products",
-    element: <Products />,
+    element: <Products title="Products - jokopi" />,
   },
 ]);
 

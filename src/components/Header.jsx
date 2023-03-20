@@ -1,12 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import {
-  Link,
-  NavLink,
-} from 'react-router-dom';
+import { Link, NavLink } from "react-router-dom";
 
-import burgerIcon from '../assets/icons/burger-menu-left.svg';
-import logo from '../assets/jokopi.svg';
+import burgerIcon from "../assets/icons/burger-menu-left.svg";
+import logo from "../assets/jokopi.svg";
 
 class Header extends Component {
   render() {
@@ -22,7 +19,7 @@ class Header extends Component {
           <img src={burgerIcon} width="30px" height="30px" alt="" />
         </div>
         <nav className="py-8 hidden lg:flex flex-row gap-8 justify-center">
-          <li className="list-none">
+          <li className="list-none" key="Home Page">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -32,7 +29,7 @@ class Header extends Component {
               Home
             </NavLink>
           </li>
-          <li className="list-none">
+          <li className="list-none" key="Product">
             <NavLink
               to="/products"
               className={({ isActive }) =>
@@ -42,10 +39,10 @@ class Header extends Component {
               Products
             </NavLink>
           </li>
-          <li className="list-none">
+          <li className="list-none" key="Cart">
             <a href="#">Your Cart</a>
           </li>
-          <li className="list-none">
+          <li className="list-none" key="History">
             <a href="#">History</a>
           </li>
         </nav>
