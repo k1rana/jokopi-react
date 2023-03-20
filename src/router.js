@@ -5,6 +5,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/Login";
 import Mainpage from "./pages/Mainpage";
 import Products from "./pages/Products";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/products",
-    element: <Products title="Products - jokopi" />,
+    element: <Products title="Products" />,
+  },
+  {
+    path: "/profile",
+    element: <Profile title="User Profile" />,
   },
 ]);
 

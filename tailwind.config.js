@@ -6,6 +6,7 @@ module.exports = {
       backgroundImage: {
         history: "url('/public/assets/images/cold-brew.webp')",
         main: "url('/public/assets/images/bg-main-coffee.webp')",
+        profile: "url('/public/assets/images/bg-profile.webp')",
       },
       spacing: {
         22: "7rem",
