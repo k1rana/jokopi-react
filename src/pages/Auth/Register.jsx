@@ -2,10 +2,10 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import icon from "../assets/jokopi.svg";
-import AuthFooter from "../components/AuthFooter";
+import icon from "../../assets/jokopi.svg";
+import AuthFooter from "../../components/AuthFooter";
 
-const Login = () => {
+const Register = () => {
   return (
     <>
       <main>
@@ -63,38 +63,27 @@ const Login = () => {
                         placeholder="Enter your password"
                       />
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-start">
-                        <div className="flex items-center h-5">
-                          <input
-                            id="remember"
-                            aria-describedby="remember"
-                            type="checkbox"
-                            className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                            required=""
-                          />
-                        </div>
-                        <div className="ml-3 text-sm">
-                          <label
-                            htmlFor="remember"
-                            className="text-gray-500 dark:text-gray-300"
-                          >
-                            Remember me
-                          </label>
-                        </div>
-                      </div>
-                      <a
-                        href="#"
-                        className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    <div>
+                      <label
+                        name="phoneNumber"
+                        htmlFor="phoneNumber"
+                        className="text-[#4F5665] font-bold"
                       >
-                        Forgot password?
-                      </a>
+                        Phone Number :
+                      </label>
+                      <input
+                        type="text"
+                        name="phoneNumber"
+                        id="phoneNumber"
+                        className="border-gray-400 border-2 rounded-2xl p-3 w-full mt-2"
+                        placeholder="Enter your phone number"
+                      />
                     </div>
                     <button
                       type="submit"
                       className="w-full text-tertiary bg-secondary focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl"
                     >
-                      Login
+                      Signup
                     </button>
                     <button
                       type="submit"
@@ -106,17 +95,17 @@ const Login = () => {
                         width="23px"
                         className="w  -5 h-5 mr-2"
                       />
-                      <span>Login with Google</span>
+                      <span>Signup with Google</span>
                     </button>
                     <div className="inline-flex items-center justify-center w-full">
                       <hr className="w-full h-px my-6 bg-gray-200 border-0 dark:bg-gray-700" />
-                      <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 w-56">
-                        Don’t have an account?
+                      <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 w-64">
+                        Already have a account?
                       </span>
                     </div>
-                    <Link to="/signup">
+                    <Link to="/login">
                       <button className="w-full text-white bg-tertiary focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl lg:mb-20">
-                        Sign up here
+                        Login here
                       </button>
                     </Link>
                   </form>
@@ -131,4 +120,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
