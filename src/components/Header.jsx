@@ -39,10 +39,10 @@ class Header extends Component {
   render() {
     return (
       <>
-        <Sidebar
+        {/* <Sidebar
           isOpen={this.state.menuOpen}
           onStateChange={(state) => this.handleStateChange(state)}
-        />
+        /> */}
         <header className=" px-10 lg:px-22 flex justify-between bg-white border-b-2 border-gray-100">
           <div className="py-8 font-extrabold">
             <Link to="/" className=" flex flex-row justify-center gap-4">

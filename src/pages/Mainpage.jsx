@@ -3,12 +3,17 @@ import React, { Component, Fragment } from "react";
 // assets icons
 import checkCircle from "../assets/icons/check-circle.svg";
 import checkIcon from "../assets/icons/check.svg";
+import loveIcon from "../assets/icons/love.svg";
+import placeIcon from "../assets/icons/place.svg";
+import starIcon from "../assets/icons/star.svg";
+import staffIcon from "../assets/icons/user.svg";
 import mapImage from "../assets/images/global.svg";
 import amazonLogo from "../assets/images/partners/amazon.svg";
 import discordLogo from "../assets/images/partners/discord.svg";
 import netflixLogo from "../assets/images/partners/netflix.svg";
 import redditLogo from "../assets/images/partners/reddit.svg";
 import spotifyLogo from "../assets/images/partners/spotify.svg";
+import phProfile from "../assets/images/placeholder-profile.jpg";
 import productImage1 from "../assets/images/product-1.webp";
 // assets images
 import provideImage from "../assets/images/team-work.webp";
@@ -23,6 +28,20 @@ class Mainpage extends Component {
       "Healthy meals, you can request the ingredients",
       "Chat with our staff to get better experience for ordering",
       "Free member card with a minimum purchase of IDR 200.000.",
+    ],
+    reviews: [
+      {
+        name: "Foo Barr",
+        text: "Wow... I am very happy to spend my whole day here. the Wi-fi is good, and the coffee and meals tho. I like it here!! Very recommended!",
+      },
+      {
+        name: "Yessica Christy",
+        text: "I like it because I like to travel far and still can make my day better just by drinking their Hazelnut Latte",
+      },
+      {
+        name: "Kim Young Jou",
+        text: "This is very unusual for my taste, I haven’t liked coffee before but their coffee is the best! and yup, you have to order the chicken wings, the best in town",
+      },
     ],
   };
   render() {
@@ -46,7 +65,39 @@ class Mainpage extends Component {
                 </button>
               </div>
             </div>
+            <section className="relative bg-white mt-20 mb-[-9rem] rounded-xl shadow-xl text-quartenary flex flex-row py-5 justify-center items-center">
+              <aside className="flex-1 border-r-2 py-6 flex justify-center gap-8 items-center">
+                <div>
+                  <div className="bg-secondary rounded-full p-2 w-10 aspect-square flex justify-center items-center">
+                    <img src={staffIcon} alt="" />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xl">90+</p>
+                  <p className="font-normal text-primary">Staff</p>
+                </div>
+              </aside>
+              <aside className="flex-1 border-r-2 py-6 flex justify-center gap-8 items-center">
+                <div className="bg-secondary rounded-full p-2 w-10 aspect-square flex justify-center items-center">
+                  <img src={loveIcon} alt="" />
+                </div>
+                <div>
+                  <p className="text-xl">30+</p>
+                  <p className="font-normal text-primary">Stores</p>
+                </div>
+              </aside>
+              <aside className="flex-1 py-6 flex justify-center gap-8 items-center">
+                <div className="bg-secondary rounded-full p-2 w-10 aspect-square flex justify-center items-center">
+                  <img src={placeIcon} alt="" />
+                </div>
+                <div>
+                  <p className="text-xl">800+</p>
+                  <p className="font-normal text-primary">Customers</p>
+                </div>
+              </aside>
+            </section>
           </section>
+          <div className="mb-20"></div>
           <section className="flex flex-row px-22 py-20 gap-32">
             <div className="flex-1 img">
               <img src={provideImage} alt="" width="100%" />
@@ -215,6 +266,62 @@ class Mainpage extends Component {
                 width="190px"
                 className="w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
               />
+            </div>
+          </section>
+          <section className="px-22 py-20">
+            <div className="flex flex-col items-center mb-20 text-center">
+              <h2 className="text-[35px] text-quartenary font-semibold mb-5">
+                Loved by Customer of
+                <br /> Happy Customer
+              </h2>
+              <p className="text-[1rem] text-gray-700 text-center max-w-[555px] text-primary">
+                These are the stories of our customers who have visited us with
+                great pleasure.
+              </p>
+            </div>
+            <div className="overflow-auto flex flex-row gap-5 ">
+              {this.state.reviews.map((review, idx) => {
+                return (
+                  <div
+                    className="w-[400px] border-gray-300 hover:border-tertiary border-2 duration-200 rounded-xl p-7 space-y-4 hover:shadow-2xl"
+                    key={idx}
+                  >
+                    <div className="flex flex-row gap-2 items-center">
+                      <img
+                        src={phProfile}
+                        alt=""
+                        className="w-14 aspect-square object-cover rounded-full"
+                      />
+                      <div className="flex-1">
+                        <p className="font-semibold text-quartenary text-lg">
+                          {review.name}
+                        </p>
+                        <p className="text-primary text-sm">Warsaw, Poland</p>
+                      </div>
+                      <div className="flex flex-row items-center gap-2">
+                        4.5 <img src={starIcon} alt="" />
+                      </div>
+                    </div>
+                    <p className="text-quartenary">“{review.text}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+          <section className="px-22 z-10 relative w-full mb-[-6rem]">
+            <div className="shadow-primary rounded-xl flex p-14 px-16 bg-white">
+              <aside className="flex-1 space-y-4">
+                <p className="text-3xl font-semibold">Check our promo today!</p>
+                <p className="text-primary">
+                  Let&apos;s see the deals and pick yours
+                </p>
+              </aside>
+              <aside className="hidden lg:block lg:flex-1"></aside>
+              <aside className="flex-1 flex flex-col justify-center">
+                <button className="ml-auto w-[75%] bg-secondary rounded-xl py-4 text-tertiary font-bold">
+                  See promo
+                </button>
+              </aside>
             </div>
           </section>
         </main>
