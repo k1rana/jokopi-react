@@ -1,14 +1,17 @@
-import React from 'react';
+import React from "react";
 
-import { Link } from 'react-router-dom';
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
-import icon from '../../assets/jokopi.svg';
-import useDocumentTitle from '../../utils/documentTitle';
+import icon from "../../assets/jokopi.svg";
+import useDocumentTitle from "../../utils/documentTitle";
 
+const notify = () => toast("Here is your toast.");
 const Login = () => {
   useDocumentTitle("Login");
   return (
     <>
+      <button onClick={notify}>Make me a toast</button>
       <header className="flex justify-between mb-10">
         <Link to="/">
           <div className="font-extrabold flex flex-row justify-center gap-4">
