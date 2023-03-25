@@ -1,10 +1,16 @@
-import React, { Component, useContext } from "react";
+import React, {
+  Component,
+  useContext,
+} from 'react';
 
-import { Link, NavLink } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+} from 'react-router-dom';
 
-import burgerIcon from "../assets/icons/burger-menu-left.svg";
-import logo from "../assets/jokopi.svg";
-import Sidebar from "./Sidebar";
+import burgerIcon from '../assets/icons/burger-menu-left.svg';
+import logo from '../assets/jokopi.svg';
+import Sidebar from './Sidebar';
 
 // create a navigation component that wraps the burger menu
 const Navigation = () => {
@@ -89,10 +95,10 @@ class Header extends Component {
             </li>
           </nav>
           <div className="flex-row gap-3 hidden lg:flex items-center select-none py-6">
-            <Link to="/login" className="pr-9 font-semibold">
+            <Link to="/auth/login" className="pr-9 font-semibold">
               Login
             </Link>
-            <Link to="/register">
+            <Link to="/auth/register">
               <button className="rounded-[25px] bg-secondary px-10 text-tertiary font-semibold py-2">
                 Sign Up
               </button>

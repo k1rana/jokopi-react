@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from 'react-router-dom';
 
-import ForgotPass from "./pages/Auth/ForgotPass";
-import Login from "./pages/Auth/Login";
-import Register from "./pages/Auth/Register";
-import Mainpage from "./pages/Mainpage";
-import ProductDetail from "./pages/ProductDetail";
-import Products from "./pages/Products";
-import Profile from "./pages/Profile";
+import Auth from './pages/Auth';
+import ForgotPass from './pages/Auth/ForgotPass';
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
+import Mainpage from './pages/Mainpage';
+import ProductDetail from './pages/ProductDetail';
+import Products from './pages/Products';
+import Profile from './pages/Profile';
 
 const router = createBrowserRouter([
   {
@@ -16,8 +17,23 @@ const router = createBrowserRouter([
     element: <Mainpage />,
   },
   {
-    path: "/login",
-    element: <Login />,
+    path: "/auth",
+    element: <Auth />,
+    children: [
+      { index: true, element: <Login /> },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "forgotpass",
+        element: <ForgotPass />,
+      },
+    ],
   },
   {
     path: "/products/*",
@@ -36,14 +52,6 @@ const router = createBrowserRouter([
   {
     path: "/products/detail/:productId",
     element: <ProductDetail />,
-  },
-  {
-    path: "/signup/",
-    element: <Register />,
-  },
-  {
-    path: "/forgotpass/",
-    element: <ForgotPass />,
   },
 ]);
 
