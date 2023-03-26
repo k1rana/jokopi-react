@@ -4,14 +4,55 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 import icon from "../../assets/jokopi.svg";
+import { login } from "../../utils/dataProvider/auth";
 import useDocumentTitle from "../../utils/documentTitle";
 
-const notify = () => toast("Here is your toast.");
 const Login = () => {
   useDocumentTitle("Login");
+
+  const controller = React.useMemo(() => new AbortController(), []);
+  const [form, setForm] = React.useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
+
+  function loginHandler(e) {
+    e.preventDefault(); // preventing default submit
+    toast.promise(
+      login(form.email, form.password, controller).then((res) => {
+        // console.log(res.data);
+        toast(res.data.data.token);
+        // const key = "tokokopi-token";
+        // save(key, res.data.token);
+      }),
+      {
+        loading: "Please wait a moment",
+        success: "Login successful!",
+        error: "Incorrect email or password",
+      }
+    );
+  }
+
+  function onChangeForm(e) {
+    return setForm((form) => {
+      return {
+        ...form,
+        [e.target.name]: e.target.value,
+      };
+    });
+  }
+  function onCheck(e) {
+    return setForm((form) => {
+      return {
+        ...form,
+        [e.target.name]: !form[e.target.name],
+      };
+    });
+  }
+
   return (
     <>
-      <button onClick={notify}>Make me a toast</button>
       <header className="flex justify-between mb-10">
         <Link to="/">
           <div className="font-extrabold flex flex-row justify-center gap-4">
@@ -22,11 +63,7 @@ const Login = () => {
         <div className="text-xl font-semibold text-tertiary">Login</div>
       </header>
       <section className="mt-16">
-        <form
-          action=""
-          method="post"
-          className="space-y-4 md:space-y-6 relative"
-        >
+        <form className="space-y-4 md:space-y-6 relative">
           <div>
             <label
               name="email"
@@ -37,16 +74,18 @@ const Login = () => {
             </label>
             <input
               type="text"
-              name=""
+              name="email"
               id="email"
               className="border-gray-400 border-2 rounded-2xl p-3 w-full mt-2"
               placeholder="Enter your email address"
+              value={form.email}
+              onChange={onChangeForm}
             />
           </div>
           <div>
             <label
-              name="email"
-              htmlFor="email"
+              name="password"
+              htmlFor="password"
               className="text-[#4F5665] font-bold"
             >
               Password :
@@ -57,6 +96,8 @@ const Login = () => {
               id="password"
               className="border-gray-400 border-2 rounded-2xl p-3 w-full mt-2"
               placeholder="Enter your password"
+              value={form.password}
+              onChange={onChangeForm}
             />
           </div>
           <div className="flex items-center justify-between">
@@ -64,10 +105,11 @@ const Login = () => {
               <div className="flex items-center h-5">
                 <input
                   id="remember"
-                  aria-describedby="remember"
+                  aria-describedby="rememberMe"
+                  name="rememberMe"
                   type="checkbox"
                   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                  required=""
+                  onChange={onCheck}
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -82,6 +124,7 @@ const Login = () => {
             <Link
               to="/auth/forgotpass"
               className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+              name="rememberMe"
             >
               Forgot password?
             </Link>
@@ -89,6 +132,7 @@ const Login = () => {
           <button
             type="submit"
             className="w-full text-tertiary bg-secondary focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl"
+            onClick={loginHandler}
           >
             Login
           </button>
