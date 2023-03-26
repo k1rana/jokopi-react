@@ -1,12 +1,93 @@
-import React from 'react';
+import React from "react";
 
-import { Link } from 'react-router-dom';
+import { toast } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
-import icon from '../../assets/jokopi.svg';
-import useDocumentTitle from '../../utils/documentTitle';
+import icon from "../../assets/jokopi.svg";
+import { register } from "../../utils/dataProvider/auth";
+import useDocumentTitle from "../../utils/documentTitle";
 
 const Register = () => {
   useDocumentTitle("Register");
+
+  const controller = React.useMemo(() => new AbortController(), []);
+  const navigate = useNavigate();
+  const [form, setForm] = React.useState({
+    email: "",
+    password: "",
+    phoneNumber: "",
+  });
+
+  const [error, setError] = React.useState({
+    email: "",
+    password: "",
+    phoneNumber: "",
+  });
+
+  function registerHandler(e) {
+    e.preventDefault(); // preventing default submit
+
+    const valid = { email: "", password: "", phoneNumber: "" };
+    const emailRegex =
+      /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
+    const passRegex = /^(?=.*[0-9])(?=.*[a-z]).{8,}$/g;
+    const phoneRegex =
+      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g;
+
+    // email validation
+    if (!form.email) valid.email = "Input your email address";
+    else if (!form.email.match(emailRegex))
+      valid.email = "Invalid email address";
+
+    // password validation
+    if (!form.password) valid.password = "Input your password";
+    else if (form.password.length < 8)
+      valid.password = "Password length minimum is 8";
+    else if (!form.password.match(passRegex))
+      valid.password = "Password must be combination alphanumeric";
+
+    // phone validation
+    if (!form.phoneNumber) valid.phoneNumber = "Input your phone number";
+    else if (!form.phoneNumber.match(phoneRegex))
+      valid.phoneNumber = "Invalid phone number";
+
+    setError({
+      email: valid.email,
+      password: valid.password,
+      phoneNumber: valid.phoneNumber,
+    });
+
+    if (valid.email == "" && valid.password == "" && valid.phoneNumber == "") {
+      toast.promise(
+        register(form.email, form.password, form.phoneNumber, controller).then(
+          (res) => {
+            return res.data.msg;
+          }
+        ),
+        {
+          loading: "Please wait a moment",
+          success: () => {
+            navigate("/auth/login", {
+              replace: true,
+            });
+            return "Register successful! You can login now";
+          },
+          error: ({ response }) => response.data.msg,
+        },
+        { success: { duration: Infinity }, error: { duration: Infinity } }
+      );
+    }
+  }
+
+  function onChangeForm(e) {
+    return setForm((form) => {
+      return {
+        ...form,
+        [e.target.name]: e.target.value,
+      };
+    });
+  }
+
   return (
     <>
       <header className="flex justify-between mb-10">
@@ -19,11 +100,7 @@ const Register = () => {
         <div className="text-xl font-semibold text-tertiary">Login</div>
       </header>
       <section className="mt-16">
-        <form
-          action=""
-          method="post"
-          className="space-y-4 md:space-y-6 relative"
-        >
+        <form className="space-y-4 md:space-y-4 relative">
           <div>
             <label
               name="email"
@@ -34,16 +111,24 @@ const Register = () => {
             </label>
             <input
               type="text"
-              name=""
+              name="email"
               id="email"
-              className="border-gray-400 border-2 rounded-2xl p-3 w-full mt-2"
+              className={
+                `border-gray-400 border-2 rounded-2xl p-3 w-full mt-2` +
+                (error.email != "" ? " border-red-500" : "")
+              }
               placeholder="Enter your email address"
+              value={form.email}
+              onChange={onChangeForm}
             />
+            <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1 h-4">
+              {error.email != "" ? error.email : ""}
+            </span>
           </div>
           <div>
             <label
-              name="email"
-              htmlFor="email"
+              name="password"
+              htmlFor="password"
               className="text-[#4F5665] font-bold"
             >
               Password :
@@ -52,9 +137,17 @@ const Register = () => {
               type="password"
               name="password"
               id="password"
-              className="border-gray-400 border-2 rounded-2xl p-3 w-full mt-2"
+              className={
+                `border-gray-400 border-2 rounded-2xl p-3 w-full mt-2` +
+                (error.password != "" ? " border-red-500" : "")
+              }
               placeholder="Enter your password"
+              value={form.password}
+              onChange={onChangeForm}
             />
+            <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1 h-4">
+              {error.password != "" ? error.password : ""}
+            </span>
           </div>
           <div>
             <label
@@ -68,13 +161,22 @@ const Register = () => {
               type="text"
               name="phoneNumber"
               id="phoneNumber"
-              className="border-gray-400 border-2 rounded-2xl p-3 w-full mt-2"
+              className={
+                `border-gray-400 border-2 rounded-2xl p-3 w-full mt-2` +
+                (error.phoneNumber != "" ? " border-red-500" : "")
+              }
               placeholder="Enter your phone number"
+              value={form.phoneNumber}
+              onChange={onChangeForm}
             />
+            <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1 h-4">
+              {error.phoneNumber != "" ? error.phoneNumber : ""}
+            </span>
           </div>
           <button
             type="submit"
             className="w-full text-tertiary bg-secondary focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl"
+            onClick={registerHandler}
           >
             Signup
           </button>
@@ -92,7 +194,7 @@ const Register = () => {
           </button>
           <div className="inline-flex items-center justify-center w-full">
             <hr className="w-full h-px my-6 bg-gray-200 border-0 dark:bg-gray-700" />
-            <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 w-64">
+            <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 w-64 text-center">
               Already have a account?
             </span>
           </div>
