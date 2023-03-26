@@ -1,11 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import { toast, ToastBar, Toaster } from "react-hot-toast";
+import {
+  toast,
+  ToastBar,
+  Toaster,
+} from 'react-hot-toast';
 
 export const Notification = () => {
   return (
     <Toaster
-      position="top-left"
+      position="bottom-left"
       reverseOrder={false}
       toastOptions={{
         className: "",

@@ -2,9 +2,9 @@ import axios from "axios";
 
 const host = process.env.REACT_APP_BACKEND_HOST;
 
-export function login(email, password, controller) {
-  const body = { email, password };
-  const url = `${host}/auth/login`;
+export function login(email, password, rememberMe, controller) {
+  const body = { email, password, rememberMe };
+  const url = `${host}/apiv1/auth/login`;
 
   return axios.post(url, body, {
     signal: controller.signal,

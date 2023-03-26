@@ -1,13 +1,18 @@
-import React from "react";
+import React from 'react';
 
-import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import toast from 'react-hot-toast';
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom';
 
-import icon from "../../assets/jokopi.svg";
-import { login } from "../../utils/dataProvider/auth";
-import useDocumentTitle from "../../utils/documentTitle";
+import icon from '../../assets/jokopi.svg';
+import { login } from '../../utils/dataProvider/auth';
+import useDocumentTitle from '../../utils/documentTitle';
+import { save } from '../../utils/localStorage';
 
 const Login = () => {
+  const navigate = useNavigate();
   useDocumentTitle("Login");
 
   const controller = React.useMemo(() => new AbortController(), []);
@@ -19,16 +24,34 @@ const Login = () => {
 
   function loginHandler(e) {
     e.preventDefault(); // preventing default submit
+    toast.dismiss(); // dismiss all toast
+
     toast.promise(
-      login(form.email, form.password, controller).then((res) => {
-        // console.log(res.data);
-        toast(res.data.data.token);
-        // const key = "tokokopi-token";
-        // save(key, res.data.token);
-      }),
+      login(form.email, form.password, form.rememberMe, controller).then(
+        (res) => {
+          // console.log(res.data);
+          // console.log(res.data.data.token);
+          // return res.data.data.token;
+
+          const key = `${process.env.REACT_APP_WEBSITE_NAME}-token`;
+          save(key, res.data.data.token);
+        }
+      ),
       {
         loading: "Please wait a moment",
-        success: "Login successful!",
+        success: () => {
+          navigate("/products");
+          toast.success("Welcome to jokopi!\nYou can order for now!", {
+            icon: "👋",
+            duration: Infinity,
+          }); // add toast welcome
+          return (
+            <>
+              Login successful!
+              <br /> Redirecting you
+            </>
+          );
+        },
         error: "Incorrect email or password",
       }
     );
@@ -42,6 +65,7 @@ const Login = () => {
       };
     });
   }
+
   function onCheck(e) {
     return setForm((form) => {
       return {

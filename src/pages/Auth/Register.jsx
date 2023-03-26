@@ -1,11 +1,14 @@
-import React from "react";
+import React from 'react';
 
-import { toast } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-hot-toast';
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom';
 
-import icon from "../../assets/jokopi.svg";
-import { register } from "../../utils/dataProvider/auth";
-import useDocumentTitle from "../../utils/documentTitle";
+import icon from '../../assets/jokopi.svg';
+import { register } from '../../utils/dataProvider/auth';
+import useDocumentTitle from '../../utils/documentTitle';
 
 const Register = () => {
   useDocumentTitle("Register");
@@ -26,6 +29,7 @@ const Register = () => {
 
   function registerHandler(e) {
     e.preventDefault(); // preventing default submit
+    toast.dismiss(); // dismiss all toast notification
 
     const valid = { email: "", password: "", phoneNumber: "" };
     const emailRegex =
