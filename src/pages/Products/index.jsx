@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 
 import {
@@ -5,6 +6,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useSearchParams,
 } from 'react-router-dom';
 
 import images from '../../assets/images/person-with-a-coffee.webp';
@@ -35,6 +37,9 @@ const promos = [
 function Products(props) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log(searchParams.keyword);
 
   useDocumentTitle(props.title);
   return (
@@ -136,8 +141,24 @@ function Products(props) {
             </li>
           </nav>
           <Routes path="/products/*">
-            <Route index element={<GetAllProducts />}></Route>
-            <Route path="category/:catId" element={<GetAllProducts />} />
+            <Route
+              index
+              element={
+                <GetAllProducts
+                  searchParams={searchParams}
+                  setSearchParams={setSearchParams}
+                />
+              }
+            ></Route>
+            <Route
+              path="category/:catId"
+              element={
+                <GetAllProducts
+                  searchParams={searchParams}
+                  setSearchParams={setSearchParams}
+                />
+              }
+            />
           </Routes>
 
           <section className="my-6 text-tertiary">

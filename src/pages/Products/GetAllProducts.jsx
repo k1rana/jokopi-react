@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, {
   useEffect,
   useState,
@@ -6,9 +7,9 @@ import React, {
 import {
   Link,
   useParams,
-  useSearchParams,
 } from 'react-router-dom';
 
+import emptyBox from '../../assets/images/empty.svg';
 import loadingImage from '../../assets/images/loading.svg';
 import productPlaceholder from '../../assets/images/placeholder-image.webp';
 import { getAllProducts } from '../../utils/dataProvider/products';
@@ -17,40 +18,46 @@ import withSearchParams from '../../utils/wrappers/withSearchParams.js';
 function GetAllProducts(props) {
   {
     const [products, setProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const { catId } = useParams();
-    const [params, setParams] = useSearchParams();
+    const { searchParams, setSearchParams } = props;
 
-    function getProducts(catId, controller) {
+    function getProducts(catId, searchParams, controller) {
+      const sort = searchParams.get("sort");
+      const orderBy = searchParams.get("orderBy");
+      const page = searchParams.get("page");
+
       setIsLoading(true);
-      getAllProducts(catId, controller)
+      getAllProducts(catId, { sort, limit: 12, orderBy, page }, controller)
         .then((response) => response.data.data)
         .then((data) => {
           setProducts(data);
-          setIsLoading(false);
+          if (!controller.aborted) {
+            setIsLoading(false);
+          }
         })
         .catch((err) => {
-          setIsLoading(false);
+          if (!controller.aborted) {
+            setIsLoading(false);
+          }
           setProducts([]);
         });
     }
 
-    useEffect(() => {
-      const controller = new AbortController();
-      getProducts(catId, controller);
-      return () => {
-        setIsLoading(true);
-        controller.abort();
-      };
-    }, [catId]);
+    // const controller = React.useMemo(() => new AbortController(), [catId]);
 
     useEffect(() => {
       const controller = new AbortController();
+
+      // Fetch new products
+      getProducts(catId, searchParams, controller);
       setIsLoading(true);
-      // const controller = React.useMemo(() => new AbortController(), []);
-      getProducts(catId, controller);
-      console.log(params.get("check"));
-    }, []);
+
+      return () => {
+        controller.abort();
+        setIsLoading(true);
+      };
+    }, [catId]);
 
     if (isLoading)
       return (
@@ -60,7 +67,19 @@ function GetAllProducts(props) {
       );
 
     if (products.length < 1) {
-      return <p>Data not found</p>;
+      return (
+        <section className="w-full flex flex-col justify-center items-center py-8 text-center font-medium gap-5">
+          <div>
+            <img src={emptyBox} alt="" className="w-52" />
+          </div>
+          <div>
+            <p>
+              We&apos;re sorry, it seems our products have gone into hiding.
+            </p>
+            <p>We&apos;ll try to coax them out soon.</p>
+          </div>
+        </section>
+      );
     }
 
     return (

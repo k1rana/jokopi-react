@@ -21,7 +21,6 @@ function ProductDetail(props) {
   const [detail, setDetail] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { productId } = useParams();
-  const title = "Cold Brew";
   useDocumentTitle("Products");
 
   const controller = React.useMemo(() => new AbortController(), []);
@@ -83,7 +82,7 @@ function ProductDetail(props) {
           <aside className="flex-1 flex flex-col items-center justify-between gap-10">
             <img
               src={p.img ? p.img : productPlaceholder}
-              alt={title}
+              alt={p.name}
               className="aspect-square object-cover rounded-full w-64"
             />
             <section className="p-4 px-8 w-full shadow-primary rounded-xl flex flex-col gap-8">
@@ -300,7 +299,7 @@ function ProductDetail(props) {
             </div>
             <div className="flex-[4_4_0] min-w-[100px]">
               <p className="font-black uppercase text-xl text-center md:text-left">
-                {title}
+                {p.name}
               </p>
             </div>
             <div className="flex-1 font-bold text-lg w-full content-end">
