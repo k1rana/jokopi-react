@@ -20,6 +20,9 @@ module.exports = {
         tertiary: "#6A4029",
         quartenary: "#0b132a",
       },
+      borderWidth: {
+        1: "1px",
+      },
     },
   },
   plugins: [],

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   NavLink,
@@ -37,9 +37,14 @@ const promos = [
 function Products(props) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const [ddMenu, setDdmenu] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
   console.log(searchParams.keyword);
+
+  const toggleDdmenu = () => {
+    setDdmenu(!ddMenu);
+  };
 
   useDocumentTitle(props.title);
   return (
@@ -138,6 +143,52 @@ function Products(props) {
               >
                 Add-on
               </NavLink>
+            </li>
+            <li className="relative">
+              <button onClick={toggleDdmenu}>▼</button>
+              <div
+                className={
+                  (ddMenu ? "opacity-0 z-0 " : " z-[5]") +
+                  " absolute w-72 shadow border-1 border-gray-200 bg-white rounded-md right-0 p-5 top-10 text-primary duration-200 transition-opacity"
+                }
+              >
+                <section className="flex flex-col">
+                  <aside className="flex-1 flex flex-col">
+                    <label
+                      htmlFor="searchProduct"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Keywords
+                    </label>
+                    <input
+                      type="text"
+                      name="searchProduct"
+                      id="searchProduct"
+                      className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                  </aside>
+                  <aside className="flex-1">
+                    <label
+                      htmlFor="orderBy"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Order by
+                    </label>
+                    <select
+                      id="orderBy"
+                      className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                      <option selected>Choose a order</option>
+                      <option value="p_asc">Price (ASC)</option>
+                      <option value="p_asc">Price (DESC)</option>
+                      <option value="id_asc">ID (ASC)</option>
+                      <option value="id_desc">ID (DESC)</option>
+                      <option value="cat_asc">Category (ASC)</option>
+                      <option value="cat_desc">Category (DESC)</option>
+                    </select>
+                  </aside>
+                </section>
+              </div>
             </li>
           </nav>
           <Routes path="/products/*">
