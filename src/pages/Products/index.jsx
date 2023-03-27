@@ -1,12 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import { NavLink, Route, Routes } from "react-router-dom";
+import {
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom';
 
-import images from "../../assets/images/person-with-a-coffee.webp";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import useDocumentTitle from "../../utils/documentTitle";
-import GetAllProducts from "./GetAllProducts";
+import images from '../../assets/images/person-with-a-coffee.webp';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import useDocumentTitle from '../../utils/documentTitle';
+import GetAllProducts from './GetAllProducts';
 
 const promos = [
   {
@@ -28,6 +33,9 @@ const promos = [
 ];
 
 function Products(props) {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
   useDocumentTitle(props.title);
   return (
     <>

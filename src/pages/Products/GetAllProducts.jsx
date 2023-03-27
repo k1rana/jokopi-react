@@ -3,33 +3,27 @@ import React, {
   useState,
 } from 'react';
 
-import axios from 'axios';
 import {
   Link,
   useParams,
+  useSearchParams,
 } from 'react-router-dom';
 
 import loadingImage from '../../assets/images/loading.svg';
 import productPlaceholder from '../../assets/images/placeholder-image.webp';
+import { getAllProducts } from '../../utils/dataProvider/products';
+import withSearchParams from '../../utils/wrappers/withSearchParams.js';
 
-export default function GetAllProducts(props) {
+function GetAllProducts(props) {
   {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const { catId } = useParams();
-    const [category, setCategory] = useState(catId);
+    const [params, setParams] = useSearchParams();
 
-    const controller = new AbortController();
-
-    function getProducts(controller, catId) {
+    function getProducts(catId, controller) {
       setIsLoading(true);
-      axios
-        .get(
-          `${process.env.REACT_APP_BACKEND_HOST}/products?category=${catId}`,
-          {
-            signal: controller.signal,
-          }
-        )
+      getAllProducts(catId, controller)
         .then((response) => response.data.data)
         .then((data) => {
           setProducts(data);
@@ -42,11 +36,20 @@ export default function GetAllProducts(props) {
     }
 
     useEffect(() => {
-      getProducts(controller, catId);
+      const controller = new AbortController();
+      getProducts(catId, controller);
+      return () => {
+        setIsLoading(true);
+        controller.abort();
+      };
     }, [catId]);
 
     useEffect(() => {
-      controller.abort();
+      const controller = new AbortController();
+      setIsLoading(true);
+      // const controller = React.useMemo(() => new AbortController(), []);
+      getProducts(catId, controller);
+      console.log(params.get("check"));
     }, []);
 
     if (isLoading)
@@ -62,8 +65,8 @@ export default function GetAllProducts(props) {
 
     return (
       <section className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 justify-items-center content-around gap-3 gap-y-16 mt-10">
-        {products.map((product, idx) => (
-          <Link to={`/products/detail/${idx}`} key={idx}>
+        {products.map((product) => (
+          <Link to={`/products/detail/${product.id}`} key={product.id}>
             <section className="relative w-36 bg-white shadow-xl p-5 rounded-3xl">
               <img
                 src={product.img ?? productPlaceholder}
@@ -91,3 +94,5 @@ export default function GetAllProducts(props) {
     );
   }
 }
+
+export default withSearchParams(GetAllProducts);

@@ -1,31 +1,88 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
-import { NavLink, useParams } from "react-router-dom";
+import {
+  NavLink,
+  useParams,
+} from 'react-router-dom';
 
-import productPlaceholder from "../assets/images/placeholder-image.webp";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import useDocumentTitle from "../utils/documentTitle";
+import loadingImage from '../../assets/images/loading.svg';
+import lostImage from '../../assets/images/not_found.svg';
+import productPlaceholder from '../../assets/images/placeholder-image.webp';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import { getProductbyId } from '../../utils/dataProvider/products';
+import useDocumentTitle from '../../utils/documentTitle';
 
 function ProductDetail(props) {
+  const [detail, setDetail] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { productId } = useParams();
   const title = "Cold Brew";
-  useDocumentTitle(title);
+  useDocumentTitle("Products");
 
-  return (
-    <>
-      <Header />
+  const controller = React.useMemo(() => new AbortController(), []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    getProductbyId(productId, controller)
+      .then((response) => {
+        setDetail(response.data.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  const NotFound = () => {
+    return (
+      <section className="w-full min-h-[80vh] flex justify-center flex-col gap-10 text-center py-5">
+        <img src={lostImage} alt="404" className="h-72" />
+        <div className="flex flex-col gap-3">
+          <p className="text-xl font-semibold">Product Not Found</p>
+          <NavLink to={"/products/"}>
+            <button className="rounded-[25px] bg-secondary px-10 text-tertiary font-semibold py-2">
+              Back to Products
+            </button>
+          </NavLink>
+        </div>
+      </section>
+    );
+  };
+
+  const Loading = () => {
+    return (
+      <section className="min-h-[80vh] flex items-center justify-center flex-col">
+        <div>
+          <img src={loadingImage} alt="" />
+        </div>
+      </section>
+    );
+  };
+
+  const Detail = (props) => {
+    const p = props.data;
+    const desc = !p.desc
+      ? "This product does not have a description yet."
+      : p.desc;
+    useDocumentTitle(p.name);
+    return (
       <main className="px-10 lg:px-22 py-10">
         <nav className="flex flex-row list-none gap-1">
           <li className="after:content-['>'] after:font-semibold text-primary">
             <NavLink to="/products">Favorite & Promo </NavLink>
           </li>
-          <li className="text-tertiary font-semibold">{title}</li>
+          <li className="text-tertiary font-semibold">{p.name}</li>
         </nav>
         <section className="flex my-10 gap-16 flex-col md:flex-row">
           <aside className="flex-1 flex flex-col items-center justify-between gap-10">
             <img
-              src={productPlaceholder}
+              src={p.img ? p.img : productPlaceholder}
               alt={title}
               className="aspect-square object-cover rounded-full w-64"
             />
@@ -135,13 +192,10 @@ function ProductDetail(props) {
           </aside>
           <aside className="flex-1 flex flex-col gap-5 justify-between">
             <p className="font-black text-5xl uppercase w-full text-center mb-4">
-              {title}
+              {p.name}
             </p>
             <p className="text-tertiary text-lg text-justify md:min-h-[200px]">
-              Cold brewing is a method of brewing that combines ground coffee
-              and cool water and uses time instead of heat to extract the
-              flavor. It is brewed in small batches and steeped for as long as
-              48 hours.
+              {desc}
             </p>
             <p className="text-tertiary text-lg mb-8">
               Delivery only on <b>Monday to friday</b> at <b>1 - 7 pm</b>
@@ -169,7 +223,9 @@ function ProductDetail(props) {
                   </button>
                 </div>
               </div>
-              <p className="font-bold text-xl">IDR 30.000</p>
+              <p className="font-bold text-xl">
+                IDR {p.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+              </p>
             </div>
             <button className="mt-4 block bg-tertiary text-white font-bold text-lg py-4 rounded-xl">
               Add to Cart
@@ -269,7 +325,19 @@ function ProductDetail(props) {
           </aside>
         </section>
       </main>
+    );
+  };
 
+  return (
+    <>
+      <Header />
+      {isLoading ? (
+        <Loading />
+      ) : detail.length < 1 ? (
+        <NotFound />
+      ) : (
+        <Detail data={detail[0]} />
+      )}
       <Footer />
     </>
   );

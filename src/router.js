@@ -7,8 +7,8 @@ import ForgotPass from './pages/Auth/ForgotPass';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Mainpage from './pages/Mainpage';
-import ProductDetail from './pages/ProductDetail';
 import Products from './pages/Products';
+import ProductDetail from './pages/Products/ProductDetail';
 import Profile from './pages/Profile';
 
 const router = createBrowserRouter([
