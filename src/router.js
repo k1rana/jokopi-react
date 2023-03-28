@@ -10,30 +10,12 @@ import Mainpage from './pages/Mainpage';
 import Products from './pages/Products';
 import ProductDetail from './pages/Products/ProductDetail';
 import Profile from './pages/Profile';
+import { isAuthenticated } from './utils/authUtils';
 
-const router = createBrowserRouter([
+const routerData = [
   {
     path: "/",
     element: <Mainpage />,
-  },
-  {
-    path: "/auth",
-    element: <Auth />,
-    children: [
-      { index: true, element: <Login /> },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "register",
-        element: <Register />,
-      },
-      {
-        path: "forgotpass",
-        element: <ForgotPass />,
-      },
-    ],
   },
   {
     path: "/products/*",
@@ -53,6 +35,30 @@ const router = createBrowserRouter([
     path: "/products/detail/:productId",
     element: <ProductDetail />,
   },
-]);
+];
+
+if (!isAuthenticated()) {
+  routerData.push({
+    path: "/auth",
+    element: <Auth />,
+    children: [
+      { index: true, element: <Login /> },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "forgotpass",
+        element: <ForgotPass />,
+      },
+    ],
+  });
+}
+
+const router = createBrowserRouter(routerData);
 
 export default router;

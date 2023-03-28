@@ -9,7 +9,9 @@ import {
 } from 'react-router-dom';
 
 import burgerIcon from '../assets/icons/burger-menu-left.svg';
+import placeholderProfile from '../assets/images/placeholder-profile.jpg';
 import logo from '../assets/jokopi.svg';
+import { isAuthenticated } from '../utils/authUtils';
 import Sidebar from './Sidebar';
 
 // create a navigation component that wraps the burger menu
@@ -94,16 +96,49 @@ class Header extends Component {
               <a href="#">History</a>
             </li>
           </nav>
-          <div className="flex-row gap-3 hidden lg:flex items-center select-none py-6">
-            <Link to="/auth/login" className="pr-9 font-semibold">
-              Login
-            </Link>
-            <Link to="/auth/register">
-              <button className="rounded-[25px] bg-secondary px-10 text-tertiary font-semibold py-2">
-                Sign Up
-              </button>
-            </Link>
-          </div>
+          {isAuthenticated() ? (
+            <div className="flex-row gap-10 hidden lg:flex select-none py-8">
+              <div className="search-section cursor-pointer">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 17 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16 16L12.375 12.375M14.3333 7.66667C14.3333 11.3486 11.3486 14.3333 7.66667 14.3333C3.98477 14.3333 1 11.3486 1 7.66667C1 3.98477 3.98477 1 7.66667 1C11.3486 1 14.3333 3.98477 14.3333 7.66667Z"
+                    stroke="#4F5665"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <a href="" className="chat-link">
+                <img src="./img/chat.webp" alt="" width="30px" />
+              </a>
+              <a href="./profile.html">
+                <img
+                  src={placeholderProfile}
+                  alt=""
+                  width="30px"
+                  className="rounded-full"
+                />
+              </a>
+            </div>
+          ) : (
+            <div className="hidden lg:flex flex-row gap-3 items-center select-none py-6">
+              <Link to="/auth/login" className="pr-9 font-semibold">
+                Login
+              </Link>
+              <Link to="/auth/register">
+                <button className="rounded-[25px] bg-secondary px-10 text-tertiary font-semibold py-2 hover:bg-secondary-200 duration-300">
+                  Sign Up
+                </button>
+              </Link>
+            </div>
+          )}
         </header>
       </>
     );
