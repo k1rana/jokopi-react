@@ -1,64 +1,53 @@
-import React from 'react';
+import React from "react";
 
-import { createBrowserRouter } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from "react-router-dom";
 
-import Auth from './pages/Auth';
-import ForgotPass from './pages/Auth/ForgotPass';
-import Login from './pages/Auth/Login';
-import Register from './pages/Auth/Register';
-import Mainpage from './pages/Mainpage';
-import Products from './pages/Products';
-import ProductDetail from './pages/Products/ProductDetail';
-import Profile from './pages/Profile';
-import { isAuthenticated } from './utils/authUtils';
+import Auth from "./pages/Auth";
+import ForgotPass from "./pages/Auth/ForgotPass";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+import NotFound from "./pages/Error";
+import Mainpage from "./pages/Mainpage";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/Products/ProductDetail";
+import Profile from "./pages/Profile";
+import { CheckAuth, CheckNoAuth } from "./utils/wrappers/protectedRoute";
 
-const routerData = [
-  {
-    path: "/",
-    element: <Mainpage />,
-  },
-  {
-    path: "/products/*",
-    element: <Products title="Products" />,
-    children: [
-      {
-        path: "category/:id",
-        element: null,
-      },
-    ],
-  },
-  {
-    path: "/profile",
-    element: <Profile title="User Profile" />,
-  },
-  {
-    path: "/products/detail/:productId",
-    element: <ProductDetail />,
-  },
-];
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" errorElement={<NotFound />}>
+      {/* Public Route */}
+      <Route index element={<Mainpage />} />
+      <Route path="products" element={<Products title="Products" />}>
+        <Route path="category/:id" />
+      </Route>
+      <Route path="products/detail/:productId" element={<ProductDetail />} />
 
-if (!isAuthenticated()) {
-  routerData.push({
-    path: "/auth",
-    element: <Auth />,
-    children: [
-      { index: true, element: <Login /> },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "register",
-        element: <Register />,
-      },
-      {
-        path: "forgotpass",
-        element: <ForgotPass />,
-      },
-    ],
-  });
-}
+      {/* Route which must not logged in */}
+      <Route
+        path="auth"
+        element={
+          <CheckNoAuth>
+            <Auth />
+          </CheckNoAuth>
+        }
+      >
+        <Route index element={<Login />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="forgotpass" element={<ForgotPass />} />
+      </Route>
 
-const router = createBrowserRouter(routerData);
+      {/* Route which must logged in */}
+      <Route element={<CheckAuth />}>
+        <Route path="profile" element={<Profile title="User Profile" />} />
+      </Route>
+    </Route>
+  )
+);
 
 export default router;

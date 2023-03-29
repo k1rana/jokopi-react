@@ -1,19 +1,21 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 
+import _ from "lodash";
 import {
   NavLink,
   Route,
   Routes,
   useLocation,
+  useNavigate,
   useSearchParams,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import images from '../../assets/images/person-with-a-coffee.webp';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import useDocumentTitle from '../../utils/documentTitle';
-import GetAllProducts from './GetAllProducts';
+import images from "../../assets/images/person-with-a-coffee.webp";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import useDocumentTitle from "../../utils/documentTitle";
+import GetAllProducts from "./GetAllProducts";
 
 const promos = [
   {
@@ -38,13 +40,59 @@ function Products(props) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const [ddMenu, setDdmenu] = useState(false);
-
+  const [sort, setSort] = useState(undefined);
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log(searchParams.keyword);
+  const [search, setSearch] = useState(
+    searchParams.has("q") ? searchParams.get("q") : undefined
+  );
 
   const toggleDdmenu = () => {
     setDdmenu(!ddMenu);
   };
+  const navigate = useNavigate();
+
+  const navigateWithParams = (newParams) => {
+    const searchParams = new URLSearchParams(location.search);
+    Object.entries(newParams).forEach(([key, value]) =>
+      searchParams.set(key, value)
+    );
+    navigate(`${location.pathname}?${searchParams}`);
+  };
+
+  const navigateDeleteParams = (deleteParams) => {
+    const searchParams = new URLSearchParams(location.search);
+    Object.entries(deleteParams).forEach(([key, value]) =>
+      searchParams.delete(key)
+    );
+    navigate(`${location.pathname}?${searchParams}`);
+  };
+
+  const delayedSort = _.debounce((orderBy, sort) => {
+    navigateWithParams({ orderBy, sort });
+  }, 200);
+
+  const delayedSearch = useCallback(
+    _.debounce((q) => {
+      navigateWithParams({ q });
+    }, 1500),
+    []
+  );
+
+  useEffect(() => {
+    if (sort) {
+      const currSort = sort.split("_", 2);
+      delayedSort(currSort[0], currSort[1]);
+    }
+    return () => {};
+  }, [sort]);
+
+  useEffect(() => {
+    if (search) {
+      delayedSearch(search);
+    } else {
+      navigateDeleteParams({ q: null });
+    }
+  }, [search]);
 
   useDocumentTitle(props.title);
   return (
@@ -173,6 +221,8 @@ function Products(props) {
                       name="searchProduct"
                       id="searchProduct"
                       className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
                     />
                   </aside>
                   <aside className="flex-1">
@@ -185,14 +235,16 @@ function Products(props) {
                     <select
                       id="orderBy"
                       className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+                      value={sort}
+                      onChange={(e) => setSort(e.target.value)}
                     >
-                      <option selected>Choose a order</option>
-                      <option value="p_asc">Price (Asc)</option>
-                      <option value="p_asc">Price (Desc)</option>
-                      <option value="id_asc">ID (Asc)</option>
-                      <option value="id_desc">ID (Desc)</option>
-                      <option value="cat_asc">Category (Asc)</option>
-                      <option value="cat_desc">Category (Desc)</option>
+                      <option value={undefined}>Choose a order</option>
+                      <option value="price_asc">Price (Asc)</option>
+                      <option value="price_desc">Price (Desc)</option>
+                      <option value="id_asc">Newest</option>
+                      <option value="id_desc">Oldest</option>
+                      <option value="category_asc">Category (Asc)</option>
+                      <option value="category_desc">Category (Desc)</option>
                     </select>
                   </aside>
                 </section>
@@ -206,6 +258,8 @@ function Products(props) {
                 <GetAllProducts
                   searchParams={searchParams}
                   setSearchParams={setSearchParams}
+                  sort={sort}
+                  setSort={setSort}
                 />
               }
             ></Route>
@@ -215,6 +269,8 @@ function Products(props) {
                 <GetAllProducts
                   searchParams={searchParams}
                   setSearchParams={setSearchParams}
+                  sort={sort}
+                  setSort={setSort}
                 />
               }
             />

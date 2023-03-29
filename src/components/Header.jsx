@@ -1,18 +1,13 @@
-import React, {
-  Component,
-  useContext,
-} from 'react';
+import React, { Component, useContext } from "react";
 
-import {
-  Link,
-  NavLink,
-} from 'react-router-dom';
+import { Link, NavLink } from "react-router-dom";
 
-import burgerIcon from '../assets/icons/burger-menu-left.svg';
-import placeholderProfile from '../assets/images/placeholder-profile.jpg';
-import logo from '../assets/jokopi.svg';
-import { isAuthenticated } from '../utils/authUtils';
-import Sidebar from './Sidebar';
+import burgerIcon from "../assets/icons/burger-menu-left.svg";
+import chatIcon from "../assets/icons/chat.svg";
+import placeholderProfile from "../assets/images/placeholder-profile.jpg";
+import logo from "../assets/jokopi.svg";
+import { isAuthenticated } from "../utils/authUtils";
+import Sidebar from "./Sidebar";
 
 // create a navigation component that wraps the burger menu
 const Navigation = () => {
@@ -51,7 +46,7 @@ class Header extends Component {
           isOpen={this.state.menuOpen}
           onStateChange={(state) => this.handleStateChange(state)}
         /> */}
-        <header className=" px-10 lg:px-22 flex justify-between bg-white border-b-2 border-gray-100">
+        <header className="sticky top-0 z-50 px-10 lg:px-22 flex justify-between bg-white border-b-2 border-gray-100">
           <div className="py-8 font-extrabold">
             <Link to="/" className=" flex flex-row justify-center gap-4">
               <img src={logo} alt="logo" width="30px" />
@@ -115,17 +110,48 @@ class Header extends Component {
                   />
                 </svg>
               </div>
-              <a href="" className="chat-link">
-                <img src="./img/chat.webp" alt="" width="30px" />
+              <a href="" className="relative">
+                <div className="absolute -left-2 -top-2 h-4 w-4 bg-tertiary rounded-full text-white flex text-[0.70rem] items-center justify-center font-extrabold">
+                  9+
+                </div>
+                <img src={chatIcon} alt="" width="30px" />
               </a>
-              <a href="./profile.html">
+              <div href="./profile.html" className="relative">
                 <img
                   src={placeholderProfile}
                   alt=""
                   width="30px"
                   className="rounded-full"
                 />
-              </a>
+                {/* <nav className="absolute list-none bg-white rounded-lg shadow-md border-1 border-gray-200 flex flex-col right-0 top-10 py-2 divide-y-1">
+                  <div className="px-4 py-1">
+                    <p>Signed in as</p>
+                    <p className="font-medium">demo@example.com</p>
+                  </div>
+                  <div className="py-1">
+                    <a
+                      className="block px-4 py-2 hover:bg-gray-100  duration-200"
+                      href="#"
+                    >
+                      Profile
+                    </a>
+                    <a
+                      className="block px-4 py-2 hover:bg-gray-100 duration-200"
+                      href="#"
+                    >
+                      My Cart
+                    </a>
+                  </div>
+                  <div className="py-1">
+                    <a
+                      className="block px-4 py-2 hover:bg-gray-100 duration-200"
+                      href="#"
+                    >
+                      Sign out
+                    </a>
+                  </div>
+                </nav> */}
+              </div>
             </div>
           ) : (
             <div className="hidden lg:flex flex-row gap-3 items-center select-none py-6">

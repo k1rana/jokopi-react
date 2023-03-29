@@ -1,10 +1,22 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React from "react";
 
-import { Navigate } from 'react-router-dom';
+import { toast } from "react-hot-toast";
+import { Navigate } from "react-router-dom";
 
-export const ProtectedRoute = ({ children }) => {
-  if (!token) {
-    return <Navigate to="/home" replace />;
+import { isAuthenticated } from "../authUtils";
+
+export const CheckAuth = ({ children }) => {
+  if (!isAuthenticated()) {
+    toast.error("You must login first!");
+    return <Navigate to="/auth/login" replace />;
+  }
+  return children;
+};
+
+export const CheckNoAuth = ({ children }) => {
+  if (isAuthenticated()) {
+    return <Navigate to="/" replace />;
   }
   return children;
 };
