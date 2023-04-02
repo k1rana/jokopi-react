@@ -111,8 +111,8 @@ class Mainpage extends Component {
                 own taste and make your day better.
               </p>
               <ul className="flex flex-col max-w-md space-y-1 text-[#4F5665] list-inside gap-4">
-                {this.state.provide.map((text) => (
-                  <li className="flex items-center gap-4" key={text.id}>
+                {this.state.provide.map((text, idx) => (
+                  <li className="flex items-center gap-4" key={idx}>
                     <img src={checkCircle} alt="" /> {text}
                   </li>
                 ))}
@@ -274,7 +274,7 @@ class Mainpage extends Component {
                 Loved by Customer of
                 <br /> Happy Customer
               </h2>
-              <p className="text-[1rem] text-gray-700 text-center max-w-[555px] text-primary">
+              <p className="text-[1rem] text-center max-w-[555px] text-primary">
                 These are the stories of our customers who have visited us with
                 great pleasure.
               </p>

@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import ForgotPass from "./pages/Auth/ForgotPass";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
+import Cart from "./pages/Cart";
 import NotFound from "./pages/Error";
 import Mainpage from "./pages/Mainpage";
 import Products from "./pages/Products";
@@ -22,7 +23,7 @@ const router = createBrowserRouter(
     <Route path="/" errorElement={<NotFound />}>
       {/* Public Route */}
       <Route index element={<Mainpage />} />
-      <Route path="products" element={<Products title="Products" />}>
+      <Route path="products/*" element={<Products title="Products" />}>
         <Route path="category/:id" />
       </Route>
       <Route path="products/detail/:productId" element={<ProductDetail />} />
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
       <Route element={<CheckAuth />}>
         <Route path="profile" element={<Profile title="User Profile" />} />
       </Route>
+      <Route path="cart" element={<Cart />} />
     </Route>
   )
 );

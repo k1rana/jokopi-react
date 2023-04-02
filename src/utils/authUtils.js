@@ -1,15 +1,23 @@
 import jwt_decode from 'jwt-decode';
 
-export function isAuthenticated() {
-  const key = `${process.env.REACT_APP_WEBSITE_NAME}-token`;
-  const token = localStorage.getItem(key);
+import { uinfoAct } from '../redux/slices/userInfo.slice';
+import store from '../redux/store';
+import { logoutUser } from './dataProvider/auth';
 
-  if (token) {
-    const decoded = jwt_decode(token);
+export function uinfoFromRedux() {
+  const state = store.getState();
+  const userInfo = state.userInfo;
+  return userInfo;
+}
+
+export function isAuthenticated() {
+  const userInfo = uinfoFromRedux();
+  if (userInfo.token) {
+    const decoded = jwt_decode(userInfo.token);
     const currentTime = Date.now() / 1000;
 
     if (decoded.exp < currentTime) {
-      localStorage.removeItem(key);
+      store.dispatch(uinfoAct.dismissToken());
       return false;
     }
 
@@ -17,4 +25,24 @@ export function isAuthenticated() {
   } else {
     return false;
   }
+}
+
+export function getUserData() {
+  const userInfo = uinfoFromRedux();
+  if (userInfo.token) {
+    const decoded = jwt_decode(userInfo.token);
+    return decoded;
+  }
+  return {};
+}
+
+export function logout() {
+  const userInfo = uinfoFromRedux();
+  if (userInfo.token) {
+    logoutUser()
+      .then(() => store.dispatch(uinfoAct.dismissToken()))
+      .catch(() => false);
+    return true;
+  }
+  return false;
 }

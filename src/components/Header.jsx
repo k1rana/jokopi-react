@@ -1,13 +1,25 @@
-import React, { Component, useContext } from "react";
+import React, {
+  Component,
+  useContext,
+} from 'react';
 
-import { Link, NavLink } from "react-router-dom";
+import { toast } from 'react-hot-toast';
+import {
+  Link,
+  NavLink,
+  useNavigate,
+} from 'react-router-dom';
 
-import burgerIcon from "../assets/icons/burger-menu-left.svg";
-import chatIcon from "../assets/icons/chat.svg";
-import placeholderProfile from "../assets/images/placeholder-profile.jpg";
-import logo from "../assets/jokopi.svg";
-import { isAuthenticated } from "../utils/authUtils";
-import Sidebar from "./Sidebar";
+import burgerIcon from '../assets/icons/burger-menu-left.svg';
+import chatIcon from '../assets/icons/chat.svg';
+import placeholderProfile from '../assets/images/placeholder-profile.jpg';
+import logo from '../assets/jokopi.svg';
+import {
+  getUserData,
+  isAuthenticated,
+  logout,
+} from '../utils/authUtils';
+import Sidebar from './Sidebar';
 
 // create a navigation component that wraps the burger menu
 const Navigation = () => {
@@ -26,19 +38,59 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuOpen: false,
+      isDropdownOpen: false,
     };
+    this.dropdownRef = React.createRef();
+    this.toggleDropdown = this.toggleDropdown.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
-  handleStateChange(state) {
-    this.setState({ menuOpen: state.isOpen });
+  navigateTo(path) {
+    const navigate = useNavigate();
+    navigate(path);
   }
-  closeMenu() {
-    this.setState({ menuOpen: false });
+
+  componentDidMount() {
+    document.addEventListener("click", this.handleClickOutside);
   }
-  toggleMenu() {
-    this.setState((state) => ({ menuOpen: !state.menuOpen }));
+
+  componentWillUnmount() {
+    document.removeEventListener("click", this.handleClickOutside);
   }
+
+  toggleDropdown() {
+    this.setState((prevState) => ({
+      isDropdownOpen: !prevState.isDropdownOpen,
+    }));
+  }
+
+  limitCharacters(str) {
+    if (str.length > 20) {
+      return str.substring(0, 20) + "...";
+    }
+    return str;
+  }
+
+  logoutHandler() {
+    toast.dismiss();
+    if (logout()) {
+      toast.success("Logout has been successful! See ya!");
+    } else {
+      toast.error("Something went wrong, please reload your page!");
+    }
+  }
+
+  handleClickOutside(event) {
+    if (
+      this.dropdownRef.current &&
+      !this.dropdownRef.current.contains(event.target)
+    ) {
+      this.setState({
+        isDropdownOpen: false,
+      });
+    }
+  }
+
   render() {
     return (
       <>
@@ -85,7 +137,14 @@ class Header extends Component {
               </NavLink>
             </li>
             <li className="list-none" key="Cart">
-              <a href="#">Your Cart</a>
+              <NavLink
+                to="/cart"
+                className={({ isActive }) =>
+                  isActive ? "font-bold text-[#6A4029]" : ""
+                }
+              >
+                Your Cart
+              </NavLink>
             </li>
             <li className="list-none" key="History">
               <a href="#">History</a>
@@ -116,46 +175,63 @@ class Header extends Component {
                 </div>
                 <img src={chatIcon} alt="" width="30px" />
               </a>
-              <div href="./profile.html" className="relative">
+              <div
+                href="./profile.html"
+                className="relative"
+                ref={this.dropdownRef}
+              >
                 <img
                   src={placeholderProfile}
                   alt=""
                   width="30px"
-                  className="rounded-full"
+                  className="rounded-full cursor-pointer"
+                  onClick={this.toggleDropdown}
                 />
-                {/* <nav className="absolute list-none bg-white rounded-lg shadow-md border-1 border-gray-200 flex flex-col right-0 top-10 py-2 divide-y-1">
-                  <div className="px-4 py-1">
-                    <p>Signed in as</p>
-                    <p className="font-medium">demo@example.com</p>
-                  </div>
-                  <div className="py-1">
-                    <a
-                      className="block px-4 py-2 hover:bg-gray-100  duration-200"
-                      href="#"
-                    >
-                      Profile
-                    </a>
-                    <a
-                      className="block px-4 py-2 hover:bg-gray-100 duration-200"
-                      href="#"
-                    >
-                      My Cart
-                    </a>
-                  </div>
-                  <div className="py-1">
-                    <a
-                      className="block px-4 py-2 hover:bg-gray-100 duration-200"
-                      href="#"
-                    >
-                      Sign out
-                    </a>
-                  </div>
-                </nav> */}
+                <div
+                  className={`dropdown ${
+                    this.state.isDropdownOpen
+                      ? "transition duration-300 ease-in-out opacity-100 transform -translate-y-6"
+                      : "transition duration-200 ease-in-out opacity-0 transform -translate-y-10 invisible"
+                  }`}
+                >
+                  {this.state.isDropdownOpen && (
+                    <nav className="absolute list-none bg-white rounded-lg shadow-md border-1 border-gray-200 flex flex-col right-0 top-10 py-2 divide-y-1 transition-all duration-200 transform origin-top-right min-w-[14rem]">
+                      <div className="px-4 py-1">
+                        <p>Signed in as</p>
+                        <p className="font-medium">
+                          {this.limitCharacters(getUserData().email)}
+                        </p>
+                      </div>
+                      <div className="py-1">
+                        <a
+                          className="block px-4 py-2 hover:bg-gray-100  duration-200"
+                          href="#"
+                        >
+                          Profile
+                        </a>
+                        <a
+                          className="block px-4 py-2 hover:bg-gray-100 duration-200"
+                          href="#"
+                        >
+                          My Cart
+                        </a>
+                      </div>
+                      <div className="py-1">
+                        <a
+                          className="block px-4 py-2 hover:bg-gray-100 duration-200 cursor-pointer"
+                          onClick={this.logoutHandler}
+                        >
+                          Sign out
+                        </a>
+                      </div>
+                    </nav>
+                  )}
+                </div>
               </div>
             </div>
           ) : (
             <div className="hidden lg:flex flex-row gap-3 items-center select-none py-6">
-              <Link to="/auth/login" className="pr-9 font-semibold">
+              <Link to="/auth/login" className="mr-9 font-semibold">
                 Login
               </Link>
               <Link to="/auth/register">

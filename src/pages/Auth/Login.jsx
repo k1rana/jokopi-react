@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { useState } from "react";
 
-import toast from 'react-hot-toast';
-import {
-  Link,
-  useNavigate,
-} from 'react-router-dom';
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
-import icon from '../../assets/jokopi.svg';
-import { login } from '../../utils/dataProvider/auth';
-import useDocumentTitle from '../../utils/documentTitle';
-import { save } from '../../utils/localStorage';
+import icon from "../../assets/jokopi.svg";
+import { uinfoAct } from "../../redux/slices/userInfo.slice";
+import { login } from "../../utils/dataProvider/auth";
+import useDocumentTitle from "../../utils/documentTitle";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,40 +19,63 @@ const Login = () => {
     password: "",
     rememberMe: false,
   });
+  const [error, setError] = React.useState({
+    email: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   function loginHandler(e) {
     e.preventDefault(); // preventing default submit
     toast.dismiss(); // dismiss all toast
+    const valid = { email: "", password: "" };
 
-    toast.promise(
-      login(form.email, form.password, form.rememberMe, controller).then(
-        (res) => {
-          // console.log(res.data);
-          // console.log(res.data.data.token);
-          // return res.data.data.token;
+    if (!form.email) valid.email = "Input your email address";
+    if (!form.password) valid.password = "Input your password";
 
-          const key = `${process.env.REACT_APP_WEBSITE_NAME}-token`;
-          save(key, res.data.data.token);
+    setError({
+      email: valid.email,
+      password: valid.password,
+    });
+
+    if (valid.email == "" && valid.password == "" && !isLoading) {
+      setIsLoading(true);
+      toast.promise(
+        login(form.email, form.password, form.rememberMe, controller).then(
+          (res) => {
+            // console.log(res.data);
+            // console.log(res.data.data.token);
+            dispatch(uinfoAct.assignToken(res.data.data.token));
+            return res.data.data.token;
+          }
+        ),
+        {
+          loading: () => {
+            e.target.disabled = true;
+            return "Please wait a moment";
+          },
+          success: () => {
+            navigate("/products");
+            toast.success("Welcome to jokopi!\nYou can order for now!", {
+              icon: "👋",
+              duration: Infinity,
+            }); // add toast welcome
+            return (
+              <>
+                Login successful!
+                <br /> Redirecting you
+              </>
+            );
+          },
+          error: () => {
+            setIsLoading(false);
+            e.target.disabled = false;
+            return "Incorrect email or password";
+          },
         }
-      ),
-      {
-        loading: "Please wait a moment",
-        success: () => {
-          navigate("/products");
-          toast.success("Welcome to jokopi!\nYou can order for now!", {
-            icon: "👋",
-            duration: Infinity,
-          }); // add toast welcome
-          return (
-            <>
-              Login successful!
-              <br /> Redirecting you
-            </>
-          );
-        },
-        error: "Incorrect email or password",
-      }
-    );
+      );
+    }
   }
 
   function onChangeForm(e) {
@@ -87,7 +108,7 @@ const Login = () => {
         <div className="text-xl font-semibold text-tertiary">Login</div>
       </header>
       <section className="mt-16">
-        <form className="space-y-4 md:space-y-6 relative">
+        <form className="space-y-2 md:space-y-4 relative">
           <div>
             <label
               name="email"
@@ -100,11 +121,17 @@ const Login = () => {
               type="text"
               name="email"
               id="email"
-              className="border-gray-400 border-2 rounded-2xl p-3 w-full mt-2"
+              className={
+                `border-gray-400 border-2 rounded-2xl p-3 w-full mt-2` +
+                (error.email != "" ? " border-red-500" : "")
+              }
               placeholder="Enter your email address"
               value={form.email}
               onChange={onChangeForm}
             />
+            <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1 h-4">
+              {error.email != "" ? error.email : ""}
+            </span>
           </div>
           <div>
             <label
@@ -118,11 +145,17 @@ const Login = () => {
               type="password"
               name="password"
               id="password"
-              className="border-gray-400 border-2 rounded-2xl p-3 w-full mt-2"
+              className={
+                `border-gray-400 border-2 rounded-2xl p-3 w-full mt-2` +
+                (error.password != "" ? " border-red-500" : "")
+              }
               placeholder="Enter your password"
               value={form.password}
               onChange={onChangeForm}
             />
+            <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1 h-4">
+              {error.password != "" ? error.password : ""}
+            </span>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-start">
@@ -155,9 +188,38 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full text-tertiary bg-secondary focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl"
+            className={
+              (isLoading
+                ? "cursor-not-allowed bg-secondary-200"
+                : "cursor-pointer bg-secondary") +
+              " w-full text-tertiary  focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl inline-flex items-center justify-center transition ease-in-out duration-150 hover:bg-secondary-200"
+            }
             onClick={loginHandler}
           >
+            {isLoading ? (
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            ) : (
+              ""
+            )}
             Login
           </button>
           <button
