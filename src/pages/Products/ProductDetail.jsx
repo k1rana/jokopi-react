@@ -4,8 +4,11 @@ import React, {
   useState,
 } from 'react';
 
+import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 import {
   NavLink,
+  useNavigate,
   useParams,
 } from 'react-router-dom';
 
@@ -15,12 +18,23 @@ import productPlaceholder from '../../assets/images/placeholder-image.webp';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import { getProductbyId } from '../../utils/dataProvider/products';
+import { addCart } from '../../utils/dataProvider/userPanel';
 import useDocumentTitle from '../../utils/documentTitle';
 
 function ProductDetail(props) {
+  const [form, setForm] = useState({
+    delivery: 0,
+    count: 1,
+    now: 0,
+    time: "",
+    size: 1,
+  });
+  const [cart, setCart] = useState([]);
   const [detail, setDetail] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { productId } = useParams();
+  const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.userInfo);
   useDocumentTitle("Products");
 
   const controller = React.useMemo(() => new AbortController(), []);
@@ -64,6 +78,80 @@ function ProductDetail(props) {
     );
   };
 
+  function onChangeForm(e) {
+    return setForm((form) => {
+      return {
+        ...form,
+        [e.target.name]: e.target.value,
+      };
+    });
+  }
+
+  const countIncrement = () => {
+    return setForm((form) => {
+      return {
+        ...form,
+        count: form.count + 1,
+      };
+    });
+  };
+  const countDecrement = () => {
+    if (form.count > 1) {
+      return setForm((form) => {
+        return {
+          ...form,
+          count: form.count - 1,
+        };
+      });
+    }
+  };
+  const checkoutHandler = () => {
+    if (cart.length < 1) {
+      return toast.error("Add atleast 1 size to cart");
+    }
+    toast.promise(
+      addCart(detail[0].id, cart, userInfo.token).then((res) => {
+        return res;
+      }),
+      {
+        loading: "Adding to cart...",
+        success: () => {
+          navigate("/cart");
+          return "Succesfully add to cart";
+        },
+        error: "Error while adding to cart",
+      }
+    );
+  };
+
+  const handleAddToCart = () => {
+    const newItem = {
+      size: Number(form.size), // mengubah nilai form.size ke tipe data number
+      count: Number(form.count), // mengubah nilai form.count ke tipe data number
+    };
+    if (newItem.size < 1 || newItem.size > 3) {
+      toast.error("Please choose size");
+      return;
+    }
+    if (newItem.count < 1) {
+      toast.error("Invalid count");
+      return;
+    }
+
+    setCart((prevItems) => {
+      const index = prevItems.findIndex((item) => item.size === newItem.size); // cari indeks item dengan size yang sama
+      if (index !== -1) {
+        const newItems = [...prevItems]; // buat salinan array of objects yang sudah ada
+        newItems[index].count += newItem.count; // tambahkan jumlah count pada item yang sudah ada
+        return newItems; // kembalikan array of objects yang sudah diubah
+      } else {
+        return [...prevItems, newItem]; // tambahkan item baru jika tidak ada item dengan size yang sama
+      }
+    });
+
+    setForm({ size: "", count: 1 }); // reset nilai form setelah berhasil menambahkan item ke cart
+  };
+
   const Detail = (props) => {
     const p = props.data;
     const desc = !p.desc
@@ -94,8 +182,10 @@ function ProductDetail(props) {
                       type="radio"
                       id="dinein"
                       name="delivery"
-                      value="dinein"
+                      value="1"
                       className="hidden peer"
+                      checked={form.delivery === "1"}
+                      onChange={onChangeForm}
                       required
                     />
                     <label
@@ -110,8 +200,10 @@ function ProductDetail(props) {
                       type="radio"
                       id="doordelivery"
                       name="delivery"
-                      value="doordelivery"
+                      value="2"
                       className="hidden peer"
+                      checked={form.delivery === "2"}
+                      onChange={onChangeForm}
                       required
                     />
                     <label
@@ -126,8 +218,10 @@ function ProductDetail(props) {
                       type="radio"
                       id="pickup"
                       name="delivery"
-                      value="pickup"
+                      value="3"
                       className="hidden peer"
+                      checked={form.delivery === "3"}
+                      onChange={onChangeForm}
                       required
                     />
                     <label
@@ -147,8 +241,10 @@ function ProductDetail(props) {
                       <input
                         type="radio"
                         id="now-true"
-                        name="deliveryNow"
-                        value="true"
+                        name="now"
+                        value="1"
+                        checked={form.now === "1"}
+                        onChange={onChangeForm}
                         className="hidden peer"
                         required
                       />
@@ -163,9 +259,11 @@ function ProductDetail(props) {
                       <input
                         type="radio"
                         id="now-false"
-                        name="deliveryNow"
-                        value="false"
+                        name="now"
+                        value="0"
                         className="hidden peer"
+                        checked={form.now === "0"}
+                        onChange={onChangeForm}
                         required
                       />
                       <label
@@ -181,8 +279,10 @@ function ProductDetail(props) {
                 <div>
                   <input
                     type="time"
-                    name="reservationtime"
+                    name="time"
                     id="reservationtime"
+                    value={form.time}
+                    onChange={onChangeForm}
                     className="bg-[#BABABA59] py-2 px-8 rounded-lg text-primary font-bold"
                   />
                 </div>
@@ -203,7 +303,7 @@ function ProductDetail(props) {
               <div className="custom-number-input h-10 w-32">
                 <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1v text-tertiary font-bold">
                   <button
-                    data-action="decrement"
+                    onClick={countDecrement}
                     className=" bg-white h-full w-20 rounded-l cursor-pointer outline-none border-gray-400 border-2 border-r-0"
                   >
                     <span className="m-auto text-xl">−</span>
@@ -212,10 +312,12 @@ function ProductDetail(props) {
                     type="number"
                     className="outline-none focus:outline-none text-center w-full bg-white text-md  md:text-basecursor-default flex items-center border-gray-400 border-2"
                     name="custom-input-number"
-                    value="0"
+                    value={form.count}
+                    onChange={onChangeForm}
+                    min="1"
                   ></input>
                   <button
-                    data-action="increment"
+                    onClick={countIncrement}
                     className="bg-white h-full w-20 rounded-r cursor-pointer border-gray-400 border-2 border-l-0"
                   >
                     <span className="m-auto text-xl">+</span>
@@ -226,10 +328,16 @@ function ProductDetail(props) {
                 IDR {p.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
               </p>
             </div>
-            <button className="mt-4 block bg-tertiary text-white font-bold text-lg py-4 rounded-xl">
+            <button
+              className="mt-4 block bg-tertiary text-white font-bold text-lg py-4 rounded-xl"
+              onClick={handleAddToCart}
+            >
               Add to Cart
             </button>
-            <button className="block bg-secondary text-tertiary font-bold text-lg py-4 rounded-xl">
+            <button
+              className="block bg-secondary disabled:bg-gray-300 disabled:cursor-not-allowed text-tertiary font-bold text-lg py-4 rounded-xl"
+              disabled
+            >
               Ask a Staff
             </button>
           </aside>
@@ -243,8 +351,10 @@ function ProductDetail(props) {
                   type="radio"
                   id="regular-size"
                   name="size"
-                  value="regular"
+                  value="1"
                   className="hidden peer"
+                  checked={form.size === "1"}
+                  onChange={onChangeForm}
                   required
                 />
                 <label
@@ -260,8 +370,10 @@ function ProductDetail(props) {
                   type="radio"
                   id="large-size"
                   name="size"
-                  value="large"
+                  value="2"
                   className="hidden peer"
+                  checked={form.size === "2"}
+                  onChange={onChangeForm}
                   required
                 />
                 <label
@@ -276,8 +388,10 @@ function ProductDetail(props) {
                   type="radio"
                   id="xlargeSize"
                   name="size"
-                  value="xlarge"
+                  value="3"
                   className="hidden peer"
+                  checked={form.size === "3"}
+                  onChange={onChangeForm}
                   required
                 />
                 <label
@@ -297,16 +411,55 @@ function ProductDetail(props) {
                 className="h-24 aspect-square object-cover rounded-full"
               />
             </div>
-            <div className="flex-[4_4_0] min-w-[100px]">
+            <div className="flex-[4_4_0] min-w-[100px] space-y-2">
               <p className="font-black uppercase text-xl text-center md:text-left">
                 {p.name}
               </p>
+              <div
+                className={`grid grid-rows-2 gap-2 text-lg grid-auto-rows-16 ${
+                  cart.length === 2 ? "grid-flow-row" : "grid-flow-col"
+                }`}
+              >
+                {cart.map((item, idx) => {
+                  let sizeName;
+                  switch (item.size) {
+                    case 1:
+                      sizeName = "Regular";
+                      break;
+                    case 2:
+                      sizeName = "Large";
+                      break;
+                    case 3:
+                      sizeName = "Xtra Large";
+                      break;
+
+                    default:
+                      sizeName = "Regular";
+                      break;
+                  }
+                  return (
+                    <div
+                      className={`${
+                        idx % 2 === 0 && cart.length < 2 ? "col-span-2" : ""
+                      }`}
+                      key={idx}
+                    >
+                      <p>
+                        x{item.count} ({sizeName})
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
             <div className="flex-1 font-bold text-lg w-full content-end">
               <p className="text-right">Checkout</p>
             </div>
             <div className="flex-1">
-              <button className="bg-secondary h-14 aspect-square flex items-center justify-center object-cover rounded-full">
+              <button
+                className="bg-secondary h-14 aspect-square flex items-center justify-center object-cover rounded-full"
+                onClick={checkoutHandler}
+              >
                 <svg
                   width="32"
                   height="30"

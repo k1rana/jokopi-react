@@ -7,6 +7,7 @@ module.exports = {
         history: "url('/public/assets/images/cold-brew.webp')",
         main: "url('/public/assets/images/bg-main-coffee.webp')",
         profile: "url('/public/assets/images/bg-profile.webp')",
+        cart: "url('/public/assets/images/bg-cart.webp')",
       },
       boxShadow: {
         primary: "0px 6px 20px 0px #00000057;",
