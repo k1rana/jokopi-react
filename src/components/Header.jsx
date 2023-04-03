@@ -1,25 +1,26 @@
-import React, {
-  Component,
-  useContext,
-} from 'react';
+import React, { Component, useContext } from "react";
 
-import { toast } from 'react-hot-toast';
-import {
-  Link,
-  NavLink,
-  useNavigate,
-} from 'react-router-dom';
+import { toast } from "react-hot-toast";
+import { connect } from "react-redux";
+import { Link, Navigate, NavLink, useNavigate } from "react-router-dom";
 
-import burgerIcon from '../assets/icons/burger-menu-left.svg';
-import chatIcon from '../assets/icons/chat.svg';
-import placeholderProfile from '../assets/images/placeholder-profile.jpg';
-import logo from '../assets/jokopi.svg';
-import {
-  getUserData,
-  isAuthenticated,
-  logout,
-} from '../utils/authUtils';
-import Sidebar from './Sidebar';
+import burgerIcon from "../assets/icons/burger-menu-left.svg";
+import chatIcon from "../assets/icons/chat.svg";
+import placeholderProfile from "../assets/images/placeholder-profile.jpg";
+import logo from "../assets/jokopi.svg";
+import { uinfoAct } from "../redux/slices/userInfo.slice";
+import { getUserData, isAuthenticated } from "../utils/authUtils";
+import { logoutUser } from "../utils/dataProvider/auth";
+import Sidebar from "./Sidebar";
+
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  assignToken: () => dispatch(uinfoAct.assignToken()),
+  dismissToken: () => dispatch(uinfoAct.dismissToken()),
+});
 
 // create a navigation component that wraps the burger menu
 const Navigation = () => {
@@ -39,6 +40,7 @@ class Header extends Component {
     super(props);
     this.state = {
       isDropdownOpen: false,
+      redirectLogout: false,
     };
     this.dropdownRef = React.createRef();
     this.toggleDropdown = this.toggleDropdown.bind(this);
@@ -71,14 +73,26 @@ class Header extends Component {
     return str;
   }
 
-  logoutHandler() {
+  logoutHandler = () => {
     toast.dismiss();
-    if (logout()) {
-      toast.success("Logout has been successful! See ya!");
-    } else {
-      toast.error("Something went wrong, please reload your page!");
-    }
-  }
+    toast.promise(
+      logoutUser(this.props.userInfo.token).then((res) => {
+        return res.data;
+      }),
+      {
+        loading: "Please wait",
+        success: () => {
+          this.setState({ ...this.state, redirectLogout: true });
+          this.props.dismissToken();
+          return "Logout has been successful! See ya!";
+        },
+        error: (err) => {
+          console.log(err);
+          return "Something went wrong, please reload your page!";
+        },
+      }
+    );
+  };
 
   handleClickOutside(event) {
     if (
@@ -175,11 +189,7 @@ class Header extends Component {
                 </div>
                 <img src={chatIcon} alt="" width="30px" />
               </a>
-              <div
-                href="./profile.html"
-                className="relative"
-                ref={this.dropdownRef}
-              >
+              <div className="relative" ref={this.dropdownRef}>
                 <img
                   src={placeholderProfile}
                   alt=""
@@ -203,12 +213,12 @@ class Header extends Component {
                         </p>
                       </div>
                       <div className="py-1">
-                        <a
+                        <NavLink
                           className="block px-4 py-2 hover:bg-gray-100  duration-200"
-                          href="#"
+                          to="/profile/"
                         >
                           Profile
-                        </a>
+                        </NavLink>
                         <a
                           className="block px-4 py-2 hover:bg-gray-100 duration-200"
                           href="#"
@@ -242,9 +252,12 @@ class Header extends Component {
             </div>
           )}
         </header>
+        {this.state.redirectLogout && (
+          <Navigate to="/auth/login" replace={true} />
+        )}
       </>
     );
   }
 }
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

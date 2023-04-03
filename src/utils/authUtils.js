@@ -1,8 +1,7 @@
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 
-import { uinfoAct } from '../redux/slices/userInfo.slice';
-import store from '../redux/store';
-import { logoutUser } from './dataProvider/auth';
+import { uinfoAct } from "../redux/slices/userInfo.slice";
+import store from "../redux/store";
 
 export function uinfoFromRedux() {
   const state = store.getState();
@@ -12,7 +11,7 @@ export function uinfoFromRedux() {
 
 export function isAuthenticated() {
   const userInfo = uinfoFromRedux();
-  if (userInfo.token) {
+  if (userInfo.token.length > 0) {
     const decoded = jwt_decode(userInfo.token);
     const currentTime = Date.now() / 1000;
 
@@ -29,20 +28,9 @@ export function isAuthenticated() {
 
 export function getUserData() {
   const userInfo = uinfoFromRedux();
-  if (userInfo.token) {
+  if (userInfo.token.length > 0) {
     const decoded = jwt_decode(userInfo.token);
     return decoded;
   }
   return {};
-}
-
-export function logout() {
-  const userInfo = uinfoFromRedux();
-  if (userInfo.token) {
-    logoutUser()
-      .then(() => store.dispatch(uinfoAct.dismissToken()))
-      .catch(() => false);
-    return true;
-  }
-  return false;
 }

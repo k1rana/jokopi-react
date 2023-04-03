@@ -1,22 +1,25 @@
-import React from "react";
+import React from 'react';
 
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import Auth from "./pages/Auth";
-import ForgotPass from "./pages/Auth/ForgotPass";
-import Login from "./pages/Auth/Login";
-import Register from "./pages/Auth/Register";
-import Cart from "./pages/Cart";
-import NotFound from "./pages/Error";
-import Mainpage from "./pages/Mainpage";
-import Products from "./pages/Products";
-import ProductDetail from "./pages/Products/ProductDetail";
-import Profile from "./pages/Profile";
-import { CheckAuth, CheckNoAuth } from "./utils/wrappers/protectedRoute";
+import Auth from './pages/Auth';
+import ForgotPass from './pages/Auth/ForgotPass';
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
+import Cart from './pages/Cart';
+import NotFound from './pages/Error';
+import Mainpage from './pages/Mainpage';
+import Products from './pages/Products';
+import ProductDetail from './pages/Products/ProductDetail';
+import Profile from './pages/Profile';
+import {
+  CheckAuth,
+  CheckNoAuth,
+} from './utils/wrappers/protectedRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

@@ -1,16 +1,79 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import iconPen from "../assets/icons/icon-pen.svg";
-import placeholderImage from "../assets/images/placeholder-profile.jpg";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import useDocumentTitle from "../utils/documentTitle";
+import jwtDecode from "jwt-decode";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+
+import iconPen from "../../assets/icons/icon-pen.svg";
+import loadingImage from "../../assets/images/loading.svg";
+import placeholderImage from "../../assets/images/placeholder-profile.jpg";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import { fetchProfile } from "../../utils/dataProvider/userPanel";
+import useDocumentTitle from "../../utils/documentTitle";
 
 function Profile() {
+  const userInfo = useSelector((state) => state.userInfo);
+  if (userInfo.token) {
+  }
+  const uinfo = userInfo.token ? jwtDecode(userInfo.token) : {};
+  const [data, setData] = useState({});
+  const [form, setForm] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isUploaderOpen, setIsUploaderOpen] = useState(false);
+
+  const handleChoosePhoto = () => {
+    setIsUploaderOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsUploaderOpen(false);
+  };
+
+  const handleImageUpload = (imageUrl) => {
+    // Kirim imageUrl ke backend untuk diunggah ke server
+  };
+
   useDocumentTitle("Profile");
-  return (
-    <>
-      <Header />
+  useEffect(() => {
+    setIsLoading(true);
+    fetchProfile(userInfo.token)
+      .then((result) => {
+        setIsLoading(false);
+        const data = result.data.data[0];
+        setData(data);
+        setForm(data);
+      })
+      .catch((err) => {
+        toast.error("Failed to fetch data");
+      });
+  }, [userInfo]);
+
+  const formHandler = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    return setForm((form) => {
+      console.log(e.target.name);
+      return {
+        ...form,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const Loading = (props) => {
+    return (
+      <main className="h-[80vh] flex items-center justify-center">
+        <div>
+          <img src={loadingImage} alt="Loading..." />
+        </div>
+      </main>
+    );
+  };
+
+  const Profile = (props) => {
+    return (
       <main className="bg-profile px-10 lg:px-22 py-10 space-y-3">
         <section className="text-white text-2xl font-extrabold">
           User Profile
@@ -22,9 +85,12 @@ function Profile() {
               alt=""
               className="w-44 aspect-square object-cover rounded-full mb-3"
             />
-            <p className="font-semibold text-lg">Zulaikha</p>
-            <p className="mb-5">zulaikha17@gmail.com</p>
-            <button className="bg-secondary py-3 w-[75%] rounded-2xl mb-3 text-tertiary font-semibold shadow-lg">
+            <p className="font-semibold text-lg">{data.display_name}</p>
+            <p className="mb-5">{uinfo.email}</p>
+            <button
+              className="bg-secondary py-3 w-[75%] rounded-2xl mb-3 text-tertiary font-semibold shadow-lg"
+              onClick={handleChoosePhoto}
+            >
               Choose photo
             </button>
             <button className="bg-tertiary secondary py-3 w-[75%] rounded-2xl mb-8 text-white font-semibold shadow-lg">
@@ -50,7 +116,7 @@ function Profile() {
             </button>
           </section>
           <section className="flex-[2_2_0%] p-10 lg:pl-0">
-            <div className="bg-white drop-shadow-2xl rounded-xl border-b-[6px] border-solid border-[#6a4029] px-5 py-3 relative">
+            <form className="bg-white drop-shadow-2xl rounded-xl border-b-[6px] border-solid border-[#6a4029] px-5 py-3 relative">
               <div className="absolute top-3 bg-tertiary p-2 rounded-full right-3 cursor-pointer select-none">
                 <img src={iconPen} alt="" />
               </div>
@@ -62,9 +128,11 @@ function Profile() {
                   </label>
                   <input
                     type="text"
-                    value="zulaikha17@gmail.com"
                     id="email"
+                    name="email"
+                    value={form.email}
                     className="focus:outline-none border-b-[1px] border-black w-full"
+                    onChange={formHandler}
                   />
                 </div>
                 <div className="flex flex-col">
@@ -73,8 +141,10 @@ function Profile() {
                   </label>
                   <input
                     type="text"
-                    value="(+62)813456782"
+                    value={data.phone_number}
                     id="phone"
+                    name="phone_number"
+                    onChange={formHandler}
                     className="focus:outline-none border-b-[1px] border-black w-full"
                   />
                 </div>
@@ -84,8 +154,10 @@ function Profile() {
                   </label>
                   <input
                     type="text"
-                    value="Iskandar Street no. 67 Block A Near Bus Stop"
-                    id="deliveryAddres"
+                    value={data.address}
+                    id="address"
+                    name="address"
+                    onChange={formHandler}
                     className="focus:outline-none border-b-[1px] border-black w-full"
                   />
                 </div>
@@ -98,8 +170,10 @@ function Profile() {
                   </label>
                   <input
                     type="text"
-                    value="Zulaikha"
-                    id="displayName"
+                    value={data.display_name}
+                    id="display_name"
+                    name="display_name"
+                    onChange={formHandler}
                     className="focus:outline-none border-b-[1px] border-black w-full"
                   />
                 </div>
@@ -111,6 +185,8 @@ function Profile() {
                     type="text"
                     value="03/04/90"
                     id="birthdate"
+                    name="birthdate"
+                    onChange={formHandler}
                     className="focus:outline-none border-b-[1px] border-black w-full"
                   />
                 </div>
@@ -120,8 +196,10 @@ function Profile() {
                   </label>
                   <input
                     type="text"
-                    value="Zulaikha"
+                    value={data.first_name}
+                    name="first_name"
                     id="firstName"
+                    onChange={formHandler}
                     className="focus:outline-none border-b-[1px] border-black w-full"
                   />
                 </div>
@@ -132,43 +210,61 @@ function Profile() {
                   </label>
                   <input
                     type="text"
-                    value="Nirmala"
+                    value={data.last_name}
+                    name="last_name"
                     id="lastName"
+                    onChange={formHandler}
                     className="focus:outline-none border-b-[1px] border-black w-full"
                   />
                 </div>
               </div>
-              <div className="gender center">
-                <div className="male">
-                  <input type="radio" id="gender" name="gender" value="male" />
-                  <label htmlFor="age1">
-                    <span>
-                      <span></span>
-                    </span>
-                    Male
-                  </label>
-                </div>
-                <div className="female">
+              <div className="flex justify-around items-center">
+                <div className="male flex items-center gap-2">
                   <input
                     type="radio"
-                    id="gender"
+                    id="genderMale"
                     name="gender"
-                    value="60"
-                    checked
+                    value="0"
+                    className="hidden peer"
+                    required
                   />
-
-                  <label htmlFor="age2" className="active">
-                    <span>
-                      <span></span>
-                    </span>
-                    Female
+                  <label
+                    htmlFor="genderMale"
+                    className="inline-flex items-center justify-between p-2 text-gray-500 bg-[#BABABA59] rounded-full cursor-pointer peer-checked:text-white peer-checked:bg-secondary peer-checked:font-bold hover:text-gray-600 hover:bg-gray-100 w-2 h-2 border-2 border-tertiary"
+                  >
+                    <div className="block"></div>
                   </label>
+                  <label htmlFor="genderMale">Male</label>
+                </div>
+                <div className="female flex items-center gap-2">
+                  <input
+                    type="radio"
+                    id="genderFemale"
+                    name="gender"
+                    value="1"
+                    className="hidden peer"
+                    required
+                  />
+                  <label
+                    htmlFor="genderFemale"
+                    className="inline-flex items-center justify-between p-2 text-gray-500 bg-[#BABABA59] rounded-full cursor-pointer peer-checked:text-white peer-checked:bg-secondary peer-checked:font-bold hover:text-gray-600 hover:bg-gray-100 w-2 h-2 border-2 border-tertiary"
+                  >
+                    <div className="block"></div>
+                  </label>
+                  <label htmlFor="genderFemale">Female</label>
                 </div>
               </div>
-            </div>
+            </form>
           </section>
         </section>
       </main>
+    );
+  };
+
+  return (
+    <>
+      <Header />
+      {isLoading ? <Loading /> : <Profile />}
       <Footer />
     </>
   );

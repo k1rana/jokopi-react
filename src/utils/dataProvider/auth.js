@@ -1,12 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
-import { uinfoFromRedux } from '../authUtils';
+import store from "../../redux/store";
 
-console.log(uinfoFromRedux());
+const state = store.getState();
+const userInfo = state.userInfo;
+
 const host = process.env.REACT_APP_BACKEND_HOST;
 const config = {
   headers: {
-    Authorization: "Bearer " + uinfoFromRedux().token,
+    Authorization: "Bearer " + userInfo.token,
   },
 };
 
@@ -37,7 +39,12 @@ export function forgotPass(email, controller) {
   });
 }
 
-export function logoutUser() {
+export function logoutUser(token) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const url = `${host}/apiv1/auth/logout`;
   return axios.delete(url, config);
 }
