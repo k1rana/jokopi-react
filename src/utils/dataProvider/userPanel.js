@@ -21,3 +21,10 @@ export function addCart(product_id, cart, token) {
   };
   return axios.patch(`${host}/apiv1/userPanel/cart`, data, config);
 }
+
+export function getCart(token) {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  return axios.get(`${host}/apiv1/userPanel/cart`, config);
+}
