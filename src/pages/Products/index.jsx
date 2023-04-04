@@ -1,7 +1,11 @@
 /* eslint-disable react/prop-types */
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
-import _ from "lodash";
+import _ from 'lodash';
 import {
   NavLink,
   Route,
@@ -9,30 +13,30 @@ import {
   useLocation,
   useNavigate,
   useSearchParams,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import images from "../../assets/images/person-with-a-coffee.webp";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import useDocumentTitle from "../../utils/documentTitle";
-import GetAllProducts from "./GetAllProducts";
+import images from '../../assets/images/person-with-a-coffee.webp';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import useDocumentTitle from '../../utils/documentTitle';
+import GetAllProducts from './GetAllProducts';
 
 const promos = [
   {
-    name: "Lorem ipsum",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    name: "Limited Time Offer: 50% off!",
+    desc: "Hurry, don't miss out!",
   },
   {
-    name: "Lorem ipsum",
-    desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    name: "Buy One, Get One Free!",
+    desc: "Double the fun.",
   },
   {
-    name: "Lorem ipsum",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    name: "Exclusive Online Deal: Save 20%",
+    desc: "Shop now and save.",
   },
   {
-    name: "Lorem ipsum",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    name: "Flash Sale Alert: 24 Hours Only!",
+    desc: "Act fast, limited stock.",
   },
 ];
 
