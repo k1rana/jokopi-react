@@ -126,7 +126,13 @@ class Header extends Component {
             this.state.isNavbarOpen ? "translate-x-0" : "translate-x-full"
           } transform h-full w-80 bg-white fixed top-0 right-0 z-[60] transition-transform duration-300 ease-in-out`}
         >
-          {/* konten navbar */}
+          <Sidebar
+            onClose={() =>
+              this.setState({
+                isDropdownOpen: false,
+              })
+            }
+          />
         </div>
         <header className="sticky top-0 z-40 px-10 lg:px-22 flex justify-between bg-white border-b-2 border-gray-100">
           <div className="py-8 font-extrabold">
@@ -177,7 +183,14 @@ class Header extends Component {
               </NavLink>
             </li>
             <li className="list-none" key="History">
-              <a href="#">History</a>
+              <NavLink
+                to="/history"
+                className={({ isActive }) =>
+                  isActive ? "font-bold text-[#6A4029]" : ""
+                }
+              >
+                History
+              </NavLink>
             </li>
           </nav>
           {isAuthenticated() ? (

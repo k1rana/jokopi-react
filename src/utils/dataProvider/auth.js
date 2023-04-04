@@ -39,6 +39,14 @@ export function forgotPass(email, controller) {
   });
 }
 
+export function verifyResetPass(verify, code, controller) {
+  const url = `${host}/apiv1/auth/resetPass?verify=${verify}&code=${code}`;
+
+  return axios.get(url, {
+    signal: controller.signal,
+  });
+}
+
 export function logoutUser(token) {
   const config = {
     headers: {

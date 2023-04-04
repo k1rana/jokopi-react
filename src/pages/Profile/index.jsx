@@ -16,8 +16,7 @@ import EditPassword from "./EditPassword";
 
 function Profile() {
   const userInfo = useSelector((state) => state.userInfo);
-  if (userInfo.token) {
-  }
+
   const uinfo = userInfo.token ? jwtDecode(userInfo.token) : {};
   const [data, setData] = useState({});
   const [form, setForm] = useState({});
@@ -25,14 +24,11 @@ function Profile() {
   const [editMode, setEditMode] = useState(false);
 
   const [editPassModal, setEditPassModal] = useState(false);
+  const [modal, setModal] = useState({ photoProfile: false });
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
 
   const handleChoosePhoto = () => {
     setIsUploaderOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setIsUploaderOpen(false);
   };
 
   const closeEpassModal = () => {
@@ -40,10 +36,6 @@ function Profile() {
   };
   const switchEpassModal = () => {
     setEditPassModal(!editPassModal);
-  };
-
-  const handleImageUpload = (imageUrl) => {
-    // Kirim imageUrl ke backend untuk diunggah ke server
   };
 
   useDocumentTitle("Profile");
@@ -82,6 +74,55 @@ function Profile() {
     );
   };
 
+  const [selectedFile, setSelectedFile] = useState();
+  const [preview, setPreview] = useState();
+
+  // create a preview as a side effect, whenever selected file is changed
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview(undefined);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+
+    // I've kept this example simple by using the first image instead of multiple
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const handleClearClick = () => {
+    setSelectedFile(null);
+  };
+
+  const saveHandler = () => {
+    let changes = {};
+
+    for (let key in form) {
+      if (form[key] !== data[key]) {
+        changes[key] = form[key];
+      }
+    }
+    toast.promise(
+      updateProfile(data, userInfo.token).then((res) => res.data),
+      {
+        loading: "Saving changes",
+        success: "Changes saved",
+        error: "Something went wrong",
+      }
+    );
+  };
+
   const Profile = (props) => {
     return (
       <>
@@ -93,19 +134,35 @@ function Profile() {
           <section className="flex flex-col lg:flex-row bg-white rounded-2xl">
             <section className="flex-1 flex flex-col items-center p-10">
               <img
-                src={data.img ? data.img : placeholderImage}
+                src={
+                  selectedFile
+                    ? preview
+                    : data.img
+                    ? data.img
+                    : placeholderImage
+                }
                 alt=""
                 className="w-44 aspect-square object-cover rounded-full mb-3"
               />
               <p className="font-semibold text-lg">{data.display_name}</p>
               <p className="mb-5">{data.email}</p>
-              <button
-                className="bg-secondary py-3 w-[75%] rounded-2xl mb-3 text-tertiary font-semibold shadow-lg"
-                onClick={handleChoosePhoto}
+              <input
+                className="hidden"
+                type="file"
+                onChange={onSelectFile}
+                accept="image/*"
+                id="imageUp"
+              />
+              <label
+                htmlFor="imageUp"
+                className="bg-secondary py-3 w-[75%] rounded-2xl mb-3 text-tertiary font-semibold shadow-lg text-center cursor-pointer"
               >
                 Choose photo
-              </button>
-              <button className="bg-tertiary secondary py-3 w-[75%] rounded-2xl mb-8 text-white font-semibold shadow-lg">
+              </label>
+              <button
+                className="bg-tertiary secondary py-3 w-[75%] rounded-2xl mb-8 text-white font-semibold shadow-lg"
+                onClick={handleClearClick}
+              >
                 Remove photo
               </button>
               <button
@@ -120,6 +177,7 @@ function Profile() {
               <button
                 className="bg-tertiary border-2  secondary py-4 w-[75%] rounded-2xl mb-3 text-white font-semibold text-xl shadow-lg disabled:cursor-not-allowed disabled:bg-gray-400"
                 id="saveChange"
+                onClick={saveHandler}
                 disabled={isEqual(form, data)}
               >
                 Save Change

@@ -52,11 +52,7 @@ function EditPassword(props) {
       error.newpassconf = "Password and confirm password does not match";
     setErr(error);
 
-    if (
-      isEmpty(err.oldpass) &&
-      isEmpty(err.newpass) &&
-      isEmpty(err.newpassconf)
-    ) {
+    if (err.oldpass !== "" && err.newpass !== "" && err.newpassconf !== "") {
       e.target.disabled = true;
       toast.promise(
         updatePassword(form.oldpass, form.newpass, userInfo.token).then(

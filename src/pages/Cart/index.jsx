@@ -10,12 +10,14 @@ import productPlaceholder from "../../assets/images/placeholder-image.webp";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { getCart } from "../../utils/dataProvider/userPanel";
+import useDocumentTitle from "../../utils/documentTitle";
 
 function Cart() {
   const userInfo = useSelector((state) => state.userInfo);
   const [isLoading, setIsLoading] = useState(false);
   const [cart, setCart] = useState([]);
   const [form, setForm] = useState({ payment: 0 });
+  useDocumentTitle("My Cart");
 
   function onChangeForm(e) {
     return setForm((form) => {

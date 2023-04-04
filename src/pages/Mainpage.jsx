@@ -308,7 +308,7 @@ class Mainpage extends Component {
               })}
             </div>
           </section>
-          <section className="px-10 lg:px-22 z-10 relative w-full mb-6 mb:mb-[-6rem]">
+          <section className="px-10 lg:px-22 z-10 relative w-full mb-6 md:mb-[-6rem]">
             <div className="shadow-primary rounded-xl flex flex-col md:flex-row p-14 px-16 bg-white text-center md:text-left">
               <aside className="flex-1 space-y-4 mb-5 md:mb-0">
                 <p className="text-3xl font-semibold">Check our promo today!</p>
