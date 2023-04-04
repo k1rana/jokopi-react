@@ -40,6 +40,7 @@ class Header extends Component {
     super(props);
     this.state = {
       isDropdownOpen: false,
+      isNavbarOpen: false,
       redirectLogout: false,
     };
     this.dropdownRef = React.createRef();
@@ -65,6 +66,12 @@ class Header extends Component {
       isDropdownOpen: !prevState.isDropdownOpen,
     }));
   }
+
+  toggleNavbar = () => {
+    this.setState((prevState) => ({
+      isNavbarOpen: !prevState.isNavbarOpen,
+    }));
+  };
 
   limitCharacters(str) {
     if (str.length > 20) {
@@ -108,11 +115,20 @@ class Header extends Component {
   render() {
     return (
       <>
-        {/* <Sidebar
-          isOpen={this.state.menuOpen}
-          onStateChange={(state) => this.handleStateChange(state)}
-        /> */}
-        <header className="sticky top-0 z-50 px-10 lg:px-22 flex justify-between bg-white border-b-2 border-gray-100">
+        <div
+          className={`${
+            this.state.isNavbarOpen ? "translate-x-0" : "translate-x-full"
+          } fixed top-0 left-0 w-full h-full bg-black opacity-50 z-[45] transition-opacity duration-300 ease-in-out`}
+          onClick={this.toggleNavbar}
+        ></div>
+        <div
+          className={`${
+            this.state.isNavbarOpen ? "translate-x-0" : "translate-x-full"
+          } transform h-full w-80 bg-white fixed top-0 right-0 z-[60] transition-transform duration-300 ease-in-out`}
+        >
+          {/* konten navbar */}
+        </div>
+        <header className="sticky top-0 z-40 px-10 lg:px-22 flex justify-between bg-white border-b-2 border-gray-100">
           <div className="py-8 font-extrabold">
             <Link to="/" className=" flex flex-row justify-center gap-4">
               <img src={logo} alt="logo" width="30px" />
@@ -120,7 +136,7 @@ class Header extends Component {
             </Link>
           </div>
           <div className="navbar-burger select-none cursor-pointer lg:hidden py-8">
-            <button onClick={() => this.toggleMenu()}>
+            <button onClick={this.toggleNavbar}>
               <img
                 src={burgerIcon}
                 width="30px"
@@ -189,14 +205,34 @@ class Header extends Component {
                 </div>
                 <img src={chatIcon} alt="" width="30px" />
               </a>
-              <div className="relative" ref={this.dropdownRef}>
-                <img
-                  src={placeholderProfile}
-                  alt=""
-                  width="30px"
-                  className="rounded-full cursor-pointer"
-                  onClick={this.toggleDropdown}
-                />
+              <div
+                className="relative"
+                ref={this.dropdownRef}
+                onClick={this.toggleDropdown}
+              >
+                <div className=" flex items-center  cursor-pointer">
+                  <img
+                    src={placeholderProfile}
+                    alt=""
+                    width="30px"
+                    className="rounded-full"
+                  />
+                  <svg
+                    className="w-4 h-4 ml-2"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </div>
                 <div
                   className={`dropdown ${
                     this.state.isDropdownOpen
@@ -219,12 +255,12 @@ class Header extends Component {
                         >
                           Profile
                         </NavLink>
-                        <a
+                        {/* <a
                           className="block px-4 py-2 hover:bg-gray-100 duration-200"
                           href="#"
                         >
                           My Cart
-                        </a>
+                        </a> */}
                       </div>
                       <div className="py-1">
                         <a

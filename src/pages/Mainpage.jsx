@@ -49,8 +49,8 @@ class Mainpage extends Component {
       <Fragment>
         <Header />
         <main>
-          <section className="bg-main bg-cover bg-center px-22 py-20 text-white font-bold">
-            <div className="flex flex-col gap-6 w-[50%] text-sm">
+          <section className="bg-main bg-cover bg-center px-10 lg:px-22 py-20 text-white font-bold">
+            <div className="flex flex-col gap-6 w-[75%] lg:w-[50%] text-sm">
               <h2 className="text-4xl font-bold">
                 Start Your Day with Coofee and Good Meals
               </h2>
@@ -65,8 +65,8 @@ class Mainpage extends Component {
                 </button>
               </div>
             </div>
-            <section className="relative bg-white mt-20 mb-[-9rem] rounded-xl shadow-xl text-quartenary flex flex-row py-5 justify-center items-center">
-              <aside className="flex-1 border-r-2 py-6 flex justify-center gap-8 items-center">
+            <section className="relative bg-white mt-20 mb-[-9rem] rounded-xl shadow-xl text-quartenary flex flex-row py-5 justify-center items-center text-center md:text-left">
+              <aside className="flex-1 border-r-2 py-6 flex flex-col md:flex-row justify-center gap-8 items-center">
                 <div>
                   <div className="bg-secondary rounded-full p-2 w-10 aspect-square flex justify-center items-center">
                     <img src={staffIcon} alt="" />
@@ -77,28 +77,28 @@ class Mainpage extends Component {
                   <p className="font-normal text-primary">Staff</p>
                 </div>
               </aside>
-              <aside className="flex-1 border-r-2 py-6 flex justify-center gap-8 items-center">
+              <aside className="flex-1 border-r-2 py-6 flex flex-col md:flex-row justify-center gap-8 items-center">
                 <div className="bg-secondary rounded-full p-2 w-10 aspect-square flex justify-center items-center">
                   <img src={loveIcon} alt="" />
-                </div>
-                <div>
-                  <p className="text-xl">30+</p>
-                  <p className="font-normal text-primary">Stores</p>
-                </div>
-              </aside>
-              <aside className="flex-1 py-6 flex justify-center gap-8 items-center">
-                <div className="bg-secondary rounded-full p-2 w-10 aspect-square flex justify-center items-center">
-                  <img src={placeIcon} alt="" />
                 </div>
                 <div>
                   <p className="text-xl">800+</p>
                   <p className="font-normal text-primary">Customers</p>
                 </div>
               </aside>
+              <aside className="flex-1 py-6 flex flex-col md:flex-row justify-center gap-8 items-center">
+                <div className="bg-secondary rounded-full p-2 w-10 aspect-square flex justify-center items-center">
+                  <img src={placeIcon} alt="" />
+                </div>
+                <div>
+                  <p className="text-xl">30+</p>
+                  <p className="font-normal text-primary">Stores</p>
+                </div>
+              </aside>
             </section>
           </section>
           <div className="mb-20"></div>
-          <section className="flex flex-row px-22 py-20 gap-32">
+          <section className="flex flex-col lg:flex-row px-10 lg:px-22 py-20 lg:gap-32">
             <div className="flex-1 img">
               <img src={provideImage} alt="" width="100%" />
             </div>
@@ -119,7 +119,7 @@ class Mainpage extends Component {
               </ul>
             </div>
           </section>
-          <section className="px-22 py-20">
+          <section className="px-10 lg:px-22 py-20">
             <div className="flex flex-col items-center">
               <h2 className="text-4xl text-quartenary font-semibold mb-5 text-center">
                 Here is People’s Favorite
@@ -129,7 +129,7 @@ class Mainpage extends Component {
                 be yours too!
               </p>
             </div>
-            <div className="flex flex-row justify-center gap-12 mt-20">
+            <div className="flex flex-row flex-wrap justify-center gap-12 mt-20">
               <div className="flex-1 flex flex-col justify-center border-gray-400 border rounded-xl px-5 py-12 items-center gap-5 text-base">
                 <img
                   src={productImage1}
@@ -213,7 +213,7 @@ class Mainpage extends Component {
               </div>
             </div>
           </section>
-          <section className="px-22 py-20">
+          <section className="px-10 lg:px-22 py-20">
             <div className="flex flex-col items-center mb-20">
               <h2 className="text-4xl text-quartenary font-semibold mb-5 text-center">
                 Visit Our Store in
@@ -229,46 +229,46 @@ class Mainpage extends Component {
               <img src={mapImage} alt="global map" />
             </div>
           </section>
-          <section className="px-22 py-20">
+          <section className="px-10 lg:px-22 py-20">
             <div className="flex flex-col items-center mb-20">
               <h2 className="text-4xl text-quartenary font-semibold mb-5 text-center">
                 Our Partner
               </h2>
             </div>
-            <div className="flex flex-row justify-center items-center gap-12 ">
+            <div className="flex flex-row flex-wrap justify-center items-center gap-12 ">
               <img
                 src={netflixLogo}
                 alt=""
-                width="190px"
-                className="w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
+                width="100px"
+                className="lg:w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
               />
               <img
                 src={redditLogo}
                 alt=""
-                width="190px"
-                className="w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
+                width="100px"
+                className="lg:w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
               />
               <img
                 src={amazonLogo}
                 alt=""
-                width="190px"
-                className="w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
+                width="100px"
+                className="lg:w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
               />
               <img
                 src={discordLogo}
                 alt=""
-                width="190px"
-                className="w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
+                width="100px"
+                className="lg:w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
               />
               <img
                 src={spotifyLogo}
                 alt=""
-                width="190px"
-                className="w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
+                width="100px"
+                className="lg:w-[15%] aspect-[3/2] object-contain grayscale opacity-20 duration-300 hover:filter-none hover:opacity-100"
               />
             </div>
           </section>
-          <section className="px-22 py-20">
+          <section className="px-10 lg:px-22 py-20">
             <div className="flex flex-col items-center mb-20 text-center">
               <h2 className="text-[35px] text-quartenary font-semibold mb-5">
                 Loved by Customer of
@@ -279,7 +279,7 @@ class Mainpage extends Component {
                 great pleasure.
               </p>
             </div>
-            <div className="overflow-auto flex flex-row gap-5 ">
+            <div className="overflow-auto flex flex-row gap-5 flex-wrap lg:flex-nowrap  ">
               {this.state.reviews.map((review, idx) => {
                 return (
                   <div
@@ -308,9 +308,9 @@ class Mainpage extends Component {
               })}
             </div>
           </section>
-          <section className="px-22 z-10 relative w-full mb-[-6rem]">
-            <div className="shadow-primary rounded-xl flex p-14 px-16 bg-white">
-              <aside className="flex-1 space-y-4">
+          <section className="px-10 lg:px-22 z-10 relative w-full mb-6 mb:mb-[-6rem]">
+            <div className="shadow-primary rounded-xl flex flex-col md:flex-row p-14 px-16 bg-white text-center md:text-left">
+              <aside className="flex-1 space-y-4 mb-5 md:mb-0">
                 <p className="text-3xl font-semibold">Check our promo today!</p>
                 <p className="text-primary">
                   Let&apos;s see the deals and pick yours
@@ -318,7 +318,7 @@ class Mainpage extends Component {
               </aside>
               <aside className="hidden lg:block lg:flex-1"></aside>
               <aside className="flex-1 flex flex-col justify-center">
-                <button className="ml-auto w-[75%] bg-secondary rounded-xl py-4 text-tertiary font-bold">
+                <button className="ml-auto w-[100%] md:w-[75%]  bg-secondary rounded-xl py-4 text-tertiary font-bold">
                   See promo
                 </button>
               </aside>
