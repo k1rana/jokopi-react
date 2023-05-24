@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom';
 
-import icon from "../../assets/jokopi.svg";
-import { uinfoAct } from "../../redux/slices/userInfo.slice";
-import { login } from "../../utils/dataProvider/auth";
-import useDocumentTitle from "../../utils/documentTitle";
+import icon from '../../assets/jokopi.svg';
+import { uinfoAct } from '../../redux/slices/userInfo.slice';
+import { login } from '../../utils/dataProvider/auth';
+import useDocumentTitle from '../../utils/documentTitle';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -105,10 +108,12 @@ const Login = () => {
             <h1 className="text-xl">jokopi.</h1>
           </div>
         </Link>
-        <div className="text-xl font-semibold text-tertiary">Login</div>
+        <div className="text-lg md:text-xl font-semibold text-tertiary">
+          Login
+        </div>
       </header>
       <section className="mt-16">
-        <form className="space-y-2 md:space-y-4 relative">
+        <form className="space-y-3 md:space-y-4 relative">
           <div>
             <label
               name="email"
@@ -192,7 +197,7 @@ const Login = () => {
               (isLoading
                 ? "cursor-not-allowed bg-secondary-200"
                 : "cursor-pointer bg-secondary") +
-              " w-full text-tertiary  focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl inline-flex items-center justify-center transition ease-in-out duration-150 hover:bg-secondary-200"
+              " w-full text-tertiary  focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-base md:text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl inline-flex items-center justify-center transition ease-in-out duration-150 hover:bg-secondary-200"
             }
             onClick={loginHandler}
           >
@@ -224,7 +229,7 @@ const Login = () => {
           </button>
           <button
             type="submit"
-            className="w-full text-tertiary bg-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl inline-flex justify-center items-center"
+            className="w-full text-tertiary bg-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-base md:text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl inline-flex justify-center items-center"
           >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
@@ -241,7 +246,7 @@ const Login = () => {
             </span>
           </div>
           <Link to="/auth/register">
-            <button className="w-full text-white bg-tertiary focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl lg:mb-20">
+            <button className="w-full text-white bg-tertiary focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-base md:text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl lg:mb-20">
               Sign up here
             </button>
           </Link>

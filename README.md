@@ -1,36 +1,147 @@
-![jokopi-react](https://socialify.git.ci/justcallmeahann/jokopi-react/image?description=1&descriptionEditable=a%20simple%20coffee%20shop%20using%20react&forks=1&language=1&logo=https%3A%2F%2Fi.ibb.co%2FqdjXb0s%2Fcoffee-cup.png&name=1&owner=1&pattern=Circuit%20Board&stargazers=1&theme=Dark)
-# ☕ jokopi
+<div align="center">
+<img src="./public/assets/images/logo.png"/>
+<h3 align="center"><b>jokopi</b> - Example App</h3>
+   <p align="center">
+   Open Source. Front-end.
+   </p>
 
-This coffee shop website is built using React, a JavaScript library for building responsive and dynamic user interfaces. This allows the coffee website to have a modern look and functionality, such as smooth animations and high interactivity.
+   [Demo](https://jokopi-react.vercel.app/) · [Report Bug](#report-bug) · [Request Feature](#report-bug)
 
-Additionally, this coffee website is integrated with an API that provides datas. The data is used to display useful information for users, such as flavor descriptions, pricing, and seller locations. You can see in here <a href="https://github.com/justcallmeahann/jokopi">here</a>
+</div>
 
+## Docs
 
+- [Docs](#docs)
+- [Overview](#overview)
+  - [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Related Projects](#related-projects)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Screenshots](#screenshots)
+- [Resources](#resources)
+- [License](#license)
+- [Report Bug](#report-bug)
 
+## Overview
+
+jokopi is a complete open-source app coffee shop ordering.
+
+This is an example application that shows how `jokopi` is applied to a react app.
+
+Build using create react app.
+
+You can build it by yourself
+
+### Features
+
+- Login, Register, Forgot Password, Logout
+- Profile
+- History Order
+- Products (Search, Sort, Filter)
+- Cart
+- Transactions
+- Admin Dashboard
+- Manage Order (Admin)
+- etc.
 
 ## Technologies Used
 
-- React: JavaScript library for building user interfaces
-- React Router: Library for handling routing in React applications
-- Axios: Library for asynchronously accessing APIs
-- Tailwind: A utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.
-- Git and GitHub: Version control system and code storage platform
+[![My Skills](https://skillicons.dev/icons?i=react,redux,tailwind,vercel)](https://skillicons.dev)
 
+- React & React Router DOM
+- Redux & Redux Persist (Local Storage)
+- TailwindCSS
+- DaisyUI
+- React Hot Toast
+- Lodash
+- Axios
+- JWT Decode
+- Vercel for deploying demo
+- etc.
 
-## Installation
+## Related Projects
 
-Install jokopi-react with npm
+- [jokopi-express](https://github.com/nyannss/jokopi) - Rest API
+- [jokopi-react-native](https://github.com/nyannss/jokopi-react-native) - Android & iOS Application
 
-1. Clone this repository to your computer
-```
-git clone https://github.com/justcallmeahann/jokopi-react
-```
-2. Run the command `npm install` to install all dependencies
-3. Run the command `npm start` to start the application on localhost
-4. Open a browser and type the address `http://localhost:3000` to view the coffee website
-## Contributions
+## Getting Started
 
-We are very open to contributions from anyone who wants to help improve or enhance this coffee website. 
+### Prerequisites
 
-Please create a pull request if you have any changes to propose, or submit an issue if you find any problems with this application. Thank you!
+   You need to install some software to run this project
 
+- [Node.js](https://nodejs.org/en/download) (LTS version recommended, 14 or newer)
+
+### Installation
+
+1. Clone this repository to your local
+
+   ```
+   git clone https://github.com/nyannss/jokopi-react.git
+   ```
+
+2. Change current directory
+
+   ```
+   cd jokopi-react
+   ```
+
+3. Install dependencies
+
+   If you using npm
+
+   ```
+   npm install
+   ```
+
+   If you using yarn
+
+   ```
+   yarn
+   ```
+
+4. Setup environment
+
+   ```
+   REACT_APP_BACKEND_HOST = (your rest api host)
+   REACT_APP_WEBSITE_NAME = (your project name)
+   ```
+
+5. Running app
+
+    ```
+    npm start
+    ```
+
+## Screenshots
+
+<img src="./public/assets/screenshots/1.png"/>
+<img src="./public/assets/screenshots/2.png"/>
+<img src="./public/assets/screenshots/3.png"/>
+<img src="./public/assets/screenshots/4.png"/>
+<img src="./public/assets/screenshots/5.png"/>
+
+## Resources
+
+Special thanks for providing resources such as icons and images.
+
+- [Flaticon](https://flaticon.com/)
+- [unDraw](https://undraw.co/)
+- [SVGRepo](https://svgrepo.com/)
+- and other sources.
+  
+If there are resources that belong to you, please let me know, I will write it here.
+
+## License
+
+This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for details.
+
+<!-- ![](assets/screenshots/1.jpg)
+
+![](assets/screenshots/2.jpg) -->
+## Report Bug
+
+Any error report you can pull request
+or contact: <nyannss@proton.me>

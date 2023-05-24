@@ -1,17 +1,28 @@
-import React, { Component, useContext } from "react";
+import React, {
+  Component,
+  useContext,
+} from 'react';
 
-import { toast } from "react-hot-toast";
-import { connect } from "react-redux";
-import { Link, Navigate, NavLink, useNavigate } from "react-router-dom";
+import { toast } from 'react-hot-toast';
+import { connect } from 'react-redux';
+import {
+  Link,
+  Navigate,
+  NavLink,
+  useNavigate,
+} from 'react-router-dom';
 
-import burgerIcon from "../assets/icons/burger-menu-left.svg";
-import chatIcon from "../assets/icons/chat.svg";
-import placeholderProfile from "../assets/images/placeholder-profile.jpg";
-import logo from "../assets/jokopi.svg";
-import { uinfoAct } from "../redux/slices/userInfo.slice";
-import { getUserData, isAuthenticated } from "../utils/authUtils";
-import { logoutUser } from "../utils/dataProvider/auth";
-import Sidebar from "./Sidebar";
+import burgerIcon from '../assets/icons/burger-menu-left.svg';
+import chatIcon from '../assets/icons/chat.svg';
+import placeholderProfile from '../assets/images/placeholder-profile.jpg';
+import logo from '../assets/jokopi.svg';
+import { uinfoAct } from '../redux/slices/userInfo.slice';
+import {
+  getUserData,
+  isAuthenticated,
+} from '../utils/authUtils';
+import { logoutUser } from '../utils/dataProvider/auth';
+import Sidebar from './Sidebar';
 
 const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
@@ -134,172 +145,174 @@ class Header extends Component {
             }
           />
         </div>
-        <header className="sticky top-0 z-40 px-10 lg:px-22 flex justify-between bg-white border-b-2 border-gray-100">
-          <div className="py-8 font-extrabold">
-            <Link to="/" className=" flex flex-row justify-center gap-4">
-              <img src={logo} alt="logo" width="30px" />
-              <h1 className="text-xl">jokopi.</h1>
-            </Link>
-          </div>
-          <div className="navbar-burger select-none cursor-pointer lg:hidden py-8">
-            <button onClick={this.toggleNavbar}>
-              <img
-                src={burgerIcon}
-                width="30px"
-                className="aspect-square"
-                alt=""
-              />
-            </button>
-          </div>
-          <nav className="py-8 hidden lg:flex flex-row gap-8 justify-center">
-            <li className="list-none" key="Home Page">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive ? "font-bold text-[#6A4029]" : ""
-                }
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className="list-none" key="Product">
-              <NavLink
-                to="/products"
-                className={({ isActive }) =>
-                  isActive ? "font-bold text-[#6A4029]" : ""
-                }
-              >
-                Products
-              </NavLink>
-            </li>
-            <li className="list-none" key="Cart">
-              <NavLink
-                to="/cart"
-                className={({ isActive }) =>
-                  isActive ? "font-bold text-[#6A4029]" : ""
-                }
-              >
-                Your Cart
-              </NavLink>
-            </li>
-            <li className="list-none" key="History">
-              <NavLink
-                to="/history"
-                className={({ isActive }) =>
-                  isActive ? "font-bold text-[#6A4029]" : ""
-                }
-              >
-                History
-              </NavLink>
-            </li>
-          </nav>
-          {isAuthenticated() ? (
-            <div className="flex-row gap-10 hidden lg:flex select-none py-8">
-              <div className="search-section cursor-pointer">
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 17 17"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+        <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b-2 border-gray-100">
+          <div className=" flex global-px justify-between items-center">
+            <div className="py-5 md:py-8 font-extrabold">
+              <Link to="/" className=" flex flex-row justify-center gap-4">
+                <img src={logo} alt="logo" width="30px" />
+                <h1 className="text-xl">jokopi.</h1>
+              </Link>
+            </div>
+            <div className="navbar-burger select-none cursor-pointer lg:hidden py-4">
+              <button onClick={this.toggleNavbar}>
+                <img
+                  src={burgerIcon}
+                  width="30px"
+                  className="aspect-square"
+                  alt=""
+                />
+              </button>
+            </div>
+            <nav className="py-6 hidden lg:flex flex-row gap-8 justify-center">
+              <li className="list-none" key="Home Page">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive ? "font-bold text-[#6A4029]" : ""
+                  }
                 >
-                  <path
-                    d="M16 16L12.375 12.375M14.3333 7.66667C14.3333 11.3486 11.3486 14.3333 7.66667 14.3333C3.98477 14.3333 1 11.3486 1 7.66667C1 3.98477 3.98477 1 7.66667 1C11.3486 1 14.3333 3.98477 14.3333 7.66667Z"
-                    stroke="#4F5665"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <a href="" className="relative">
-                <div className="absolute -left-2 -top-2 h-4 w-4 bg-tertiary rounded-full text-white flex text-[0.70rem] items-center justify-center font-extrabold">
-                  9+
-                </div>
-                <img src={chatIcon} alt="" width="30px" />
-              </a>
-              <div
-                className="relative"
-                ref={this.dropdownRef}
-                onClick={this.toggleDropdown}
-              >
-                <div className=" flex items-center  cursor-pointer">
-                  <img
-                    src={placeholderProfile}
-                    alt=""
-                    width="30px"
-                    className="rounded-full"
-                  />
+                  Home
+                </NavLink>
+              </li>
+              <li className="list-none" key="Product">
+                <NavLink
+                  to="/products"
+                  className={({ isActive }) =>
+                    isActive ? "font-bold text-[#6A4029]" : ""
+                  }
+                >
+                  Products
+                </NavLink>
+              </li>
+              <li className="list-none" key="Cart">
+                <NavLink
+                  to="/cart"
+                  className={({ isActive }) =>
+                    isActive ? "font-bold text-[#6A4029]" : ""
+                  }
+                >
+                  Your Cart
+                </NavLink>
+              </li>
+              <li className="list-none" key="History">
+                <NavLink
+                  to="/history"
+                  className={({ isActive }) =>
+                    isActive ? "font-bold text-[#6A4029]" : ""
+                  }
+                >
+                  History
+                </NavLink>
+              </li>
+            </nav>
+            {isAuthenticated() ? (
+              <div className="flex-row gap-10 hidden lg:flex select-none py-4 items-center">
+                <div className="search-section cursor-pointer">
                   <svg
-                    className="w-4 h-4 ml-2"
-                    aria-hidden="true"
+                    width="28"
+                    height="28"
+                    viewBox="0 0 17 17"
                     fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
+                      d="M16 16L12.375 12.375M14.3333 7.66667C14.3333 11.3486 11.3486 14.3333 7.66667 14.3333C3.98477 14.3333 1 11.3486 1 7.66667C1 3.98477 3.98477 1 7.66667 1C11.3486 1 14.3333 3.98477 14.3333 7.66667Z"
+                      stroke="#4F5665"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
+                    />
                   </svg>
                 </div>
+                <a href="" className="relative">
+                  <div className="absolute -left-2 -top-2 h-4 w-4 bg-tertiary rounded-full text-white flex text-[0.70rem] items-center justify-center font-extrabold">
+                    9+
+                  </div>
+                  <img src={chatIcon} alt="" width="30px" />
+                </a>
                 <div
-                  className={`dropdown ${
-                    this.state.isDropdownOpen
-                      ? "transition duration-300 ease-in-out opacity-100 transform -translate-y-6"
-                      : "transition duration-200 ease-in-out opacity-0 transform -translate-y-10 invisible"
-                  }`}
+                  className="relative flex items-center my-auto"
+                  ref={this.dropdownRef}
+                  onClick={this.toggleDropdown}
                 >
-                  {this.state.isDropdownOpen && (
-                    <nav className="absolute list-none bg-white rounded-lg shadow-md border-1 border-gray-200 flex flex-col right-0 top-10 py-2 divide-y-1 transition-all duration-200 transform origin-top-right min-w-[14rem]">
-                      <div className="px-4 py-1">
-                        <p>Signed in as</p>
-                        <p className="font-medium">
-                          {this.limitCharacters(getUserData().email)}
-                        </p>
-                      </div>
-                      <div className="py-1">
-                        <NavLink
-                          className="block px-4 py-2 hover:bg-gray-100  duration-200"
-                          to="/profile/"
-                        >
-                          Profile
-                        </NavLink>
-                        {/* <a
+                  <div className=" flex items-center  cursor-pointer">
+                    <img
+                      src={placeholderProfile}
+                      alt=""
+                      width="30px"
+                      className="rounded-full"
+                    />
+                    <svg
+                      className="w-4 h-4 ml-2"
+                      aria-hidden="true"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div
+                    className={`dropdown ${
+                      this.state.isDropdownOpen
+                        ? "transition duration-300 ease-in-out opacity-100 transform -translate-y-6"
+                        : "transition duration-200 ease-in-out opacity-0 transform -translate-y-10 invisible"
+                    }`}
+                  >
+                    {this.state.isDropdownOpen && (
+                      <nav className="absolute list-none bg-white rounded-lg shadow-md border-1 border-gray-200 flex flex-col right-0 top-10 py-2 divide-y-1 transition-all duration-200 transform origin-top-right min-w-[14rem]">
+                        <div className="px-4 py-1">
+                          <p>Signed in as</p>
+                          <p className="font-medium">
+                            {this.limitCharacters(getUserData().email)}
+                          </p>
+                        </div>
+                        <div className="py-1">
+                          <NavLink
+                            className="block px-4 py-2 hover:bg-gray-100  duration-200"
+                            to="/profile/"
+                          >
+                            Profile
+                          </NavLink>
+                          {/* <a
                           className="block px-4 py-2 hover:bg-gray-100 duration-200"
                           href="#"
                         >
                           My Cart
                         </a> */}
-                      </div>
-                      <div className="py-1">
-                        <a
-                          className="block px-4 py-2 hover:bg-gray-100 duration-200 cursor-pointer"
-                          onClick={this.logoutHandler}
-                        >
-                          Sign out
-                        </a>
-                      </div>
-                    </nav>
-                  )}
+                        </div>
+                        <div className="py-1">
+                          <a
+                            className="block px-4 py-2 hover:bg-gray-100 duration-200 cursor-pointer"
+                            onClick={this.logoutHandler}
+                          >
+                            Sign out
+                          </a>
+                        </div>
+                      </nav>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="hidden lg:flex flex-row gap-3 items-center select-none py-6">
-              <Link to="/auth/login" className="mr-9 font-semibold">
-                Login
-              </Link>
-              <Link to="/auth/register">
-                <button className="rounded-[25px] bg-secondary px-10 text-tertiary font-semibold py-2 hover:bg-secondary-200 duration-300">
-                  Sign Up
-                </button>
-              </Link>
-            </div>
-          )}
+            ) : (
+              <div className="hidden lg:flex flex-row gap-3 items-center select-none py-6">
+                <Link to="/auth/login" className="mr-9 font-semibold">
+                  Login
+                </Link>
+                <Link to="/auth/register">
+                  <button className="rounded-[25px] bg-secondary px-10 text-tertiary font-semibold py-2 hover:bg-secondary-200 duration-300">
+                    Sign Up
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
         </header>
         {this.state.redirectLogout && (
           <Navigate to="/auth/login" replace={true} />
