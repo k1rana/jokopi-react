@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   list: [],
@@ -6,6 +6,7 @@ const initialState = {
   delivery_id: "",
   delivery_address: "",
   notes: "",
+  now: "",
 };
 
 const cartSlice = createSlice({
@@ -102,8 +103,6 @@ const cartSlice = createSlice({
       return {
         ...prevState,
         delivery_id: action.payload.delivery_id,
-        delivery_address: action.payload.delivery_address,
-        notes: action.payload.notes,
       };
     },
   },

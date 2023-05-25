@@ -159,7 +159,7 @@ function ProductDetail(props) {
       : p.desc;
     useDocumentTitle(p.name);
     return (
-      <main className="px-10 lg:px-22 py-10">
+      <main className="global-px py-10">
         <nav className="flex flex-row list-none gap-1">
           <li className="after:content-['>'] after:font-semibold text-primary">
             <NavLink to="/products">Favorite & Promo </NavLink>

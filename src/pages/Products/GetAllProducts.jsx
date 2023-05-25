@@ -1,13 +1,21 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 
-import emptyBox from "../../assets/images/empty.svg";
-import loadingImage from "../../assets/images/loading.svg";
-import productPlaceholder from "../../assets/images/placeholder-image.webp";
-import { getAllProducts } from "../../utils/dataProvider/products";
-import withSearchParams from "../../utils/wrappers/withSearchParams.js";
+import emptyBox from '../../assets/images/empty.svg';
+import loadingImage from '../../assets/images/loading.svg';
+import productPlaceholder from '../../assets/images/placeholder-image.webp';
+import { getAllProducts } from '../../utils/dataProvider/products';
+import withSearchParams from '../../utils/wrappers/withSearchParams.js';
 
 function GetAllProducts(props) {
   {
@@ -23,28 +31,23 @@ function GetAllProducts(props) {
       const sort = searchParams.get("sort");
       const orderBy = searchParams.get("orderBy");
       const searchByName = searchParams.get("q");
+      setIsLoading(true);
 
       getAllProducts(
         catId,
-        { sort, limit: 12, searchByName, orderBy, page },
+        { sort, limit: 8, searchByName, orderBy, page },
         controller
       )
         .then((response) => response.data)
         .then((data) => {
           setProducts(data.data);
           setMeta(data.meta);
-
-          if (!controller.aborted) {
-            setIsLoading(false);
-          }
         })
         .catch((err) => {
-          if (!controller.aborted) {
-            setIsLoading(false);
-          }
           setProducts([]);
           setMeta({});
-        });
+        })
+        .finally(() => setIsLoading(false));
     }
 
     // const controller = React.useMemo(() => new AbortController(), [catId]);
@@ -61,6 +64,11 @@ function GetAllProducts(props) {
         setSearchParams({ page });
       }
     };
+
+    // const controller = useMemo(
+    //   () => new AbortController(),
+    //   [catId, page, searchParams]
+    // );
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -89,9 +97,9 @@ function GetAllProducts(props) {
 
       // Fetch new products
       getProducts(catId, searchParams, controller);
-      setIsLoading(true);
 
       return () => {
+        console.log(catId);
         controller.abort();
         setIsLoading(true);
       };
@@ -125,7 +133,7 @@ function GetAllProducts(props) {
         <section className="grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 justify-items-center content-around gap-3 gap-y-16 mt-10">
           {products.map((product) => (
             <Link to={`/products/detail/${product.id}`} key={product.id}>
-              <section className="relative w-36 bg-white shadow-lg hover:shadow-2xl duration-200 p-5 rounded-3xl">
+              <section className="relative w-36 bg-white shadow-lg hover:shadow-xl duration-200 p-5 rounded-3xl">
                 <img
                   src={product.img ?? productPlaceholder}
                   alt=""

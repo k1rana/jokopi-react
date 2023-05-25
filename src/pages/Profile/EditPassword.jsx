@@ -52,7 +52,11 @@ function EditPassword(props) {
       error.newpassconf = "Password and confirm password does not match";
     setErr(error);
 
-    if (err.oldpass !== "" && err.newpass !== "" && err.newpassconf !== "") {
+    if (
+      error.oldpass === "" &&
+      error.newpass === "" &&
+      error.newpassconf === ""
+    ) {
       e.target.disabled = true;
       toast.promise(
         updatePassword(form.oldpass, form.newpass, userInfo.token).then(
@@ -139,13 +143,21 @@ function EditPassword(props) {
             <span className="font-medium">{err.newpassconf}</span>
           </p>
         </div>
-        <button
-          className="bg-tertiary text-white p-3 rounded-lg text-sm font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
-          type="submit"
-          onClick={submitFormHandler}
-        >
-          Confirm
-        </button>
+        <section className="flex flex-row gap-x-3 items-center">
+          <button
+            className="bg-tertiary text-white p-3 rounded-lg text-sm font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+            type="submit"
+            onClick={submitFormHandler}
+          >
+            Confirm
+          </button>
+          <p
+            className="hover:underline text-sm cursor-pointer"
+            onClick={props.onClose}
+          >
+            Cancel
+          </p>
+        </section>
       </form>
     </Modal>
   );

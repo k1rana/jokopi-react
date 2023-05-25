@@ -1,16 +1,6 @@
 import axios from "axios";
 
-import store from "../../redux/store";
-
-const state = store.getState();
-const userInfo = state.userInfo;
-
 const host = process.env.REACT_APP_BACKEND_HOST;
-const config = {
-  headers: {
-    Authorization: "Bearer " + userInfo.token,
-  },
-};
 
 export function login(email, password, rememberMe, controller) {
   const body = { email, password, rememberMe };

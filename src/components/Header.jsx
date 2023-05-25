@@ -1,36 +1,29 @@
-import React, {
-  Component,
-  useContext,
-} from 'react';
+import React, { Component, useContext } from "react";
 
-import { toast } from 'react-hot-toast';
-import { connect } from 'react-redux';
-import {
-  Link,
-  Navigate,
-  NavLink,
-  useNavigate,
-} from 'react-router-dom';
+import { toast } from "react-hot-toast";
+import { connect } from "react-redux";
+import { Link, Navigate, NavLink, useNavigate } from "react-router-dom";
 
-import burgerIcon from '../assets/icons/burger-menu-left.svg';
-import chatIcon from '../assets/icons/chat.svg';
-import placeholderProfile from '../assets/images/placeholder-profile.jpg';
-import logo from '../assets/jokopi.svg';
-import { uinfoAct } from '../redux/slices/userInfo.slice';
-import {
-  getUserData,
-  isAuthenticated,
-} from '../utils/authUtils';
-import { logoutUser } from '../utils/dataProvider/auth';
-import Sidebar from './Sidebar';
+import burgerIcon from "../assets/icons/burger-menu-left.svg";
+import chatIcon from "../assets/icons/chat.svg";
+import placeholderProfile from "../assets/images/placeholder-profile.jpg";
+import logo from "../assets/jokopi.svg";
+import { profileAction } from "../redux/slices/profile.slice";
+import { uinfoAct } from "../redux/slices/userInfo.slice";
+import { getUserData, isAuthenticated } from "../utils/authUtils";
+import { logoutUser } from "../utils/dataProvider/auth";
+import Sidebar from "./Sidebar";
 
 const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
+  profile: state.profile,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   assignToken: () => dispatch(uinfoAct.assignToken()),
   dismissToken: () => dispatch(uinfoAct.dismissToken()),
+  getProfile: (token, controller) =>
+    dispatch(profileAction.getProfileThunk({ token, controller })),
 });
 
 // create a navigation component that wraps the burger menu
@@ -58,7 +51,6 @@ class Header extends Component {
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
   }
-
   navigateTo(path) {
     const navigate = useNavigate();
     navigate(path);
@@ -66,6 +58,11 @@ class Header extends Component {
 
   componentDidMount() {
     document.addEventListener("click", this.handleClickOutside);
+    if (this.props?.userInfo?.token && !this.props.profile.isFulfilled) {
+      const controller = new AbortController();
+      this.props.getProfile(this.props.userInfo.token, controller);
+    }
+    // console.log(jwtDecode(this.props.userInfo.token));
   }
 
   componentWillUnmount() {
@@ -137,15 +134,9 @@ class Header extends Component {
             this.state.isNavbarOpen ? "translate-x-0" : "translate-x-full"
           } transform h-full w-80 bg-white fixed top-0 right-0 z-[60] transition-transform duration-300 ease-in-out`}
         >
-          <Sidebar
-            onClose={() =>
-              this.setState({
-                isDropdownOpen: false,
-              })
-            }
-          />
+          <Sidebar onClose={this.toggleNavbar} />
         </div>
-        <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b-2 border-gray-100">
+        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b-2 border-gray-100">
           <div className=" flex global-px justify-between items-center">
             <div className="py-5 md:py-8 font-extrabold">
               <Link to="/" className=" flex flex-row justify-center gap-4">
@@ -153,7 +144,30 @@ class Header extends Component {
                 <h1 className="text-xl">jokopi.</h1>
               </Link>
             </div>
-            <div className="navbar-burger select-none cursor-pointer lg:hidden py-4">
+            <div className="navbar-burger select-none cursor-pointer lg:hidden py-4 flex gap-7 flex-row items-center">
+              <div className="search-section cursor-pointer">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 17 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16 16L12.375 12.375M14.3333 7.66667C14.3333 11.3486 11.3486 14.3333 7.66667 14.3333C3.98477 14.3333 1 11.3486 1 7.66667C1 3.98477 3.98477 1 7.66667 1C11.3486 1 14.3333 3.98477 14.3333 7.66667Z"
+                    stroke="#4F5665"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <a href="" className="relative">
+                <div className="absolute -left-2 -top-2 h-4 w-4 bg-tertiary rounded-full text-white flex text-[0.70rem] items-center justify-center font-extrabold">
+                  9+
+                </div>
+                <img src={chatIcon} alt="" width="24px" />
+              </a>
               <button onClick={this.toggleNavbar}>
                 <img
                   src={burgerIcon}
@@ -237,9 +251,13 @@ class Header extends Component {
                 >
                   <div className=" flex items-center  cursor-pointer">
                     <img
-                      src={placeholderProfile}
+                      src={
+                        this.props?.profile?.data?.img
+                          ? this.props.profile.data.img
+                          : placeholderProfile
+                      }
                       alt=""
-                      width="30px"
+                      width="32px"
                       className="rounded-full"
                     />
                     <svg

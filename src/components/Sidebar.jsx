@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
-import logo from "../assets/jokopi.svg";
+import logo from '../assets/jokopi.svg';
 
-function Sidebar(props) {
+function Sidebar({ onClose }) {
   return (
     <>
       <div className="h-full">
@@ -18,7 +18,7 @@ function Sidebar(props) {
                 className="align-middle"
               />
             </a>
-            <button className="navbar-close" onClick={props.onClose}>
+            <button className="navbar-close" onClick={onClose}>
               <svg
                 className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
                 xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +39,7 @@ function Sidebar(props) {
             <ul>
               <li className="mb-1">
                 <NavLink
-                  className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded"
+                  className="block p-4 text-sm font-semibold text-gray-400 hover:bg-tertiary/40 hover:text-tertiary rounded"
                   to="/"
                 >
                   Home
@@ -47,7 +47,7 @@ function Sidebar(props) {
               </li>
               <li className="mb-1">
                 <NavLink
-                  className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded"
+                  className="block p-4 text-sm font-semibold text-gray-400 hover:bg-tertiary/40 hover:text-tertiary rounded"
                   to="/products"
                 >
                   Products
@@ -55,7 +55,7 @@ function Sidebar(props) {
               </li>
               <li className="mb-1">
                 <NavLink
-                  className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded"
+                  className="block p-4 text-sm font-semibold text-gray-400 hover:bg-tertiary/40 hover:text-tertiary rounded"
                   to="/cart"
                 >
                   Your Cart
@@ -63,7 +63,7 @@ function Sidebar(props) {
               </li>
               <li className="mb-1">
                 <NavLink
-                  className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded"
+                  className="block p-4 text-sm font-semibold text-gray-400 hover:bg-tertiary/40 hover:text-tertiary rounded"
                   to="/history"
                 >
                   History

@@ -10,7 +10,7 @@ module.exports = {
         cart: "url('/public/assets/images/bg-cart.webp')",
       },
       boxShadow: {
-        primary: "0px 6px 20px 0px #00000057;",
+        primary: "0px 6px 20px 0px #00000020;",
       },
       spacing: {
         22: "7rem",
