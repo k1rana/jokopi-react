@@ -7,6 +7,7 @@ const initialState = {
   delivery_address: "",
   notes: "",
   now: "",
+  phone_number: "",
 };
 
 const cartSlice = createSlice({
@@ -102,7 +103,7 @@ const cartSlice = createSlice({
     setDelivery: (prevState, action) => {
       return {
         ...prevState,
-        delivery_id: action.payload.delivery_id,
+        ...action.payload,
       };
     },
   },

@@ -28,7 +28,21 @@ module.exports = {
     },
   },
   daisyui: {
-    themes: ["light"],
+    themes: [
+      {
+        jokopi: {
+          primary: "#6A4029",
+          secondary: "#ffba33",
+          accent: "#4F5665",
+          neutral: "#9f9f9f",
+          "base-100": "#fff",
+          info: "#3ABFF8",
+          success: "#36D399",
+          warning: "#FBBD23",
+          error: "#F87272",
+        },
+      },
+    ],
   },
   plugins: [require("daisyui")],
 };

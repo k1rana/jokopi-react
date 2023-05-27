@@ -14,6 +14,7 @@ import ResetPass from './pages/Auth/ResetPass';
 import Cart from './pages/Cart';
 import NotFound from './pages/Error';
 import History from './pages/History';
+import HistoryDetail from './pages/History/HistoryDetail';
 import Mainpage from './pages/Mainpage';
 import Products from './pages/Products';
 import ProductDetail from './pages/Products/ProductDetail';
@@ -63,6 +64,7 @@ const Routers = () => {
             <Route path="profile" element={<Profile title="User Profile" />} />
             <Route path="cart" element={<Cart />} />
             <Route path="history" element={<History />} />
+            <Route path="history/:id" element={<HistoryDetail />} />
           </Route>
         </Route>
       </Routes>

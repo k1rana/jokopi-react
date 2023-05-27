@@ -1,10 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import { NavLink } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
-import logo from '../assets/jokopi.svg';
+import logo from "../assets/jokopi.svg";
 
 function Sidebar({ onClose }) {
+  const profile = useSelector((state) => state.profile);
+
   return (
     <>
       <div className="h-full">
@@ -80,7 +83,7 @@ function Sidebar({ onClose }) {
                 Login
               </NavLink>
               <NavLink
-                className="block px-4 py-3 mb-2 leading-loose text-xs text-center font-semibold bg-secondary hover:bg-blue-700  rounded-xl shadow-md"
+                className="block px-4 py-3 mb-2 leading-loose text-xs text-center font-semibold bg-secondary hover:bg-secondary-focus  rounded-xl shadow-md"
                 to="/auth/register"
               >
                 Sign Up

@@ -1,25 +1,19 @@
 /* eslint-disable react/prop-types */
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from "react";
 
-import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
-import {
-  NavLink,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
-import loadingImage from '../../assets/images/loading.svg';
-import lostImage from '../../assets/images/not_found.svg';
-import productPlaceholder from '../../assets/images/placeholder-image.webp';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import { getProductbyId } from '../../utils/dataProvider/products';
-import { addCart } from '../../utils/dataProvider/userPanel';
-import useDocumentTitle from '../../utils/documentTitle';
+import loadingImage from "../../assets/images/loading.svg";
+import lostImage from "../../assets/images/not_found.svg";
+import productPlaceholder from "../../assets/images/placeholder-image.webp";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import { cartActions } from "../../redux/slices/cart.slice";
+import { getProductbyId } from "../../utils/dataProvider/products";
+import { addCart } from "../../utils/dataProvider/userPanel";
+import useDocumentTitle from "../../utils/documentTitle";
 
 function ProductDetail(props) {
   const [form, setForm] = useState({
@@ -30,12 +24,21 @@ function ProductDetail(props) {
     size: 1,
   });
   const [cart, setCart] = useState([]);
-  const [detail, setDetail] = useState([]);
+  const [detail, setDetail] = useState({
+    price: 0,
+  });
   const [isLoading, setIsLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
   const { productId } = useParams();
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const userInfo = useSelector((state) => state.userInfo);
-  useDocumentTitle("Products");
+  const cartRedux = useSelector((state) => state.cart);
+  const filteredCart = cartRedux.list.filter(
+    (obj) => String(obj.product_id) === String(productId)
+  );
 
   const controller = React.useMemo(() => new AbortController(), []);
 
@@ -43,10 +46,11 @@ function ProductDetail(props) {
     setIsLoading(true);
     getProductbyId(productId, controller)
       .then((response) => {
-        setDetail(response.data.data);
+        setDetail(response.data.data[0]);
         setIsLoading(false);
       })
       .catch((error) => {
+        setNotFound(true);
         console.log(error);
         setIsLoading(false);
       });
@@ -110,7 +114,7 @@ function ProductDetail(props) {
       return toast.error("Add atleast 1 size to cart");
     }
     toast.promise(
-      addCart(detail[0].id, cart, userInfo.token).then((res) => {
+      addCart(detail.id, cart, userInfo.token).then((res) => {
         return res;
       }),
       {
@@ -137,6 +141,17 @@ function ProductDetail(props) {
       toast.error("Invalid count");
       return;
     }
+
+    dispatch(
+      cartActions.addtoCart({
+        product_id: detail.id,
+        size_id: newItem.size,
+        qty: 1,
+        name: detail.name,
+        img: detail.img,
+        price: detail.price,
+      })
+    );
 
     setCart((prevItems) => {
       const index = prevItems.findIndex((item) => item.size === newItem.size); // cari indeks item dengan size yang sama
@@ -420,9 +435,9 @@ function ProductDetail(props) {
                   cart.length === 2 ? "grid-flow-row" : "grid-flow-col"
                 }`}
               >
-                {cart.map((item, idx) => {
+                {filteredCart.map((item, idx) => {
                   let sizeName;
-                  switch (item.size) {
+                  switch (item.size_id) {
                     case 1:
                       sizeName = "Regular";
                       break;
@@ -445,14 +460,14 @@ function ProductDetail(props) {
                       key={idx}
                     >
                       <p>
-                        x{item.count} ({sizeName})
+                        x{item.qty} ({sizeName})
                       </p>
                     </div>
                   );
                 })}
               </div>
             </div>
-            <div className="flex-1 font-bold text-lg w-full content-end">
+            <div className="flex-1 font-bold text-lg w-full content-end md:hidden">
               <p className="text-right">Checkout</p>
             </div>
             <div className="flex-1">
@@ -485,10 +500,10 @@ function ProductDetail(props) {
       <Header />
       {isLoading ? (
         <Loading />
-      ) : detail.length < 1 ? (
+      ) : notFound ? (
         <NotFound />
       ) : (
-        <Detail data={detail[0]} />
+        <Detail data={detail} />
       )}
       <Footer />
     </>

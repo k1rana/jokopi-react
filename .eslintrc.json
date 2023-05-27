@@ -17,6 +17,6 @@
     ],
     "rules": {
         "react/jsx-key":"warn",
-        "react/prop-types":"warn"
+        "react/prop-types":"off"
     }
 }
