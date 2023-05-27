@@ -17,6 +17,7 @@ import reducer from "./slices";
 const persistConfig = {
   key: "jokopi_appdata",
   storage,
+  blacklist: ["context"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

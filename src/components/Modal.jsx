@@ -1,12 +1,12 @@
 // Modal.jsx
-import React from 'react';
+import React from "react";
 
 const Modal = ({ isOpen, onClose, children }) => {
   return (
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40"
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[42]"
           onClick={onClose}
         >
           <div

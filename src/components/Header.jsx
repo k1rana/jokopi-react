@@ -8,10 +8,11 @@ import burgerIcon from "../assets/icons/burger-menu-left.svg";
 import chatIcon from "../assets/icons/chat.svg";
 import placeholderProfile from "../assets/images/placeholder-profile.jpg";
 import logo from "../assets/jokopi.svg";
+import { contextAct } from "../redux/slices/context.slice";
 import { profileAction } from "../redux/slices/profile.slice";
 import { uinfoAct } from "../redux/slices/userInfo.slice";
 import { getUserData, isAuthenticated } from "../utils/authUtils";
-import { logoutUser } from "../utils/dataProvider/auth";
+import Logout from "./Logout";
 import Sidebar from "./Sidebar";
 
 const mapStateToProps = (state) => ({
@@ -24,6 +25,7 @@ const mapDispatchToProps = (dispatch) => ({
   dismissToken: () => dispatch(uinfoAct.dismissToken()),
   getProfile: (token, controller) =>
     dispatch(profileAction.getProfileThunk({ token, controller })),
+  openLogout: () => dispatch(contextAct.openLogout()),
 });
 
 // create a navigation component that wraps the burger menu
@@ -90,23 +92,24 @@ class Header extends Component {
 
   logoutHandler = () => {
     toast.dismiss();
-    toast.promise(
-      logoutUser(this.props.userInfo.token).then((res) => {
-        return res.data;
-      }),
-      {
-        loading: "Please wait",
-        success: () => {
-          this.setState({ ...this.state, redirectLogout: true });
-          this.props.dismissToken();
-          return "Logout has been successful! See ya!";
-        },
-        error: (err) => {
-          console.log(err);
-          return "Something went wrong, please reload your page!";
-        },
-      }
-    );
+    this.props.openLogout();
+    // toast.promise(
+    //   logoutUser(this.props.userInfo.token).then((res) => {
+    //     return res.data;
+    //   }),
+    //   {
+    //     loading: "Please wait",
+    //     success: () => {
+    //       this.setState({ ...this.state, redirectLogout: true });
+    //       this.props.dismissToken();
+    //       return "Logout has been successful! See ya!";
+    //     },
+    //     error: (err) => {
+    //       console.log(err);
+    //       return "Something went wrong, please reload your page!";
+    //     },
+    //   }
+    // );
   };
 
   handleClickOutside(event) {
@@ -123,6 +126,7 @@ class Header extends Component {
   render() {
     return (
       <>
+        <Logout />
         <div
           className={`${
             this.state.isNavbarOpen ? "translate-x-0" : "translate-x-full"

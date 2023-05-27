@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
-import {
-  Link,
-  useNavigate,
-} from 'react-router-dom';
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
-import icon from '../../assets/jokopi.svg';
-import { uinfoAct } from '../../redux/slices/userInfo.slice';
-import { login } from '../../utils/dataProvider/auth';
-import useDocumentTitle from '../../utils/documentTitle';
+import icon from "../../assets/jokopi.svg";
+import { profileAction } from "../../redux/slices/profile.slice";
+import { uinfoAct } from "../../redux/slices/userInfo.slice";
+import { login } from "../../utils/dataProvider/auth";
+import useDocumentTitle from "../../utils/documentTitle";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -50,6 +48,12 @@ const Login = () => {
             // console.log(res.data);
             // console.log(res.data.data.token);
             dispatch(uinfoAct.assignToken(res.data.data.token));
+            dispatch(
+              profileAction.getProfileThunk({
+                controller,
+                token: res.data.data.token,
+              })
+            );
             return res.data.data.token;
           }
         ),

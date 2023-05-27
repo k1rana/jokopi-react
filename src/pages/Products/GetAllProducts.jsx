@@ -1,21 +1,13 @@
 /* eslint-disable react/prop-types */
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from "react";
 
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
-import emptyBox from '../../assets/images/empty.svg';
-import loadingImage from '../../assets/images/loading.svg';
-import productPlaceholder from '../../assets/images/placeholder-image.webp';
-import { getAllProducts } from '../../utils/dataProvider/products';
-import withSearchParams from '../../utils/wrappers/withSearchParams.js';
+import emptyBox from "../../assets/images/empty.svg";
+import loadingImage from "../../assets/images/loading.svg";
+import productPlaceholder from "../../assets/images/placeholder-image.webp";
+import { getAllProducts } from "../../utils/dataProvider/products";
+import withSearchParams from "../../utils/wrappers/withSearchParams.js";
 
 function GetAllProducts(props) {
   {
@@ -176,7 +168,7 @@ function GetAllProducts(props) {
                   >
                     <path d="M2.63236 9.26808H10.8757L9.1343 11.0095C8.73118 11.4126 8.73118 12.0662 9.1343 12.4693C9.53742 12.8724 10.191 12.8724 10.5941 12.4693L14.0977 8.96571C14.2913 8.77218 14.4001 8.50957 14.4001 8.23582C14.4001 7.96207 14.2913 7.6995 14.0977 7.50589L10.5942 4.00232C10.191 3.59925 9.53746 3.59921 9.13434 4.00232C8.73123 4.40544 8.73123 5.05903 9.13434 5.46214L10.8758 7.20356H2.63236C2.06226 7.20356 1.6001 7.66572 1.6001 8.23582C1.60006 8.80592 2.06226 9.26808 2.63236 9.26808Z"></path>
                   </svg>{" "}
-                  <p className="hidden sm:flex">Previous page </p>
+                  <p className="hidden sm:flex">Previous</p>
                 </button>
               </li>
             ) : (
@@ -190,7 +182,7 @@ function GetAllProducts(props) {
                   rel="next"
                   onClick={handleNextClick}
                 >
-                  <p className="flex">Next page </p>
+                  <p className="flex">Next</p>
                   <svg
                     alt="Next page"
                     className="fill-current h-5 ml-2 transition ease-in group-hover:transform group-hover:translate-x-0.5"
