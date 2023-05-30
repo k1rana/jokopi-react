@@ -1,12 +1,21 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
+import penIcon from "../../assets/icons/icon-pen.svg";
 import emptyBox from "../../assets/images/empty.svg";
 import loadingImage from "../../assets/images/loading.svg";
 import productPlaceholder from "../../assets/images/placeholder-image.webp";
 import { getAllProducts } from "../../utils/dataProvider/products";
+import { n_f } from "../../utils/helpers";
 import withSearchParams from "../../utils/wrappers/withSearchParams.js";
 
 function GetAllProducts(props) {
@@ -15,6 +24,7 @@ function GetAllProducts(props) {
     const [meta, setMeta] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [inputPage, setInputPage] = useState(1);
+    const userInfo = useSelector((state) => state.userInfo);
     const { catId } = useParams();
     const { searchParams, setSearchParams } = props;
     const { sort, setSort } = props;
@@ -139,11 +149,16 @@ function GetAllProducts(props) {
                     {product.name}
                   </p>
                   <p className="font-bold end text-tertiary">
-                    IDR
-                    {product.price
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                    IDR {n_f(product.price)}
                   </p>
+                  {Number(userInfo.role > 1) && (
+                    <NavLink
+                      to={`/products/edit/${product.id}`}
+                      className="bg-tertiary absolute bottom-0 right-0 w-7 h-7 rounded-full flex items-center justify-center hover:bg-primary-focus"
+                    >
+                      <img src={penIcon} className="w-4 h-4" />
+                    </NavLink>
+                  )}
                 </div>
               </section>
             </Link>

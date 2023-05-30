@@ -6,7 +6,7 @@ const Modal = ({ isOpen, onClose, children }) => {
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[42]"
+          className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex justify-center items-center z-[42]"
           onClick={onClose}
         >
           <div
@@ -16,14 +16,14 @@ const Modal = ({ isOpen, onClose, children }) => {
             }}
           >
             <button
-              className="absolute top-2 right-2 text-gray-800 hover:text-gray-900 focus:outline-none"
+              className="absolute top-3 right-3 text-gray-800 hover:text-gray-900 focus:outline-none"
               onClick={onClose}
             >
               <svg
-                className="h-6 w-6"
+                className="h-7 w-7"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
+                stroke="#EEE"
               >
                 <path
                   strokeLinecap="round"

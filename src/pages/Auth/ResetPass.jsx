@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { Link, useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import notfoundImage from "../../assets/images/empty-box.svg";
 import loadingImage from "../../assets/images/loading.svg";
 import icon from "../../assets/jokopi.svg";
-import { verifyResetPass } from "../../utils/dataProvider/auth";
+import { resetPass, verifyResetPass } from "../../utils/dataProvider/auth";
 
 function ResetPass() {
   const [error, setError] = useState("");
@@ -13,6 +14,7 @@ function ResetPass() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
+  const navigate = useNavigate();
 
   function handleChange(e) {
     return setPass(e.target.value);
@@ -57,28 +59,39 @@ function ResetPass() {
     toast.dismiss(); // dismiss all toast
 
     let err = "";
-    if (password.length < 1) {
+    if (pass.length < 8) {
       err = "Password must be 8 character or higher";
+    }
+    if (!/^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/.test(pass)) {
+      err = "Password must alphanumeric";
     }
     setError(err);
     if (!isLoading && err.length < 1) {
       setIsLoading(true);
       e.target.disabled = true;
+      const controller = new AbortController();
       toast.promise(
-        verifyResetPass(searchParams.get("verify"), controller).then((res) => {
+        resetPass(
+          searchParams.get("verify"),
+          searchParams.get("code"),
+          pass,
+          controller
+        ).then((res) => {
           // console.log(res.data.data.token);
-          setResend(now() + 2 * 60 * 1000); // now + 2 minutes
+          // setResend(now() + 2 * 60 * 1000); // now + 2 minutes
           e.target.disabled = false;
           setIsLoading(false);
+          navigate("/auth/login", { replace: true });
           return res.data;
         }),
         {
           loading: "Please wait a moment",
-          success: "We sent a code to your email!",
+          success: "The new password has been set successfully",
           error: (err) => {
             e.target.disabled = false;
             setIsLoading(false);
-            return err.response.data.msg;
+            if (err.response) return err.response?.data?.msg;
+            return err.message;
           },
         }
       );
@@ -135,7 +148,7 @@ function ResetPass() {
               </span>
               <button
                 type="submit"
-                className="w-full text-tertiary bg-secondary focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl"
+                className="w-full text-tertiary bg-secondary focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-2xl text-lg p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 shadow-xl mt-4"
                 onClick={resetPassHandler}
               >
                 Send

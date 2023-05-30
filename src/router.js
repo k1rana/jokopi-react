@@ -1,29 +1,24 @@
-import React from 'react';
+import React from "react";
 
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Auth from './pages/Auth';
-import ForgotPass from './pages/Auth/ForgotPass';
-import Login from './pages/Auth/Login';
-import Register from './pages/Auth/Register';
-import ResetPass from './pages/Auth/ResetPass';
-import Cart from './pages/Cart';
-import NotFound from './pages/Error';
-import History from './pages/History';
-import HistoryDetail from './pages/History/HistoryDetail';
-import Mainpage from './pages/Mainpage';
-import Products from './pages/Products';
-import ProductDetail from './pages/Products/ProductDetail';
-import Profile from './pages/Profile';
-import ScrollToTop from './utils/scrollToTop';
-import {
-  CheckAuth,
-  CheckNoAuth,
-} from './utils/wrappers/protectedRoute';
+import Auth from "./pages/Auth";
+import ForgotPass from "./pages/Auth/ForgotPass";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+import ResetPass from "./pages/Auth/ResetPass";
+import Cart from "./pages/Cart";
+import NotFound from "./pages/Error";
+import History from "./pages/History";
+import HistoryDetail from "./pages/History/HistoryDetail";
+import Mainpage from "./pages/Mainpage";
+import Products from "./pages/Products";
+import EditProduct from "./pages/Products/EditProduct";
+import NewProduct from "./pages/Products/NewProduct";
+import ProductDetail from "./pages/Products/ProductDetail";
+import Profile from "./pages/Profile";
+import ScrollToTop from "./utils/scrollToTop";
+import { CheckAuth, CheckNoAuth } from "./utils/wrappers/protectedRoute";
 
 // const AllRouter = createBrowserRouter(createRoutesFromElements());
 
@@ -38,6 +33,8 @@ const Routers = () => {
           <Route path="products/*" element={<Products title="Products" />}>
             <Route path="category/:id" element={""} />
           </Route>
+          <Route path="products/new" element={<NewProduct />} />
+          <Route path="products/edit/:productId" element={<EditProduct />} />
           <Route
             path="products/detail/:productId"
             element={<ProductDetail />}

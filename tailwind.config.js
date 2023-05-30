@@ -33,7 +33,7 @@ module.exports = {
         jokopi: {
           primary: "#6A4029",
           secondary: "#ffba33",
-          accent: "#4F5665",
+          accent: "#0b132a",
           neutral: "#9f9f9f",
           "base-100": "#fff",
           info: "#3ABFF8",

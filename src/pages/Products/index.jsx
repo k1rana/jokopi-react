@@ -1,11 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 
-import _ from 'lodash';
+import _ from "lodash";
+import { connect } from "react-redux";
 import {
   NavLink,
   Route,
@@ -13,13 +10,13 @@ import {
   useLocation,
   useNavigate,
   useSearchParams,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import images from '../../assets/images/person-with-a-coffee.webp';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import useDocumentTitle from '../../utils/documentTitle';
-import GetAllProducts from './GetAllProducts';
+import images from "../../assets/images/person-with-a-coffee.webp";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import useDocumentTitle from "../../utils/documentTitle";
+import GetAllProducts from "./GetAllProducts";
 
 const promos = [
   {
@@ -127,6 +124,16 @@ function Products(props) {
               </div>
             ))}
           </div>
+          {Number(props.userInfo.role) > 1 && (
+            <div className="mt-auto flex w-full">
+              <button
+                onClick={() => navigate("/promo/new")}
+                className="btn btn-block btn-secondary text-tertiary font-bold normal-case"
+              >
+                Add new promo
+              </button>
+            </div>
+          )}
         </section>
         <section className="flex-[2_2_0%] flex flex-col md:pl-16 py-5">
           <nav className="list-none flex flex-row md:justify-between justify-evenly flex-wrap gap-5 mb-10 ">
@@ -283,10 +290,27 @@ function Products(props) {
           <section className="my-6 text-tertiary">
             *the price has been cutted by discount appears
           </section>
+          {Number(props.userInfo.role) > 1 && (
+            <div className="mt-auto flex w-full">
+              <button
+                onClick={() => navigate("/products/new")}
+                className="btn btn-block btn-primary text-white font-bold normal-case"
+              >
+                Add new product
+              </button>
+            </div>
+          )}
         </section>
       </main>
       <Footer />
     </>
   );
 }
-export default Products;
+
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

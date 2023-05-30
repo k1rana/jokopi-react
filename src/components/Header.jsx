@@ -309,6 +309,28 @@ class Header extends Component {
                           My Cart
                         </a> */}
                         </div>
+                        {Number(this.props.userInfo.role) > 1 && (
+                          <div className="py-1">
+                            <NavLink
+                              className="block px-4 py-2 hover:bg-gray-100  duration-200"
+                              to="/admin"
+                            >
+                              Admin Dashboard
+                            </NavLink>
+                            <NavLink
+                              className="block px-4 py-2 hover:bg-gray-100  duration-200"
+                              to="/products/new"
+                            >
+                              Add Product
+                            </NavLink>
+                            <NavLink
+                              className="block px-4 py-2 hover:bg-gray-100  duration-200"
+                              to="/promo/new"
+                            >
+                              Add Promo
+                            </NavLink>
+                          </div>
+                        )}
                         <div className="py-1">
                           <a
                             className="block px-4 py-2 hover:bg-gray-100 duration-200 cursor-pointer"

@@ -37,6 +37,18 @@ export function verifyResetPass(verify, code, controller) {
   });
 }
 
+export function resetPass(verify, code, password, controller) {
+  const url = `${host}/apiv1/auth/resetPass?verify=${verify}&code=${code}`;
+
+  return axios.patch(
+    url,
+    { newPassword: password },
+    {
+      signal: controller.signal,
+    }
+  );
+}
+
 export function logoutUser(token) {
   const config = {
     headers: {

@@ -1,4 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
+
+import api from "./base";
 
 const host = process.env.REACT_APP_BACKEND_HOST;
 
@@ -20,3 +22,32 @@ export function getProductbyId(productId, controller) {
     signal: controller.signal,
   });
 }
+
+export const createProductEntry = (
+  { name = "", price = "", category_id = "", desc = "", image = "" },
+  token,
+  controller
+) => {
+  const bodyForm = new FormData();
+  bodyForm.append("image", image);
+  bodyForm.append("name", name);
+  bodyForm.append("category_id", category_id);
+  bodyForm.append("desc", desc);
+  bodyForm.append("price", price);
+
+  // const body = {
+  //   name,
+  //   price,
+  //   category_id,
+  //   desc,
+  //   image,
+  // };
+  // console.log(image);
+  return api.post("/apiv1/products", bodyForm, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+    signal: controller.signal,
+  });
+};

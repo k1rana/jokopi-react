@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import jwtDecode from "jwt-decode";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -48,6 +49,8 @@ const Login = () => {
             // console.log(res.data);
             // console.log(res.data.data.token);
             dispatch(uinfoAct.assignToken(res.data.data.token));
+            const { role } = jwtDecode(res.data.data.token);
+            dispatch(uinfoAct.assignData({ role }));
             dispatch(
               profileAction.getProfileThunk({
                 controller,
