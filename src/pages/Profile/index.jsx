@@ -33,7 +33,19 @@ function Profile() {
     phone_number: "",
     user_id: "",
   });
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({
+    address: "",
+    birthdate: "",
+    created_at: "",
+    display_name: "",
+    email: "",
+    first_name: "",
+    gender: 1,
+    img: "",
+    last_name: "",
+    phone_number: "",
+    user_id: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
@@ -70,8 +82,15 @@ function Profile() {
     //     toast.error("Failed to fetch data");
     //   });
     // console.log(profile.data);
-    setData({ ...profile.data });
-    setForm({ ...profile.data });
+    const updatedObject = { ...profile.data };
+
+    for (const [key, value] of Object.entries(updatedObject)) {
+      if (value === null || value === "null") {
+        updatedObject[key] = "";
+      }
+    }
+    setData(updatedObject);
+    setForm(updatedObject);
   }, [profile]);
 
   const formHandler = (e) => {
@@ -164,7 +183,7 @@ function Profile() {
         className="bg-tertiary border-2  secondary py-4 w-[75%] rounded-2xl mb-3 text-white font-semibold text-xl shadow-lg disabled:cursor-not-allowed disabled:bg-gray-400"
         id="saveChange"
         onClick={saveHandler}
-        disabled={isEqual(form, data) || isProcess}
+        disabled={(isEqual(form, data) && !selectedFile) || isProcess}
       >
         Save Change
       </button>
@@ -213,7 +232,7 @@ function Profile() {
                     className="hidden"
                     type="file"
                     onChange={onSelectFile}
-                    accept="image/*"
+                    accept="image/png, image/jpeg, image/webp"
                     id="imageUp"
                   />
                   <label

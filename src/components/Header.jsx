@@ -254,7 +254,18 @@ class Header extends Component {
                   onClick={this.toggleDropdown}
                 >
                   <div className=" flex items-center  cursor-pointer">
-                    <img
+                    <div className="avatar">
+                      <div className="w-9 rounded-full">
+                        <img
+                          src={
+                            this.props?.profile?.data?.img
+                              ? this.props.profile.data.img
+                              : placeholderProfile
+                          }
+                        />
+                      </div>
+                    </div>
+                    {/* <img
                       src={
                         this.props?.profile?.data?.img
                           ? this.props.profile.data.img
@@ -263,7 +274,7 @@ class Header extends Component {
                       alt=""
                       width="32px"
                       className="rounded-full"
-                    />
+                    /> */}
                     <svg
                       className="w-4 h-4 ml-2"
                       aria-hidden="true"

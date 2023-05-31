@@ -8,7 +8,6 @@ export const Notification = () => {
       position="bottom-left"
       reverseOrder={false}
       toastOptions={{
-        duration: 4500,
         style: {
           // border: "1px solid #6A4029",
           padding: "6px 12px",
