@@ -2,6 +2,7 @@ import React from "react";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import AdminDashboard from "./pages/Admin";
 import Auth from "./pages/Auth";
 import ForgotPass from "./pages/Auth/ForgotPass";
 import Login from "./pages/Auth/Login";
@@ -18,7 +19,12 @@ import NewProduct from "./pages/Products/NewProduct";
 import ProductDetail from "./pages/Products/ProductDetail";
 import Profile from "./pages/Profile";
 import ScrollToTop from "./utils/scrollToTop";
-import { CheckAuth, CheckNoAuth } from "./utils/wrappers/protectedRoute";
+import {
+  CheckAuth,
+  CheckIsAdmin,
+  CheckNoAuth,
+  TokenHandler,
+} from "./utils/wrappers/protectedRoute";
 
 // const AllRouter = createBrowserRouter(createRoutesFromElements());
 
@@ -27,8 +33,9 @@ const Routers = () => {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" errorElement={<NotFound />}>
+        <Route path="/" element={<TokenHandler />}>
           {/* Public Route */}
+          <Route path="*" element={<NotFound />} />
           <Route index element={<Mainpage />} />
           <Route path="products/*" element={<Products title="Products" />}>
             <Route path="category/:id" element={""} />
@@ -39,6 +46,7 @@ const Routers = () => {
             path="products/detail/:productId"
             element={<ProductDetail />}
           />
+          <Route path="cart" element={<Cart />} />
 
           {/* Route which must not logged in */}
           <Route
@@ -59,9 +67,13 @@ const Routers = () => {
           {/* Route which must logged in */}
           <Route element={<CheckAuth />}>
             <Route path="profile" element={<Profile title="User Profile" />} />
-            <Route path="cart" element={<Cart />} />
             <Route path="history" element={<History />} />
             <Route path="history/:id" element={<HistoryDetail />} />
+          </Route>
+
+          {/* Route which only admin */}
+          <Route element={<CheckIsAdmin />}>
+            <Route path="admin" element={<AdminDashboard />} />
           </Route>
         </Route>
       </Routes>

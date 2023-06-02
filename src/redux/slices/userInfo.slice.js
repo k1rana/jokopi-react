@@ -24,6 +24,7 @@ const uinfoSlice = createSlice({
       return {
         ...prevState,
         token: "",
+        role: "",
       };
     },
   },

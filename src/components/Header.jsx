@@ -1,19 +1,30 @@
-import React, { Component, useContext } from "react";
+import React, {
+  Component,
+  useContext,
+} from 'react';
 
-import { toast } from "react-hot-toast";
-import { connect } from "react-redux";
-import { Link, Navigate, NavLink, useNavigate } from "react-router-dom";
+import { toast } from 'react-hot-toast';
+import { connect } from 'react-redux';
+import {
+  Link,
+  Navigate,
+  NavLink,
+  useNavigate,
+} from 'react-router-dom';
 
-import burgerIcon from "../assets/icons/burger-menu-left.svg";
-import chatIcon from "../assets/icons/chat.svg";
-import placeholderProfile from "../assets/images/placeholder-profile.jpg";
-import logo from "../assets/jokopi.svg";
-import { contextAct } from "../redux/slices/context.slice";
-import { profileAction } from "../redux/slices/profile.slice";
-import { uinfoAct } from "../redux/slices/userInfo.slice";
-import { getUserData, isAuthenticated } from "../utils/authUtils";
-import Logout from "./Logout";
-import Sidebar from "./Sidebar";
+import burgerIcon from '../assets/icons/burger-menu-left.svg';
+import chatIcon from '../assets/icons/chat.svg';
+import placeholderProfile from '../assets/images/placeholder-profile.jpg';
+import logo from '../assets/jokopi.svg';
+import { contextAct } from '../redux/slices/context.slice';
+import { profileAction } from '../redux/slices/profile.slice';
+import { uinfoAct } from '../redux/slices/userInfo.slice';
+import {
+  getUserData,
+  isAuthenticated,
+} from '../utils/authUtils';
+import Logout from './Logout';
+import Sidebar from './Sidebar';
 
 const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
@@ -60,10 +71,6 @@ class Header extends Component {
 
   componentDidMount() {
     document.addEventListener("click", this.handleClickOutside);
-    if (this.props?.userInfo?.token && !this.props.profile.isFulfilled) {
-      const controller = new AbortController();
-      this.props.getProfile(this.props.userInfo.token, controller);
-    }
     // console.log(jwtDecode(this.props.userInfo.token));
   }
 

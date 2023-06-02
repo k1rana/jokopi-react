@@ -151,7 +151,7 @@ function GetAllProducts(props) {
                   <p className="font-bold end text-tertiary">
                     IDR {n_f(product.price)}
                   </p>
-                  {Number(userInfo.role > 1) && (
+                  {Number(userInfo.role) > 1 && (
                     <NavLink
                       to={`/products/edit/${product.id}`}
                       className="bg-tertiary absolute bottom-0 right-0 w-7 h-7 rounded-full flex items-center justify-center hover:bg-primary-focus"
