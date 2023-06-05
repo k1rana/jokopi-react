@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export const n_f = (number) => {
   if (!number || isNaN(number)) return 0;
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -38,3 +40,9 @@ export function formatDateTime(dateTimeString) {
 
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
+
+export const getEmailUsername = (email) => {
+  if (!email || email === "") return "Anon";
+  const username = _.head(_.split(email, "@"));
+  return username;
+};

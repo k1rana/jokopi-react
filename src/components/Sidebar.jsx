@@ -117,14 +117,24 @@ function Sidebar({ onClose }) {
                 </NavLink>
               </li>
               {Number(userInfo.role) > 1 && (
-                <li className="mb-1">
-                  <NavLink
-                    className="block p-4 text-sm font-semibold text-gray-400 hover:bg-tertiary/40 hover:text-tertiary rounded"
-                    to="/admin"
-                  >
-                    Admin Dashboard
-                  </NavLink>
-                </li>
+                <>
+                  <li className="mb-1">
+                    <NavLink
+                      className="block p-4 text-sm font-semibold text-gray-400 hover:bg-tertiary/40 hover:text-tertiary rounded"
+                      to="/admin"
+                    >
+                      Admin Dashboard
+                    </NavLink>
+                  </li>
+                  <li className="mb-1">
+                    <NavLink
+                      className="block p-4 text-sm font-semibold text-gray-400 hover:bg-tertiary/40 hover:text-tertiary rounded"
+                      to="/manage-order"
+                    >
+                      Manage Order
+                    </NavLink>
+                  </li>
+                </>
               )}
             </ul>
           </div>

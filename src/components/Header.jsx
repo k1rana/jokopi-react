@@ -419,6 +419,12 @@ class Header extends Component {
                             </NavLink>
                             <NavLink
                               className="block px-4 py-2 hover:bg-gray-100  duration-200"
+                              to="/manage-order"
+                            >
+                              Manage Order
+                            </NavLink>
+                            <NavLink
+                              className="block px-4 py-2 hover:bg-gray-100  duration-200"
                               to="/products/new"
                             >
                               Add Product
