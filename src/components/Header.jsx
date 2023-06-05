@@ -1,30 +1,26 @@
-import React, {
-  Component,
-  useContext,
-} from 'react';
+import React, { Component, useContext } from "react";
 
-import { toast } from 'react-hot-toast';
-import { connect } from 'react-redux';
+import { toast } from "react-hot-toast";
+import { connect } from "react-redux";
 import {
+  createSearchParams,
   Link,
   Navigate,
   NavLink,
   useNavigate,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import burgerIcon from '../assets/icons/burger-menu-left.svg';
-import chatIcon from '../assets/icons/chat.svg';
-import placeholderProfile from '../assets/images/placeholder-profile.jpg';
-import logo from '../assets/jokopi.svg';
-import { contextAct } from '../redux/slices/context.slice';
-import { profileAction } from '../redux/slices/profile.slice';
-import { uinfoAct } from '../redux/slices/userInfo.slice';
-import {
-  getUserData,
-  isAuthenticated,
-} from '../utils/authUtils';
-import Logout from './Logout';
-import Sidebar from './Sidebar';
+import burgerIcon from "../assets/icons/burger-menu-left.svg";
+import chatIcon from "../assets/icons/chat.svg";
+import placeholderProfile from "../assets/images/placeholder-profile.jpg";
+import logo from "../assets/jokopi.svg";
+import { contextAct } from "../redux/slices/context.slice";
+import { profileAction } from "../redux/slices/profile.slice";
+import { uinfoAct } from "../redux/slices/userInfo.slice";
+import { getUserData, isAuthenticated } from "../utils/authUtils";
+import withSearchParams from "../utils/wrappers/withSearchParams.js";
+import Logout from "./Logout";
+import Sidebar from "./Sidebar";
 
 const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
@@ -59,10 +55,14 @@ class Header extends Component {
       isDropdownOpen: false,
       isNavbarOpen: false,
       redirectLogout: false,
+      isSearchOpen: false,
+      inputSearch: "",
     };
     this.dropdownRef = React.createRef();
+    this.searchRef = React.createRef();
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.handleClickOutsideSearch = this.handleClickOutsideSearch.bind(this);
   }
   navigateTo(path) {
     const navigate = useNavigate();
@@ -70,7 +70,16 @@ class Header extends Component {
   }
 
   componentDidMount() {
+    const query = this.props.searchParams.get("q");
+    // console.log(query);
+    // if (query) {
+    this.setState((prevState) => ({
+      ...prevState,
+      inputSearch: query || "",
+    }));
+    // }
     document.addEventListener("click", this.handleClickOutside);
+    document.addEventListener("click", this.handleClickOutsideSearch);
     // console.log(jwtDecode(this.props.userInfo.token));
   }
 
@@ -130,6 +139,17 @@ class Header extends Component {
     }
   }
 
+  handleClickOutsideSearch(event) {
+    if (
+      this.searchRef.current &&
+      !this.searchRef.current.contains(event.target)
+    ) {
+      this.setState({
+        isSearchOpen: false,
+      });
+    }
+  }
+
   render() {
     return (
       <>
@@ -158,8 +178,8 @@ class Header extends Component {
             <div className="navbar-burger select-none cursor-pointer lg:hidden py-4 flex gap-7 flex-row items-center">
               <div className="search-section cursor-pointer">
                 <svg
-                  width="24"
-                  height="24"
+                  width="22"
+                  height="22"
                   viewBox="0 0 17 17"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -232,7 +252,16 @@ class Header extends Component {
             </nav>
             {isAuthenticated() ? (
               <div className="flex-row gap-10 hidden lg:flex select-none py-4 items-center">
-                <div className="search-section cursor-pointer">
+                <div
+                  ref={this.searchRef}
+                  className="search-section cursor-pointer relative"
+                  onClick={() =>
+                    this.setState((prevState) => ({
+                      ...prevState,
+                      isSearchOpen: !prevState.isSearchOpen,
+                    }))
+                  }
+                >
                   <svg
                     width="28"
                     height="28"
@@ -248,6 +277,59 @@ class Header extends Component {
                       strokeLinejoin="round"
                     />
                   </svg>
+                  {this.state.isSearchOpen && (
+                    <nav
+                      className="absolute list-none bg-white rounded-lg shadow-md border-1 border-gray-200 flex flex-col right-0 top-10 py-2 divide-y-1 transition-all duration-200 transform origin-top-right min-w-[14rem]"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          // this.props.setSearchParams({
+                          //   q: this.state.inputSearch,
+                          // });
+                          // this.props.navigate("/products");
+                          this.props.navigate({
+                            pathname: "/products",
+                            search: createSearchParams({
+                              q: this.state.inputSearch,
+                            }).toString(),
+                          });
+                        }}
+                        className="group flex gap-2"
+                      >
+                        <input
+                          value={this.state.inputSearch}
+                          onChange={(e) =>
+                            this.setState((prevState) => ({
+                              ...prevState,
+                              inputSearch: e.target.value,
+                            }))
+                          }
+                          placeholder="Search product here..."
+                          className="border outline-none focus:border-tertiary px-2 py-2 mx-2 rounded-lg text-sm"
+                          required
+                        />
+                        <button type="submit" className="mr-4">
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 17 17"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M16 16L12.375 12.375M14.3333 7.66667C14.3333 11.3486 11.3486 14.3333 7.66667 14.3333C3.98477 14.3333 1 11.3486 1 7.66667C1 3.98477 3.98477 1 7.66667 1C11.3486 1 14.3333 3.98477 14.3333 7.66667Z"
+                              stroke="#4F5665"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                      </form>
+                    </nav>
+                  )}
                 </div>
                 <a href="" className="relative">
                   <div className="absolute -left-2 -top-2 h-4 w-4 bg-tertiary rounded-full text-white flex text-[0.70rem] items-center justify-center font-extrabold">
@@ -384,4 +466,6 @@ class Header extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withSearchParams(
+  connect(mapStateToProps, mapDispatchToProps)(Header)
+);

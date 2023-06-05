@@ -59,8 +59,16 @@ export const setTransactionDone = (ids = [], token, controller) => {
   );
 };
 
-export const getTransactionHistory = (token, controller) => {
+export const getTransactionHistory = (
+  { page = "1", limit = "9" },
+  token,
+  controller
+) => {
   return api.get("/apiv1/userPanel/transactions", {
+    params: {
+      page,
+      limit,
+    },
     headers: { Authorization: `Bearer ${token}` },
     signal: controller.signal,
   });

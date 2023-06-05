@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import AdminDashboard from "./pages/Admin";
+import ManageOrder from "./pages/Admin/ManageOrder";
 import Auth from "./pages/Auth";
 import ForgotPass from "./pages/Auth/ForgotPass";
 import Login from "./pages/Auth/Login";
@@ -40,8 +41,6 @@ const Routers = () => {
           <Route path="products/*" element={<Products title="Products" />}>
             <Route path="category/:id" element={""} />
           </Route>
-          <Route path="products/new" element={<NewProduct />} />
-          <Route path="products/edit/:productId" element={<EditProduct />} />
           <Route
             path="products/detail/:productId"
             element={<ProductDetail />}
@@ -74,6 +73,9 @@ const Routers = () => {
           {/* Route which only admin */}
           <Route element={<CheckIsAdmin />}>
             <Route path="admin" element={<AdminDashboard />} />
+            <Route path="products/new" element={<NewProduct />} />
+            <Route path="manage-order" element={<ManageOrder />} />
+            <Route path="products/edit/:productId" element={<EditProduct />} />
           </Route>
         </Route>
       </Routes>

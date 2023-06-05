@@ -1,19 +1,28 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import toast from 'react-hot-toast';
+import {
+  useDispatch,
+  useSelector,
+} from 'react-redux';
+import {
+  NavLink,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 
-import loadingImage from "../../assets/images/loading.svg";
-import lostImage from "../../assets/images/not_found.svg";
-import productPlaceholder from "../../assets/images/placeholder-image.webp";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import { cartActions } from "../../redux/slices/cart.slice";
-import { getProductbyId } from "../../utils/dataProvider/products";
-import { addCart } from "../../utils/dataProvider/userPanel";
-import useDocumentTitle from "../../utils/documentTitle";
+import loadingImage from '../../assets/images/loading.svg';
+import lostImage from '../../assets/images/not_found.svg';
+import productPlaceholder from '../../assets/images/placeholder-image.webp';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import { cartActions } from '../../redux/slices/cart.slice';
+import { getProductbyId } from '../../utils/dataProvider/products';
+import useDocumentTitle from '../../utils/documentTitle';
 
 function ProductDetail(props) {
   const [form, setForm] = useState({
@@ -113,19 +122,20 @@ function ProductDetail(props) {
     if (cart.length < 1) {
       return toast.error("Add atleast 1 size to cart");
     }
-    toast.promise(
-      addCart(detail.id, cart, userInfo.token).then((res) => {
-        return res;
-      }),
-      {
-        loading: "Adding to cart...",
-        success: () => {
-          navigate("/cart");
-          return "Succesfully add to cart";
-        },
-        error: "Error while adding to cart",
-      }
-    );
+    navigate("/cart");
+    // toast.promise(
+    //   addCart(detail.id, cart, userInfo.token).then((res) => {
+    //     return res;
+    //   }),
+    //   {
+    //     loading: "Adding to cart...",
+    //     success: () => {
+    //       navigate("/cart");
+    //       return "Succesfully add to cart";
+    //     },
+    //     error: "Error while adding to cart",
+    //   }
+    // );
   };
 
   const handleAddToCart = () => {
@@ -146,7 +156,7 @@ function ProductDetail(props) {
       cartActions.addtoCart({
         product_id: detail.id,
         size_id: newItem.size,
-        qty: 1,
+        qty: form.count,
         name: detail.name,
         img: detail.img,
         price: detail.price,

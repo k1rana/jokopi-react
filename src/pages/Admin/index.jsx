@@ -1,16 +1,23 @@
-import "react-loading-skeleton/dist/skeleton.css";
+import 'react-loading-skeleton/dist/skeleton.css';
 
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
-import Skeleton from "react-loading-skeleton";
-import { connect } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import axios from 'axios';
+import Skeleton from 'react-loading-skeleton';
+import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import { getSellingReport } from "../../utils/dataProvider/admin";
-import useDocumentTitle from "../../utils/documentTitle";
-import { n_f, short_n_f } from "../../utils/helpers";
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import { getSellingReport } from '../../utils/dataProvider/admin';
+import useDocumentTitle from '../../utils/documentTitle';
+import {
+  n_f,
+  short_n_f,
+} from '../../utils/helpers';
 
 const AdminDashboard = (props) => {
   useDocumentTitle("Admin Dashboard");
@@ -36,11 +43,14 @@ const AdminDashboard = (props) => {
       .then((result) => {
         const { data } = result.data;
         setData(data.reverse());
+        setLoading(false);
       })
       .catch((err) => {
+        if (axios.isCancel(err)) return;
+        setLoading(false);
         console.log(err);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {});
   };
   useEffect(() => {
     const controller = new AbortController();

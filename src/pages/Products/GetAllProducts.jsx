@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 
+import axios from "axios";
 import { useSelector } from "react-redux";
 import {
   Link,
@@ -44,12 +45,14 @@ function GetAllProducts(props) {
         .then((data) => {
           setProducts(data.data);
           setMeta(data.meta);
+          setIsLoading(false);
         })
         .catch((err) => {
+          if (axios.isCancel(err)) return;
+          setIsLoading(false);
           setProducts([]);
           setMeta({});
-        })
-        .finally(() => setIsLoading(false));
+        });
     }
 
     // const controller = React.useMemo(() => new AbortController(), [catId]);

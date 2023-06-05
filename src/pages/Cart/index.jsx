@@ -1,16 +1,26 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
-import { isEmpty } from "lodash";
-import { toast } from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { isEmpty } from 'lodash';
+import { toast } from 'react-hot-toast';
+import {
+  useDispatch,
+  useSelector,
+} from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-import loadingImage from "../../assets/images/loading.svg";
-import productPlaceholder from "../../assets/images/placeholder-image.webp";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import { createTransaction } from "../../utils/dataProvider/transaction";
-import useDocumentTitle from "../../utils/documentTitle";
-import { n_f } from "../../utils/helpers";
+import loadingImage from '../../assets/images/loading.svg';
+import productPlaceholder from '../../assets/images/placeholder-image.webp';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import Modal from '../../components/Modal';
+import { cartActions } from '../../redux/slices/cart.slice';
+import { createTransaction } from '../../utils/dataProvider/transaction';
+import useDocumentTitle from '../../utils/documentTitle';
+import { n_f } from '../../utils/helpers';
 
 function Cart() {
   const userInfo = useSelector((state) => state.userInfo);
@@ -19,6 +29,12 @@ function Cart() {
   // const [cart, setCart] = useState([]);
   const cartRedux = useSelector((state) => state.cart);
   const profile = useSelector((state) => state.profile);
+  const [remove, setRemove] = useState({
+    product_id: "",
+    size_id: "",
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cart = cartRedux.list;
   const [result, setResult] = useState("");
 
@@ -74,11 +90,18 @@ function Cart() {
     toggleEdit();
   };
 
-  const disabled = form.payment === "";
+  const disabled = form.payment === "" || form.delivery_address === "";
   const controller = useMemo(() => new AbortController());
   const payHandler = () => {
     if (disabled) return;
+    if (userInfo.token === "") {
+      toast.error("Login to continue transaction");
+      navigate("/auth/login");
+      return;
+    }
     if (editMode) return toast.error("You have unsaved changes");
+    if (cart.length < 1)
+      return toast.error("Add at least 1 product to your cart");
     setIsLoading(true);
     createTransaction(
       {
@@ -93,6 +116,8 @@ function Cart() {
     )
       .then(() => {
         toast.success("Success create transaction");
+        dispatch(cartActions.resetCart());
+        navigate("/history");
       })
       .catch((err) => {
         console.log(err);
@@ -102,9 +127,37 @@ function Cart() {
         setIsLoading(false);
       });
   };
-
+  const closeRemoveModal = () => {
+    setRemove({ product_id: "", size_id: "" });
+  };
   return (
     <>
+      <Modal
+        isOpen={remove.product_id !== "" && remove.size_id !== ""}
+        onClose={() => setRemove({ product_id: "", size_id: "" })}
+        className="flex flex-col gap-y-5"
+      >
+        Are you sure to delete this item form your cart?
+        <div className="mx-auto space-x-3">
+          <button
+            onClick={() => {
+              dispatch(
+                cartActions.removeFromCart({
+                  product_id: remove.product_id,
+                  size_id: remove.size_id,
+                })
+              );
+              setRemove({ product_id: "", size_id: "" });
+            }}
+            className="btn btn-primary text-white"
+          >
+            Yes
+          </button>
+          <div onClick={closeRemoveModal} className="btn btn-error">
+            No
+          </div>
+        </div>
+      </Modal>
       <Header />
 
       <main className="bg-cart bg-cover bg-center">
@@ -137,7 +190,7 @@ function Cart() {
                     }
                     return (
                       <div
-                        className="flex flex-row gap-2 lg:gap-5 w-full lg:text-lg items-center"
+                        className="flex flex-row gap-2 lg:gap-5 w-full lg:text-lg items-center relative"
                         key={idx}
                       >
                         <aside className="flex-1">
@@ -150,8 +203,41 @@ function Cart() {
                           />
                         </aside>
                         <aside className="flex-[2_2_0%]">
-                          <p>{list.name}</p>
-                          <p>x {list.qty}</p>
+                          <p className="font-semibold">{list.name}</p>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => {
+                                if (list.qty - 1 < 1)
+                                  return setRemove({
+                                    product_id: list.product_id,
+                                    size_id: list.size_id,
+                                  });
+                                dispatch(
+                                  cartActions.decrementQty({
+                                    product_id: list.product_id,
+                                    size_id: list.size_id,
+                                  })
+                                );
+                              }}
+                              className="rounded-full bg-tertiary text-white font-bold w-6 h-6 items-center justify-center duration-200 hover:bg-primary-focus"
+                            >
+                              -
+                            </button>
+                            <p>x {list.qty}</p>
+                            <button
+                              onClick={() =>
+                                dispatch(
+                                  cartActions.incrementQty({
+                                    product_id: list.product_id,
+                                    size_id: list.size_id,
+                                  })
+                                )
+                              }
+                              className="rounded-full bg-tertiary text-white font-bold w-6 h-6 items-center justify-center duration-200 hover:bg-primary-focus"
+                            >
+                              +
+                            </button>
+                          </div>
                           <p>{sizeName}</p>
                         </aside>
                         <aside className="flex-1">
@@ -159,6 +245,17 @@ function Cart() {
                             IDR {n_f(Number(list.price) * Number(list.qty))}
                           </p>
                         </aside>
+                        <button
+                          onClick={() =>
+                            setRemove({
+                              product_id: list.product_id,
+                              size_id: list.size_id,
+                            })
+                          }
+                          className="absolute top-2 right-2 rounded-full h-6 w-6 bg-tertiary text-white font-bold text-xs text-center flex"
+                        >
+                          <p className="m-auto">X</p>
+                        </button>
                       </div>
                     );
                   })}
@@ -186,14 +283,12 @@ function Cart() {
                     <p className="flex-[2_2_0%]">Total</p>
                     <p className="flex-initial lg:flex-none">
                       IDR{" "}
-                      {(
+                      {n_f(
                         cart.reduce(
                           (acc, cur) => acc + cur.price * cur.qty,
                           0
                         ) + 30000
-                      )
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                      )}
                     </p>
                   </div>
                 </section>
@@ -210,23 +305,23 @@ function Cart() {
                 </button>
               </section>
               <section className="bg-white rounded-xl  p-5 lg:p-7 space-y-2">
-                <p className="">
+                <div className="flex gap-1">
                   <b>Delivery</b> to
                   <input
                     value={form.delivery_address}
                     onChange={onChangeForm}
                     disabled={!editMode}
-                    className="outline-none ml-1"
+                    className="outline-none flex-1"
                     name="delivery_address"
                     placeholder="address..."
                   />
-                </p>
+                </div>
                 <hr />
                 <input
                   value={form.notes}
                   onChange={onChangeForm}
                   disabled={!editMode}
-                  className="outline-none"
+                  className="outline-none w-full"
                   name="notes"
                   placeholder="notes..."
                 />
