@@ -6,7 +6,7 @@ const host = process.env.REACT_APP_BACKEND_HOST;
 
 export function getAllProducts(
   catId = "",
-  { orderBy, sort, searchByName, limit, page },
+  { orderBy = "", sort = "", searchByName = "", limit = "10", page = "1" },
   controller
 ) {
   const params = { orderBy, sort, searchByName, limit, page };

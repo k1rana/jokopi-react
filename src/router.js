@@ -19,6 +19,7 @@ import EditProduct from "./pages/Products/EditProduct";
 import NewProduct from "./pages/Products/NewProduct";
 import ProductDetail from "./pages/Products/ProductDetail";
 import Profile from "./pages/Profile";
+import NewPromo from "./pages/Promo/NewPromo";
 import ScrollToTop from "./utils/scrollToTop";
 import {
   CheckAuth,
@@ -76,6 +77,7 @@ const Routers = () => {
             <Route path="products/new" element={<NewProduct />} />
             <Route path="manage-order" element={<ManageOrder />} />
             <Route path="products/edit/:productId" element={<EditProduct />} />
+            <Route path="promo/new" element={<NewPromo />} />
           </Route>
         </Route>
       </Routes>

@@ -5,22 +5,22 @@
    Open Source. Front-end.
    </p>
 
-   [Demo](https://jokopi-react.vercel.app/) · [Report Bug](#report-bug) · [Request Feature](#report-bug)
+   [Demo](https://jokopi-react.vercel.app/) · [Related Projects](#related-projects) · [Request Feature](#report-bug)
 
 </div>
 
-## Docs
+## Table of Contents
 
-- [Docs](#docs)
+- [Table of Contents](#table-of-contents)
 - [Overview](#overview)
   - [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Related Projects](#related-projects)
+- [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Screenshots](#screenshots)
 - [Resources](#resources)
+- [Related Projects](#related-projects)
 - [License](#license)
 - [Report Bug](#report-bug)
 
@@ -46,25 +46,17 @@ You can build it by yourself
 - Manage Order (Admin)
 - etc.
 
-## Technologies Used
+## Tech Stack
 
 [![My Skills](https://skillicons.dev/icons?i=react,redux,tailwind,vercel)](https://skillicons.dev)
 
-- React & React Router DOM
-- Redux & Redux Persist (Local Storage)
-- TailwindCSS
-- DaisyUI
-- React Hot Toast
-- Lodash
-- Axios
-- JWT Decode
-- Vercel for deploying demo
+- [React](https://react.dev/) & [React Router DOM](https://reactrouter.com/en/main)
+- [Redux](https://redux.js.org/) & [Redux Persist](https://www.npmjs.com/package/redux-persist) (Local Storage)
+- [TailwindCSS](https://tailwindcss.com/)
+- [DaisyUI](https://daisyui.com/)
+- [React Hot Toast](https://www.npmjs.com/package/react-hot-toast)
+- [Vercel](https://vercel.com/dashboard) for deploying demo
 - etc.
-
-## Related Projects
-
-- [jokopi-express](https://github.com/nyannss/jokopi) - Rest API
-- [jokopi-react-native](https://github.com/nyannss/jokopi-react-native) - Android & iOS Application
 
 ## Getting Started
 
@@ -78,13 +70,13 @@ You can build it by yourself
 
 1. Clone this repository to your local
 
-   ```
+   ```bash
    git clone https://github.com/nyannss/jokopi-react.git
    ```
 
 2. Change current directory
 
-   ```
+   ```bash
    cd jokopi-react
    ```
 
@@ -92,36 +84,38 @@ You can build it by yourself
 
    If you using npm
 
-   ```
+   ```bash
    npm install
    ```
 
    If you using yarn
 
-   ```
+   ```bash
    yarn
    ```
 
 4. Setup environment
 
-   ```
+   ```env
    REACT_APP_BACKEND_HOST = (your rest api host)
    REACT_APP_WEBSITE_NAME = (your project name)
    ```
 
 5. Running app
 
-    ```
+    ```bash
     npm start
     ```
 
 ## Screenshots
+<div align="center">
 
-<img src="./public/assets/screenshots/1.png"/>
-<img src="./public/assets/screenshots/2.png"/>
-<img src="./public/assets/screenshots/3.png"/>
-<img src="./public/assets/screenshots/4.png"/>
-<img src="./public/assets/screenshots/5.png"/>
+<img src="./public/assets/screenshots/1.png" width="400"/> 
+<img src="./public/assets/screenshots/2.png" width="400"/>
+<img src="./public/assets/screenshots/3.png" width="400"/>
+<img src="./public/assets/screenshots/4.png" width="400"/>
+<img src="./public/assets/screenshots/5.png" width="400"/>
+</div>
 
 ## Resources
 
@@ -133,6 +127,11 @@ Special thanks for providing resources such as icons and images.
 - and other sources.
   
 If there are resources that belong to you, please let me know, I will write it here.
+
+## Related Projects
+
+- [jokopi-express](https://github.com/nyannss/jokopi) - Rest API
+- [jokopi-react-native](https://github.com/nyannss/jokopi-react-native) - Android & iOS Application
 
 ## License
 
