@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 import { profileAction } from "../../redux/slices/profile.slice";
+import { uinfoAct } from "../../redux/slices/userInfo.slice";
 
 export const CheckAuth = ({ children }) => {
   const { userInfo } = useSelector((state) => ({

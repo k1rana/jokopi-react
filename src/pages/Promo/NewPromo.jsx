@@ -1,29 +1,21 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-import _ from 'lodash';
-import { toast } from 'react-hot-toast';
-import { connect } from 'react-redux';
-import {
-  NavLink,
-  useNavigate,
-} from 'react-router-dom';
-import Datepicker from 'react-tailwindcss-datepicker';
+import _ from "lodash";
+import { toast } from "react-hot-toast";
+import { connect } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import Datepicker from "react-tailwindcss-datepicker";
 
-import closeIcon from '../../assets/icons/close.svg';
-import loadingImage from '../../assets/images/loading.svg';
-import productPlaceholder from '../../assets/images/placeholder-promo.jpg';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import Modal from '../../components/Modal';
-import { getAllProducts } from '../../utils/dataProvider/products';
-import { createPromoEntry } from '../../utils/dataProvider/promo';
-import useDocumentTitle from '../../utils/documentTitle';
-import { n_f } from '../../utils/helpers';
+import closeIcon from "../../assets/icons/close.svg";
+import loadingImage from "../../assets/images/loading.svg";
+import productPlaceholder from "../../assets/images/placeholder-promo.jpg";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import Modal from "../../components/Modal";
+import { getAllProducts } from "../../utils/dataProvider/products";
+import { createPromoEntry } from "../../utils/dataProvider/promo";
+import useDocumentTitle from "../../utils/documentTitle";
+import { n_f } from "../../utils/helpers";
 
 const NewPromo = (props) => {
   useDocumentTitle("New Promo");
@@ -47,8 +39,10 @@ const NewPromo = (props) => {
     desc: "",
     image: "",
     coupon_code: "",
-    start_date: "",
-    end_date: "",
+    start_date: "", // real form
+    end_date: "", // real form
+    startDate: "",
+    endDate: "",
   });
   const [error, setError] = useState({
     name: "",
@@ -117,15 +111,24 @@ const NewPromo = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    // if (
-    //   form.category_id === "" ||
-    //   form.desc === "" ||
-    //   form.name === "" ||
-    //   form.price === ""
-    // ) {
-    //   return toast.error("Input required form");
-    // }
+    if (form.product_id === "") return toast.error("Select product required");
+    if (
+      form.coupon_code === "" ||
+      form.desc === "" ||
+      form.name === "" ||
+      form.discount === "" ||
+      form.startDate === "" ||
+      form.endDate === ""
+    ) {
+      return toast.error("Input required form");
+    }
+    if (form.name.length < 6) return toast.error("Promo title min 6 char");
+    if (form.desc.length < 10)
+      return toast.error("Promo description min 10 char");
+    if (form.coupon_code.length < 6)
+      return toast.error("Promo coupon code min 6 char");
+    if (form.discount < 1 || form.discount > 100)
+      return toast.error("Promo discount is invalid");
 
     setLoading(true);
     createPromoEntry(form, props.userInfo.token, controller)
@@ -138,6 +141,7 @@ const NewPromo = (props) => {
       .catch((err) => {
         if (err.response?.data?.msg) {
           toast.error(err.response?.data?.msg);
+          return;
         }
         toast.error(err.message);
       })
@@ -371,14 +375,15 @@ const NewPromo = (props) => {
               Description :
             </label>
             <textarea
-              placeholder="Describe your product min. 50 characters"
+              placeholder="Describe your promo min. 10 characters"
               name="desc"
               id="product_price"
               value={form.desc}
               onChange={formChangeHandler}
               className="border-b-2 py-2 border-gray-300 focus:border-tertiary outline-none"
-              minLength={50}
-              maxLength={250}
+              minLength={10}
+              maxLength={50}
+              required
             >
               {form.desc}
             </textarea>
@@ -391,12 +396,12 @@ const NewPromo = (props) => {
               Coupon Code :
             </label>
             <input
-              placeholder="Type promo title max. 50 characters"
+              placeholder="Type promo coupon code 6-12 characters"
               name="coupon_code"
               id="coupon_code"
               value={form.coupon_code.toUpperCase()}
               onChange={formChangeHandler}
-              maxLength={50}
+              maxLength={12}
               required
               className="border-b-2 py-2 border-gray-300 focus:border-tertiary outline-none"
             ></input>
@@ -434,7 +439,7 @@ const NewPromo = (props) => {
                 isLoading && "loading"
               } btn btn-block btn-lg normal-case mt-2 btn-primary text-white shadow-lg rounded-2xl`}
             >
-              Save Product
+              Save Promo
             </button>
             {/* <button
               type="reset"

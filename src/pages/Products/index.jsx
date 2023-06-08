@@ -1,7 +1,10 @@
+import "react-loading-skeleton/dist/skeleton.css";
+
 /* eslint-disable react/prop-types */
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import _ from "lodash";
+import Skeleton from "react-loading-skeleton";
 import { connect } from "react-redux";
 import {
   NavLink,
@@ -15,6 +18,7 @@ import {
 import images from "../../assets/images/person-with-a-coffee.webp";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { getPromos } from "../../utils/dataProvider/promo";
 import useDocumentTitle from "../../utils/documentTitle";
 import GetAllProducts from "./GetAllProducts";
 
@@ -42,7 +46,10 @@ function Products(props) {
   const queryParams = new URLSearchParams(location.search);
   const [ddMenu, setDdmenu] = useState(false);
   const [sort, setSort] = useState(undefined);
+  const [promo, setPromo] = useState([]);
+  const [promoLoad, setPromoLoad] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
+  const controller = useMemo(() => new AbortController(), []);
   const [search, setSearch] = useState(
     searchParams.has("q") ? searchParams.get("q") : undefined
   );
@@ -95,6 +102,23 @@ function Products(props) {
     }
   }, [search]);
 
+  const fetchPromo = async () => {
+    try {
+      setPromoLoad(true);
+      const result = await getPromos({ page: 1 }, controller);
+      setPromo(result.data.data);
+      setPromoLoad(false);
+    } catch (error) {
+      setPromoLoad(false);
+      setPromo([]);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPromo();
+  }, []);
+
   useDocumentTitle(props.title);
   return (
     <>
@@ -109,20 +133,29 @@ function Products(props) {
             Check them out!
           </p>
           <div className="flex flex-col justify-center gap-5">
-            {promos.map((promo, idx) => (
-              <div
-                className="flex flex-row items-center bg-slate-300  rounded-xl gap-2 px-4 py-3"
-                key={idx}
-              >
-                <div className="flex-1 flex justify-center">
-                  <img src={images} alt="" width="75px" />
+            {promoLoad ? (
+              <Skeleton
+                height={125}
+                count={4}
+                containerClassName="flex-1 w-[350px] md:w-auto lg:w-[346px]"
+                style={{ marginBottom: "1rem", minWidth: 250 }}
+              />
+            ) : (
+              promo.map((promo, idx) => (
+                <div
+                  className="flex flex-row items-center bg-slate-300  rounded-xl gap-2 px-4 py-3"
+                  key={idx}
+                >
+                  <div className="flex-1 flex justify-center">
+                    <img src={promo.img || images} alt="" width="75px" />
+                  </div>
+                  <div className="flex-[2_2_0%]">
+                    <p className="font-bold">{promo.name}</p>
+                    <p className="text-sm">{promo.desc}</p>
+                  </div>
                 </div>
-                <div className="flex-[2_2_0%]">
-                  <p className="font-bold">{promo.name}</p>
-                  <p className="text-sm">{promo.desc}</p>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
           {Number(props.userInfo.role) > 1 && (
             <div className="mt-auto flex w-full">
