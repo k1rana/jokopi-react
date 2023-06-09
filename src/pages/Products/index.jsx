@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import _ from "lodash";
 import Skeleton from "react-loading-skeleton";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import {
   NavLink,
   Route,
@@ -15,6 +15,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
+import penIcon from "../../assets/icons/icon-pen.svg";
+import illustrationsPromo from "../../assets/illustrations/mobile-search-undraw.png";
 import images from "../../assets/images/person-with-a-coffee.webp";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
@@ -53,6 +55,9 @@ function Products(props) {
   const [search, setSearch] = useState(
     searchParams.has("q") ? searchParams.get("q") : undefined
   );
+  const { userInfo } = useSelector((state) => ({
+    userInfo: state.userInfo,
+  }));
 
   const toggleDdmenu = () => {
     setDdmenu(!ddMenu);
@@ -140,19 +145,44 @@ function Products(props) {
                 containerClassName="flex-1 w-[350px] md:w-auto lg:w-[346px]"
                 style={{ marginBottom: "1rem", minWidth: 250 }}
               />
+            ) : promo.length < 1 ? (
+              <div className="flex flex-col text-center">
+                <img src={illustrationsPromo} width={200} />
+                <p className="text-tertiary font-semibold">No promo today</p>
+                <p className="text-black font-medium text-sm">
+                  Dont worry, check tommorow
+                </p>
+              </div>
             ) : (
               promo.map((promo, idx) => (
                 <div
-                  className="flex flex-row items-center bg-slate-300  rounded-xl gap-2 px-4 py-3"
+                  className="flex flex-row items-center bg-slate-300  rounded-xl gap-2 px-4 py-3 relative"
                   key={idx}
                 >
-                  <div className="flex-1 flex justify-center">
-                    <img src={promo.img || images} alt="" width="75px" />
+                  <div className="flex-1 flex justify-center py-1">
+                    {/* <img src={promo.img || images} alt="" width="75px" /> */}
+                    <div className="avatar">
+                      <div className="w-24 rounded-xl">
+                        <img
+                          src={promo.img || images}
+                          className="mix-blend-multiply contrast-100"
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="flex-[2_2_0%]">
                     <p className="font-bold">{promo.name}</p>
                     <p className="text-sm">{promo.desc}</p>
                   </div>
+
+                  {Number(userInfo.role) > 1 && (
+                    <NavLink
+                      to={`/promo/edit/${promo.id}`}
+                      className="bg-tertiary absolute bottom-0 right-0 w-7 h-7 rounded-full flex items-center justify-center hover:bg-primary-focus"
+                    >
+                      <img src={penIcon} className="w-4 h-4" />
+                    </NavLink>
+                  )}
                 </div>
               ))
             )}

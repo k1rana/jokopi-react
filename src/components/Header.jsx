@@ -1,5 +1,6 @@
 import React, { Component, useContext } from "react";
 
+import _ from "lodash";
 import { toast } from "react-hot-toast";
 import { connect } from "react-redux";
 import {
@@ -176,7 +177,16 @@ class Header extends Component {
               </Link>
             </div>
             <div className="navbar-burger select-none cursor-pointer lg:hidden py-4 flex gap-7 flex-row items-center">
-              <div className="search-section cursor-pointer">
+              <div
+                ref={this.searchRef}
+                className="search-section cursor-pointer relative"
+                onClick={() =>
+                  this.setState((prevState) => ({
+                    ...prevState,
+                    isSearchOpen: !prevState.isSearchOpen,
+                  }))
+                }
+              >
                 <svg
                   width="22"
                   height="22"
@@ -193,12 +203,14 @@ class Header extends Component {
                   />
                 </svg>
               </div>
-              <a href="" className="relative">
-                <div className="absolute -left-2 -top-2 h-4 w-4 bg-tertiary rounded-full text-white flex text-[0.70rem] items-center justify-center font-extrabold">
-                  9+
-                </div>
-                <img src={chatIcon} alt="" width="24px" />
-              </a>
+              {!_.isEmpty(this.props.userInfo.token) && (
+                <a href="" className="relative">
+                  <div className="absolute -left-2 -top-2 h-4 w-4 bg-tertiary rounded-full text-white flex text-[0.70rem] items-center justify-center font-extrabold">
+                    9+
+                  </div>
+                  <img src={chatIcon} alt="" width="24px" />
+                </a>
+              )}
               <button onClick={this.toggleNavbar}>
                 <img
                   src={burgerIcon}
