@@ -5,13 +5,12 @@
    Open Source. Front-end.
    </p>
 
-   [Demo](https://jokopi-react.vercel.app/) · [Related Projects](#related-projects) · [Request Feature](#report-bug)
+[Demo](https://jokopi-react.vercel.app/) · [Related Projects](#related-projects) · [Request Feature](#report-bug)
 
 </div>
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Overview](#overview)
   - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -62,7 +61,7 @@ You can build it by yourself
 
 ### Prerequisites
 
-   You need to install some software to run this project
+You need to install some software to run this project
 
 - [Node.js](https://nodejs.org/en/download) (LTS version recommended, 14 or newer)
 
@@ -103,11 +102,12 @@ You can build it by yourself
 
 5. Running app
 
-    ```bash
-    npm start
-    ```
+   ```bash
+   npm start
+   ```
 
 ## Screenshots
+
 <div align="center">
 
 <img src="./public/assets/screenshots/1.png" width="400"/> 
@@ -125,7 +125,7 @@ Special thanks for providing resources such as icons and images.
 - [unDraw](https://undraw.co/)
 - [SVGRepo](https://svgrepo.com/)
 - and other sources.
-  
+
 If there are resources that belong to you, please let me know, I will write it here.
 
 ## Related Projects
@@ -140,6 +140,7 @@ This project is licensed under the ISC License. See the [LICENSE](LICENSE) file 
 <!-- ![](assets/screenshots/1.jpg)
 
 ![](assets/screenshots/2.jpg) -->
+
 ## Report Bug
 
 Any error report you can pull request
