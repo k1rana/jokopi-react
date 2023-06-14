@@ -1,5 +1,8 @@
 <div align="center">
 <img src="./public/assets/images/logo.png"/>
+
+[![Tech Stack](https://skillicons.dev/icons?i=react,redux,tailwind,vercel)](#tech-stack)
+
 <h3 align="center"><b>jokopi</b> - Example App</h3>
    <p align="center">
    Open Source. Front-end.
@@ -47,12 +50,9 @@ You can build it by yourself
 
 ## Tech Stack
 
-[![My Skills](https://skillicons.dev/icons?i=react,redux,tailwind,vercel)](https://skillicons.dev)
-
 - [React](https://react.dev/) & [React Router DOM](https://reactrouter.com/en/main)
 - [Redux](https://redux.js.org/) & [Redux Persist](https://www.npmjs.com/package/redux-persist) (Local Storage)
-- [TailwindCSS](https://tailwindcss.com/)
-- [DaisyUI](https://daisyui.com/)
+- [TailwindCSS](https://tailwindcss.com/) & [DaisyUI](https://daisyui.com/)
 - [React Hot Toast](https://www.npmjs.com/package/react-hot-toast)
 - [Vercel](https://vercel.com/dashboard) for deploying demo
 - etc.
@@ -108,13 +108,12 @@ You need to install some software to run this project
 
 ## Screenshots
 
-<div align="center">
-
-<img src="./public/assets/screenshots/1.png" width="400"/> 
-<img src="./public/assets/screenshots/2.png" width="400"/>
-<img src="./public/assets/screenshots/3.png" width="400"/>
-<img src="./public/assets/screenshots/4.png" width="400"/>
-<img src="./public/assets/screenshots/5.png" width="400"/>
+<div style="display:flex;flex-wrap:wrap;gap:0.5rem">
+<img src="./public/assets/screenshots/1.png" width="370"/> 
+<img src="./public/assets/screenshots/2.png" width="370"/>
+<img src="./public/assets/screenshots/3.png" width="370"/>
+<img src="./public/assets/screenshots/4.png" width="370"/>
+<img src="./public/assets/screenshots/5.png" width="370"/>
 </div>
 
 ## Resources
@@ -136,10 +135,6 @@ If there are resources that belong to you, please let me know, I will write it h
 ## License
 
 This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for details.
-
-<!-- ![](assets/screenshots/1.jpg)
-
-![](assets/screenshots/2.jpg) -->
 
 ## Report Bug
 
