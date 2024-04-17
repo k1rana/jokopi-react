@@ -96,8 +96,8 @@ You need to install some software to run this project
 4. Setup environment
 
    ```env
-   REACT_APP_BACKEND_HOST = (your rest api host)
-   REACT_APP_WEBSITE_NAME = (your project name)
+   VITE_BACKEND_HOST = (your rest api host)
+   VITE_APP_NAME = (your project name)
    ```
 
 5. Running app
