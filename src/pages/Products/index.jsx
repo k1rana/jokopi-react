@@ -1,7 +1,7 @@
 import "react-loading-skeleton/dist/skeleton.css";
 
 /* eslint-disable react/prop-types */
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import _ from "lodash";
 import Skeleton from "react-loading-skeleton";
@@ -45,7 +45,7 @@ const promos = [
 
 function Products(props) {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+  // const queryParams = new URLSearchParams(location.search);
   const [ddMenu, setDdmenu] = useState(false);
   const [sort, setSort] = useState(undefined);
   const [promo, setPromo] = useState([]);
@@ -145,7 +145,7 @@ function Products(props) {
                 containerClassName="flex-1 w-[350px] md:w-auto lg:w-[346px]"
                 style={{ marginBottom: "1rem", minWidth: 250 }}
               />
-            ) : promo.length < 1 ? (
+            ) : !promo || promo.length < 1 ? (
               <div className="flex flex-col text-center">
                 <img src={illustrationsPromo} width={200} />
                 <p className="text-tertiary font-semibold">No promo today</p>

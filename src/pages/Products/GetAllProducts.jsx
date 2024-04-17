@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -17,9 +17,9 @@ import loadingImage from "../../assets/images/loading.svg";
 import productPlaceholder from "../../assets/images/placeholder-image.webp";
 import { getAllProducts } from "../../utils/dataProvider/products";
 import { n_f } from "../../utils/helpers";
-import withSearchParams from "../../utils/wrappers/withSearchParams.js";
+import withSearchParams from "../../utils/wrappers/withSearchParams";
 
-function GetAllProducts(props) {
+const GetAllProducts = (props) => {
   {
     const [products, setProducts] = useState([]);
     const [meta, setMeta] = useState({});
@@ -28,9 +28,8 @@ function GetAllProducts(props) {
     const userInfo = useSelector((state) => state.userInfo);
     const { catId } = useParams();
     const { searchParams, setSearchParams } = props;
-    const { sort, setSort } = props;
 
-    function getProducts(catId, searchParams, controller) {
+    const getProducts = (catId, searchParams, controller) => {
       const sort = searchParams.get("sort");
       const orderBy = searchParams.get("orderBy");
       const searchByName = searchParams.get("q");
@@ -53,7 +52,7 @@ function GetAllProducts(props) {
           setProducts([]);
           setMeta({});
         });
-    }
+    };
 
     // const controller = React.useMemo(() => new AbortController(), [catId]);
     const page = searchParams.get("page");
@@ -117,7 +116,7 @@ function GetAllProducts(props) {
         </section>
       );
 
-    if (products.length < 1) {
+    if (!products || products.length < 1) {
       return (
         <section className="w-full flex flex-col justify-center items-center py-8 text-center font-medium gap-5">
           <div>
@@ -271,6 +270,6 @@ function GetAllProducts(props) {
       </>
     );
   }
-}
+};
 
 export default withSearchParams(GetAllProducts);

@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js",
@@ -7,10 +7,10 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        history: "url('/public/assets/images/cold-brew.webp')",
-        main: "url('/public/assets/images/bg-main-coffee.webp')",
-        profile: "url('/public/assets/images/bg-profile.webp')",
-        cart: "url('/public/assets/images/bg-cart.webp')",
+        history: "url('/assets/images/cold-brew.webp')",
+        main: "url('/assets/images/bg-main-coffee.webp')",
+        profile: "url('/assets/images/bg-profile.webp')",
+        cart: "url('/assets/images/bg-cart.webp')",
       },
       boxShadow: {
         primary: "0px 6px 20px 0px #00000020;",

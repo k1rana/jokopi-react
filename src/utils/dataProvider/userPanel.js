@@ -1,12 +1,10 @@
-import axios from "axios";
-
-const host = process.env.REACT_APP_BACKEND_HOST;
+import baseRestApi from "./base";
 
 export function fetchProfile(token) {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  return axios.get(`${host}/apiv1/userPanel/profile`, config);
+  return baseRestApi.get(`/apiv1/userPanel/profile`, config);
 }
 
 export function addCart(product_id, cart, token) {
@@ -17,14 +15,14 @@ export function addCart(product_id, cart, token) {
     product_id,
     cart,
   };
-  return axios.patch(`${host}/apiv1/userPanel/cart`, data, config);
+  return baseRestApi.patch(`/apiv1/userPanel/cart`, data, config);
 }
 
 export function getCart(token) {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  return axios.get(`${host}/apiv1/userPanel/cart`, config);
+  return baseRestApi.get(`/apiv1/userPanel/cart`, config);
 }
 
 export function updatePassword(oldPassword, newPassword, token) {
@@ -35,12 +33,12 @@ export function updatePassword(oldPassword, newPassword, token) {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  return axios.patch(`${host}/apiv1/auth/editPassword`, body, config);
+  return baseRestApi.patch(`/apiv1/auth/editPassword`, body, config);
 }
 
 export function updateProfile(data, token) {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  return axios.patch(`${host}/apiv1/auth/editProfile`, data, config);
+  return baseRestApi.patch(`/apiv1/auth/editProfile`, data, config);
 }

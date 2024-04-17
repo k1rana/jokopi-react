@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 import { profileAction } from "../../redux/slices/profile.slice";
 import { uinfoAct } from "../../redux/slices/userInfo.slice";
 
-export const CheckAuth = ({ children }) => {
+export const CheckAuth = () => {
   const { userInfo } = useSelector((state) => ({
     userInfo: state.userInfo,
   }));
@@ -50,7 +50,6 @@ export const TokenHandler = () => {
   }));
   const dispatch = useDispatch();
   const controller = useMemo(() => new AbortController(), []);
-  const navigate = useNavigate();
   useEffect(() => {
     if (userInfo.token) {
       const decoded = jwtDecode(userInfo.token);

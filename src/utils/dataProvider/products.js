@@ -1,8 +1,4 @@
-import axios from "axios";
-
-import api from "./base";
-
-const host = process.env.REACT_APP_BACKEND_HOST;
+import baseRestApi from "./base";
 
 export function getAllProducts(
   catId = "",
@@ -10,15 +6,15 @@ export function getAllProducts(
   controller
 ) {
   const params = { orderBy, sort, searchByName, limit, page };
-  const url = `${host}/apiv1/products?category=${catId}`;
+  const url = `/apiv1/products?category=${catId}`;
 
-  return axios.get(url, { params, signal: controller.signal });
+  return baseRestApi.get(url, { params, signal: controller.signal });
 }
 
 export function getProductbyId(productId, controller) {
-  const url = `${host}/apiv1/products/${productId}`;
+  const url = `/apiv1/products/${productId}`;
 
-  return axios.get(url, {
+  return baseRestApi.get(url, {
     signal: controller.signal,
   });
 }
@@ -43,7 +39,7 @@ export const createProductEntry = (
   //   image,
   // };
   // console.log(image);
-  return api.post("/apiv1/products", bodyForm, {
+  return baseRestApi.post("/apiv1/products", bodyForm, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
@@ -72,7 +68,7 @@ export const editProductEntry = (
   //   desc,
   //   image,
   // };
-  return api.patch(`/apiv1/products/${productId}`, bodyForm, {
+  return baseRestApi.patch(`/apiv1/products/${productId}`, bodyForm, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
@@ -82,7 +78,7 @@ export const editProductEntry = (
 };
 
 export const deleteProductEntry = (productId, token, controller) => {
-  return api.delete(`/apiv1/products/${productId}`, {
+  return baseRestApi.delete(`/apiv1/products/${productId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import jwtDecode from "jwt-decode";
 import { isEqual } from "lodash";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +18,7 @@ function Profile() {
   const userInfo = useSelector((state) => state.userInfo);
   const profile = useSelector((state) => state.profile);
 
-  const uinfo = userInfo.token ? jwtDecode(userInfo.token) : {};
+  // const uinfo = userInfo.token ? jwtDecode(userInfo.token) : {};
   const [data, setData] = useState({
     address: "",
     birthdate: "",
@@ -51,15 +50,10 @@ function Profile() {
 
   const [editPassModal, setEditPassModal] = useState(false);
   const [isProcess, setProcess] = useState(false);
-  const [isUploaderOpen, setIsUploaderOpen] = useState(false);
 
   const controller = useMemo(() => new AbortController(), []);
 
   const dispatch = useDispatch();
-
-  const handleChoosePhoto = () => {
-    setIsUploaderOpen(true);
-  };
 
   const closeEpassModal = () => {
     setEditPassModal(false);
@@ -104,7 +98,7 @@ function Profile() {
     }
   };
 
-  const Loading = (props) => {
+  const Loading = () => {
     return (
       <main className="h-[80vh] flex items-center justify-center">
         <div>

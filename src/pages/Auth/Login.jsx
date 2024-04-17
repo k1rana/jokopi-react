@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";

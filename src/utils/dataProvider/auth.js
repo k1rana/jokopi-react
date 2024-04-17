@@ -1,46 +1,44 @@
-import axios from "axios";
-
-const host = process.env.REACT_APP_BACKEND_HOST;
+import baseRestApi from "./base";
 
 export function login(email, password, rememberMe, controller) {
   const body = { email, password, rememberMe };
-  const url = `${host}/apiv1/auth/login`;
+  const url = `/apiv1/auth/login`;
 
-  return axios.post(url, body, {
+  return baseRestApi.post(url, body, {
     signal: controller.signal,
   });
 }
 
 export function register(email, password, phone_number, controller) {
   const body = { email, password, phone_number };
-  const url = `${host}/apiv1/auth/register`;
+  const url = `/apiv1/auth/register`;
 
-  return axios.post(url, body, {
+  return baseRestApi.post(url, body, {
     signal: controller.signal,
   });
 }
 
 export function forgotPass(email, controller) {
   const body = { email };
-  const url = `${host}/apiv1/auth/forgotPass`;
+  const url = `/apiv1/auth/forgotPass`;
 
-  return axios.post(url, body, {
+  return baseRestApi.post(url, body, {
     signal: controller.signal,
   });
 }
 
 export function verifyResetPass(verify, code, controller) {
-  const url = `${host}/apiv1/auth/resetPass?verify=${verify}&code=${code}`;
+  const url = `/apiv1/auth/resetPass?verify=${verify}&code=${code}`;
 
-  return axios.get(url, {
+  return baseRestApi.get(url, {
     signal: controller.signal,
   });
 }
 
 export function resetPass(verify, code, password, controller) {
-  const url = `${host}/apiv1/auth/resetPass?verify=${verify}&code=${code}`;
+  const url = `/apiv1/auth/resetPass?verify=${verify}&code=${code}`;
 
-  return axios.patch(
+  return baseRestApi.patch(
     url,
     { newPassword: password },
     {
@@ -55,6 +53,6 @@ export function logoutUser(token) {
       Authorization: `Bearer ${token}`,
     },
   };
-  const url = `${host}/apiv1/auth/logout`;
-  return axios.delete(url, config);
+  const url = `/apiv1/auth/logout`;
+  return baseRestApi.delete(url, config);
 }

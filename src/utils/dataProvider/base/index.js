@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const host = process.env.REACT_APP_BACKEND_HOST;
+const host = import.meta.env.VITE_BACKEND_HOST;
 
-const api = axios.create({
+const baseRestApi = axios.create({
   baseURL: host,
 });
 
-export default api;
+export default baseRestApi;

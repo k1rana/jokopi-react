@@ -19,7 +19,7 @@ import { contextAct } from "../redux/slices/context.slice";
 import { profileAction } from "../redux/slices/profile.slice";
 import { uinfoAct } from "../redux/slices/userInfo.slice";
 import { getUserData, isAuthenticated } from "../utils/authUtils";
-import withSearchParams from "../utils/wrappers/withSearchParams.js";
+import withSearchParams from "../utils/wrappers/withSearchParams";
 import Logout from "./Logout";
 import Sidebar from "./Sidebar";
 
@@ -36,18 +36,18 @@ const mapDispatchToProps = (dispatch) => ({
   openLogout: () => dispatch(contextAct.openLogout()),
 });
 
-// create a navigation component that wraps the burger menu
-const Navigation = () => {
-  const ctx = useContext(MyContext);
+// // create a navigation component that wraps the burger menu
+// const Navigation = () => {
+//   const ctx = useContext(MyContext);
 
-  return (
-    <Sidebar
-      customBurgerIcon={false}
-      isOpen={ctx.isMenuOpen}
-      onStateChange={(state) => ctx.stateChangeHandler(state)}
-    />
-  );
-};
+//   return (
+//     <Sidebar
+//       customBurgerIcon={false}
+//       isOpen={ctx.isMenuOpen}
+//       onStateChange={(state) => ctx.stateChangeHandler(state)}
+//     />
+//   );
+// };
 
 class Header extends Component {
   constructor(props) {

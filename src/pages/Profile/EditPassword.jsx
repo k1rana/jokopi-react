@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-import { isEqual } from 'lodash';
-import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
+import { isEqual } from "lodash";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
-import Modal from '../../components/Modal';
-import { updatePassword } from '../../utils/dataProvider/userPanel';
+import Modal from "../../components/Modal";
+import { updatePassword } from "../../utils/dataProvider/userPanel";
 
 function EditPassword(props) {
   const userInfo = useSelector((state) => state.userInfo);
@@ -162,5 +162,10 @@ function EditPassword(props) {
     </Modal>
   );
 }
+
+EditPassword.propTypes = {
+  onClose: Function,
+  isOpen: Boolean,
+};
 
 export default EditPassword;

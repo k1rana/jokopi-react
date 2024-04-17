@@ -1,4 +1,4 @@
-import api from './base';
+import baseRestApi from "./base";
 
 export const createTransaction = (
   {
@@ -20,7 +20,7 @@ export const createTransaction = (
     address,
     notes,
   };
-  return api.post(`/apiv1/transactions`, body, {
+  return baseRestApi.post(`/apiv1/transactions`, body, {
     signal: controller.signal,
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -31,7 +31,7 @@ export const getTransactions = (
   token,
   controller
 ) => {
-  return api.get("/apiv1/transactions", {
+  return baseRestApi.get("/apiv1/transactions", {
     params: {
       status_id,
       page,
@@ -47,7 +47,7 @@ export const setTransactionDone = (ids = [], token, controller) => {
     convertedIds = ids.join(",");
   }
   console.log(convertedIds);
-  return api.patch(
+  return baseRestApi.patch(
     "/apiv1/transactions/changeStatus",
     {
       transactions: convertedIds,
@@ -64,7 +64,7 @@ export const getTransactionHistory = (
   token,
   controller
 ) => {
-  return api.get("/apiv1/userPanel/transactions", {
+  return baseRestApi.get("/apiv1/userPanel/transactions", {
     params: {
       page,
       limit,
@@ -75,7 +75,7 @@ export const getTransactionHistory = (
 };
 
 export const getTransactionDetail = (transactionId, token, controller) => {
-  return api.get(`/apiv1/transactions/${transactionId}`, {
+  return baseRestApi.get(`/apiv1/transactions/${transactionId}`, {
     headers: { Authorization: `Bearer ${token}` },
     signal: controller.signal,
   });
