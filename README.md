@@ -32,7 +32,7 @@ jokopi is a complete open-source app coffee shop ordering.
 
 This is an example application that shows how `jokopi` is applied to a react app.
 
-Build using create react app.
+Build using vite + react.
 
 You can build it by yourself
 
