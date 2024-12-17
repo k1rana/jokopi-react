@@ -32,7 +32,7 @@ class Mainpage extends Component {
       "High quality beans",
       "Healthy meals, you can request the ingredients",
       "Chat with our staff to get better experience for ordering",
-      "Free member card with a minimum purchase of IDR 200.000.",
+      "Free member card with a minimum purchase of $10.",
     ],
     reviews: [
       {
