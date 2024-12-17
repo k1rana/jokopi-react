@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
-import icon from "../../assets/jokopi.svg";
+import icon from "../../assets/logo.jpg";
 import { profileAction } from "../../redux/slices/profile.slice";
 import { uinfoAct } from "../../redux/slices/userInfo.slice";
 import { login } from "../../utils/dataProvider/auth";
@@ -67,7 +67,7 @@ const Login = () => {
           },
           success: () => {
             navigate("/products");
-            toast.success("Welcome to jokopi!\nYou can order for now!", {
+            toast.success("Welcome to your Buisness!\nYou can order for now!", {
               icon: "👋",
               duration: Infinity,
             }); // add toast welcome
@@ -112,7 +112,7 @@ const Login = () => {
         <Link to="/">
           <div className="font-extrabold flex flex-row justify-center gap-4">
             <img src={icon} alt="logo" width="30px" />
-            <h1 className="text-xl">jokopi.</h1>
+            <h1 className="text-xl">Your Buisness.</h1>
           </div>
         </Link>
         <div className="text-lg md:text-xl font-semibold text-tertiary">

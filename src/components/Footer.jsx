@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import fbLogo from '../assets/icons/facebook.svg';
 import igLogo from '../assets/icons/instagram.svg';
 import twLogo from '../assets/icons/twitter.svg';
-import logo from '../assets/jokopi.svg';
+import logo from '../assets/logo.jpg';
 
 class Footer extends Component {
   render() {
@@ -18,12 +18,12 @@ class Footer extends Component {
               <Link to="/">
                 <div className="font-extrabold flex flex-row gap-2">
                   <img src={logo} alt="logo" width="30px" />{" "}
-                  <h1 className="text-xl text-black">jokopi.</h1>
+                  <h1 className="text-xl text-black">Buisness Name</h1>
                 </div>
               </Link>
               <div className="md:w-96">
-                jokopi is a store that sells some good meals, and especially
-                coffee. We provide high quality beans
+              Labore est ex duis nisi.
+              Ea commodo enim sint est.
               </div>
               <div className="flex flex-row gap-5">
                 <a
@@ -45,7 +45,7 @@ class Footer extends Component {
                   <img src={twLogo} alt="" width="120%" className="w-16" />
                 </a>
               </div>
-              <div className="copyright">(c) 2023 jokopi</div>
+              <div className="copyright">(c) 2024 CJay</div>
             </div>
             <nav className="flex flex-row gap-10 md:flex-1">
               <div className="flex-1 flex flex-col gap-5">

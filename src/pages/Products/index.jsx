@@ -351,7 +351,7 @@ function Products(props) {
           </Routes>
 
           <section className="my-6 text-tertiary">
-            *the price has been cutted by discount appears
+            
           </section>
           {Number(props.userInfo.role) > 1 && (
             <div className="mt-auto flex w-full">

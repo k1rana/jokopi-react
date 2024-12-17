@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
-import icon from "../../assets/jokopi.svg";
+import icon from "../../assets/logo.jpg";
 import { register } from "../../utils/dataProvider/auth";
 import useDocumentTitle from "../../utils/documentTitle";
 
@@ -105,7 +105,7 @@ const Register = () => {
         <Link to="/">
           <div className="font-extrabold flex flex-row justify-center gap-4">
             <img src={icon} alt="logo" width="30px" />
-            <h1 className="text-xl">jokopi.</h1>
+            <h1 className="text-xl">Your Buisness</h1>
           </div>
         </Link>
         <div className="text-xl font-semibold text-tertiary">Login</div>

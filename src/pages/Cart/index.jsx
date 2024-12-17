@@ -242,7 +242,7 @@ function Cart() {
                         </aside>
                         <aside className="flex-1">
                           <p className="text-right">
-                            IDR {n_f(Number(list.price) * Number(list.qty))}
+                            aud {n_f(Number(list.price) * Number(list.qty))}
                           </p>
                         </aside>
                         <button
@@ -273,16 +273,16 @@ function Cart() {
                   </div>
                   <div className="flex flex-row uppercase lg:text-lg">
                     <p className="flex-[2_2_0%]">Tax & Fees</p>
-                    <p className="flex-1 lg:flex-none text-right">IDR 20.000</p>
+                    <p className="flex-1 lg:flex-none text-right">AUD 20.000</p>
                   </div>
                   <div className="flex flex-row uppercase lg:text-lg">
                     <p className="flex-[2_2_0%]">Shipping</p>
-                    <p className="flex-1 lg:flex-none text-right">IDR 10.000</p>
+                    <p className="flex-1 lg:flex-none text-right">AUD 10.000</p>
                   </div>
                   <div className="flex flex-row uppercase  lg:text-xl font-bold my-10">
                     <p className="flex-[2_2_0%]">Total</p>
                     <p className="flex-initial lg:flex-none">
-                      IDR{" "}
+                      AUD{" "}
                       {n_f(
                         cart.reduce(
                           (acc, cur) => acc + cur.price * cur.qty,
